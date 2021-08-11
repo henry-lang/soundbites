@@ -7,6 +7,8 @@ const postRouter = require('./routes/post_router');
 const Post = require('./models/post_model');
 const dateAssembly = require("./date_assembly");
 
+const logRequests = require('./middleware/log_requests');
+
 require('dotenv').config();
 
 mongoose.connect(process.env.DB_URL, {
@@ -35,6 +37,7 @@ const serverPort = process.env.SERVER_PORT;
 server.set('view engine', 'ejs');
 server.use(express.static('pages'));
 server.use('/assets', express.static(path.join(__dirname, '../assets')));
+server.use(logRequests);
 
 server.listen(serverPort, () => {
     console.log(`Started server on port ${serverPort}!`);
@@ -49,3 +52,7 @@ server.get('/featured', (req, res) => {
 });
 
 server.use('/posts', postRouter);
+
+server.use((req, res) => {
+    res.status(404).render('../views/404');
+});

@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const postRouter = require('./routes/post_router');
 const Post = require('./models/post_model');
+const assemble = require("./date_assembly")
 
 require('dotenv').config();
 
@@ -19,7 +20,7 @@ mongoose.connect(process.env.DB_URL, {
     var testPost = new Post({
         title: 'Music is awesome!',
         description: 'It\'s so cool.',
-        date: Date.now(),
+        date: assemble(),
         author: 'Henry',
         markdown: fs.readFileSync('./sample.md')
     });

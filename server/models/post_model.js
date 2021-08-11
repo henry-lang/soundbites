@@ -19,11 +19,11 @@ const postSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: false,
+        required: true,
     },
     date: {
-        type: Date,
-        default: Date.now
+        type: String,
+        required: true,
     },
     author: {
         type: String,

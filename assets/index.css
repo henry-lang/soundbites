@@ -1,39 +1,19 @@
-a {
-    color: #8a8a8b;
-    transition: .25s;
-}
-
-a:hover {
-    color: white;
-}
-
-nav {
+#title {
+    font-family: "Georama";
     text-align: center;
-    width: 100%;
+    position: relative;
+    top: 40px;
 }
 
-ul {
-    z-index: 1;
-    position: fixed;
-    top: 0;
-    width: 100;
+p {
+    font-family: "Georama";
+    position: relative;
+    text-align: center;
 }
 
-li {
-    z-index: 1;
-    float: left;
-    display: inline;
-    border-right: 2px solid #323437;
-}
-
-li:last-child {
-    border-right:none;
-}
-
-li a {
-    z-index: 1;
-    display: block;
-    padding: 9px;
-    background-color: #222324;
-    font-family: "Georama Thin";
+h2 {
+    font-family: "Georama";
+    font-weight: 300;
+    padding-left: 100px;
+    padding-top: 100px;
 }

@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const marked = require('marked');
+
+const createDOMPurify = require('dompurify');
+const jsdom = require('jsdom');
+
+const dompurify = createDOMPurify(new jsdom.JSDOM('').window);
 
 const postSchema = new mongoose.Schema({
     slug: {
@@ -26,12 +32,16 @@ const postSchema = new mongoose.Schema({
     markdown: {
         type: String,
         required: true
+    },
+    html: {
+        type: String,
+        required: true
     }
 });
 
 postSchema.pre('validate', function(next) {
-    console.log('pog');
     this.slug = slugify(this.title, {lower: true, strict: true});
+    this.html = dompurify.sanitize(marked(this.markdown));
 
     next();
 });

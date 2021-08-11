@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 const postRouter = require('./routes/post_router');
 const Post = require('./models/post_model');
@@ -15,14 +16,14 @@ mongoose.connect(process.env.DB_URL, {
     if (err) throw err;
     console.log(`Connected to database on ${process.env.DB_URL}!`);
 
-    // var testPost = new Post({
-    //     title: 'Music is awesome!',
-    //     description: 'It\'s so cool.',
-    //     date: Date.now(),
-    //     author: 'Henry',
-    //     markdown: 'sample text'
-    // });
-    // await testPost.save();
+    var testPost = new Post({
+        title: 'Music is awesome!',
+        description: 'It\'s so cool.',
+        date: Date.now(),
+        author: 'Henry',
+        markdown: fs.readFileSync('./sample.md')
+    });
+    await testPost.save();
 }); 
 
 const server = express();

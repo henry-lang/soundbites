@@ -6,7 +6,10 @@ const postRouter = express.Router();
 postRouter.get('/:slug', async (req, res) => {
     var slug = req.params.slug;
     var data = await Post.findOne({slug: slug});
-    if(!data) res.render('404');
+    if(!data) {
+        res.render('404');
+        return;
+    }
     
     var trimmed = {
         title: data.title,
@@ -14,7 +17,7 @@ postRouter.get('/:slug', async (req, res) => {
         date: data.date,
         author: data.author,
         slug: data.slug,
-        markdown: data.markdown
+        html: data.html
     };
     res.render('posts', {data: trimmed});
 });

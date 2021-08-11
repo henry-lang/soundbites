@@ -1,0 +1,2 @@
+**Bold text**
+*Italic*

@@ -5,15 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= data.title %> - music blog</title>
+    <link type="text/css" href="assets/common.css">
 </head>
 <body>
+    <%- include("common/navbar") %>
     <h1><%= data.title %> </h1>
     <h3>By <%= data.author %> <i>on <%= data.date %></i></h3>
-    <br>
-    <br>
-    <br>
-    <br>
+
     <%- data.html %>
 </body>
-<script src="../assets/maincss.js"></script>
 </html>

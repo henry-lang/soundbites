@@ -19,11 +19,11 @@ postRouter.get('/:slug', async (req, res) => {
         slug: data.slug,
         html: data.html
     };
-    res.render('template', {data: trimmed});
+    res.render('post', {data: trimmed});
 });
 
-postRouter.get("/", (req, res) => {
-    res.render("featured")
+postRouter.get('/', (req, res) => {
+    res.redirect('/featured');
 });
 
 module.exports = postRouter;

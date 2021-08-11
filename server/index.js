@@ -2,15 +2,19 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const fs = require('fs');
+const log4js = require('log4js');
 
 const postRouter = require('./routes/post_router');
 const Post = require('./models/post_model');
-const assemble = require("./date_assembly")
+const dateAssembly = require("./date_assembly");
 
 require('dotenv').config();
 
+const logger = log4js.getLogger();
+logger.level = 'debug';
+
 mongoose.connect(process.env.DB_URL, {
-    useNewUrlParser: true, 
+    useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
 }, async (err) => {
@@ -20,7 +24,7 @@ mongoose.connect(process.env.DB_URL, {
     // var testPost = new Post({
     //     title: 'Music is awesome!',
     //     description: 'It\'s so cool.',
-    //     date: assemble(),
+    //     date: dateAssembly(),
     //     author: 'Henry',
     //     markdown: fs.readFileSync('./sample.md')
     // });
@@ -33,7 +37,6 @@ const serverPort = process.env.SERVER_PORT;
 server.set('view engine', 'ejs');
 server.use(express.static('pages'));
 server.use('/assets', express.static(path.join(__dirname, '../assets')));
-console.log(path.join(__dirname, '../assets'))
 
 server.listen(serverPort, () => {
     console.log(`Started server on port ${serverPort}!`);
@@ -43,8 +46,8 @@ server.get('/', (req, res) => {
     res.render('index');
 });
 
-server.use('/posts', postRouter);
-
-server.use(function (req, res) {
-    res.status(404).render('../views/404');
+server.get('/featured', (req, res) => {
+    res.render('featured')
 });
+
+server.use('/posts', postRouter);

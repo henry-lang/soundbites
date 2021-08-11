@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel=stylesheet href="../assets/404.css">
+    <link rel=stylesheet href="../assets/common.css">
     <title>404 - music blog</title>
 </head>
 <body>
-    <h1 id="title">404: could not load page</h1>
-    <p>the page you were looking for does not exist. <a href="/">return to home</a></p>
+    <%- include("common/navbar") %>
+
+    <div class="main-content">
+        <h1 id="title">404: could not load page</h1>
+        <p>the page you were looking for does not exist. <a href="/">return to home</a></p>
+    </div>
+
 </body>
-<script src="../assets/maincss.js"></script>
 </html>

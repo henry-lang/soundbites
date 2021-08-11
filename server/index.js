@@ -2,16 +2,12 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const fs = require('fs');
-const log4js = require('log4js');
 
 const postRouter = require('./routes/post_router');
 const Post = require('./models/post_model');
 const dateAssembly = require("./date_assembly");
 
 require('dotenv').config();
-
-const logger = log4js.getLogger();
-logger.level = 'debug';
 
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,

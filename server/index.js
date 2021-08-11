@@ -17,15 +17,17 @@ mongoose.connect(process.env.DB_URL, {
     if (err) throw err;
     console.log(`Connected to database on ${process.env.DB_URL}!`);
 
-    // var testPost = new Post({
-    //     title: 'Music is awesome!',
-    //     description: 'It\'s so cool.',
-    //     date: dateAssembly(),
-    //     author: 'Henry',
-    //     markdown: fs.readFileSync('./sample.md')
-    // });
-    // await testPost.save();
-}); 
+    try {
+        var testPost = new Post({
+            title: 'Music is awesome!',
+            description: 'It\'s so cool.',
+            date: dateAssembly(),
+            author: 'Henry',
+            markdown: fs.readFileSync('./sample.md')
+        });
+        await testPost.save();
+    } catch(err) {}
+});
 
 const server = express();
 const serverPort = process.env.SERVER_PORT;

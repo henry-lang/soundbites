@@ -1,0 +1,39 @@
+a {
+    color: #8a8a8b;
+    transition: .25s;
+}
+
+a:hover {
+    color: white;
+}
+
+nav {
+    text-align: center;
+    width: 100%;
+}
+
+ul {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    width: 100;
+}
+
+li {
+    z-index: 1;
+    float: left;
+    display: inline;
+    border-right: 2px solid #323437;
+}
+
+li:last-child {
+    border-right:none;
+}
+
+li a {
+    z-index: 1;
+    display: block;
+    padding: 9px;
+    background-color: #222324;
+    font-family: "Georama Thin";
+}

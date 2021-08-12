@@ -97,7 +97,16 @@ body {
 }
 
 .navbar-link {
-    text-decoration: none;
+    font-family: var(--main-font);
+    font-weight: 200;
+    text-decoration: underline solid transparent;
+    color: var(--accent-color);
+    padding-right: 20px;
+    transition: 0.5s;
+}
+
+.navbar-link:hover {
+    text-decoration: underline solid var(--accent-color);
     color: var(--accent-color);
     padding-right: 20px;
 }
@@ -112,6 +121,7 @@ body {
 }
 
 .main-content {
+    font-family: var(--main-font);
     padding-top: calc(var(--nav-height) + 40px);
     width: var(--main-content-width);
     margin: 0 auto;

@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 
 const postRouter = require('./routes/post_router');
+const userRouter = require("./routes/user_router")
 const Post = require('./models/post_model');
+const User = require('./models/user_model');
 const dateAssembly = require("./date_assembly");
 
 const logRequests = require('./middleware/log_requests');
@@ -20,12 +22,11 @@ mongoose.connect(process.env.DB_URL, {
     console.log(`Connected to database on ${process.env.DB_URL}!`);
 
     try {
-        var testPost = new Post({
-            title: 'Music is awesome!',
-            description: 'It\'s so cool.',
-            date: dateAssembly(),
-            author: 'Henry',
-            markdown: fs.readFileSync('./sample.md')
+        var testPost = new User({
+            username: "alksdjflk",
+            password: "ajsdlkfj",
+            displayName: "Test",
+
         });
         await testPost.save();
     } catch(err) {}
@@ -52,6 +53,7 @@ server.get('/featured', (req, res) => {
 });
 
 server.use('/posts', postRouter);
+server.use("/users", userRouter);
 
 server.use((req, res) => {
     res.status(404).render('../views/404');

@@ -1,11 +1,20 @@
 const mongoose = require('mongoose');
+// const PasswordValidator = require("password-validator")
 
-const passwordSchema = new PasswordValidator();
-passwordSchema
-.is.min(8)
-.is.max(20)
-.has().digits(1)
-.has().not().spaces()
+// const passwordSchema = new PasswordValidator();
+// passwordSchema
+// .is.min(8)
+// .is.max(20)
+// .has().digits(1)
+// .has().not().spaces()
+// const PasswordValidator = require("password-validator")
+
+// const passwordSchema = new PasswordValidator();
+// passwordSchema
+// .is.min(8)
+// .is.max(20)
+// .has().digits(1)
+// .has().not().spaces()
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -22,7 +31,7 @@ const userSchema = new mongoose.Schema({
     },
     profilePictureURL: {
         type: String,
-        required: true
+        required: false
     },
     author: { // Author for writing posts, other users will be able to write comments, and rate them maybe.
         type: Boolean,

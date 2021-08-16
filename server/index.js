@@ -28,6 +28,19 @@ const SECRET = process.env.JWT_SECRET
 const server = express()
 const serverPort = process.env.SERVER_PORT
 
+function verifyCookie(req, res, next) {
+    var token = req.cookies.access_token
+    
+    if (!token) {
+        return res.redirect("/login")
+    }
+
+    if (jwt.verify(token, SECRET) == false) {
+        return res.redirect("/login")
+    }
+    return next()
+}
+
 server.set('view engine', 'ejs')
 server.use(express.static('pages'))
 server.use('/assets', express.static(path.join(__dirname, '../assets')))
@@ -55,6 +68,10 @@ server.get('/login', async (req, res) => {
     res.render('login')
 })
 
+server.get("/profile", verifyCookie, (req, res) => {
+    res.json({status: "authorized."})
+})
+
 server.post('/login', async (req, res) => {
     var username = req.body.username
     var pwd = req.body.pwd
@@ -73,6 +90,7 @@ server.post('/login', async (req, res) => {
 
 server.post('/register', async (req, res) => {
     var pwd = await bcrypt.hash(req.body.pwd, 10)
+    var username = req.body.username
 
     try {
         var newUser = new User({
@@ -81,12 +99,14 @@ server.post('/register', async (req, res) => {
         })
         await newUser.save()
 
-        res.json({status: 'ok'})
+        newUser = await User.findOne({username})
+        var token = jwt.sign({id: newUser._id, username: newUser.username}, SECRET)
+        return res.cookie("access_token", token).json({status: 'ok'}) //supply cookie for the first time
 } catch(err) {
     if (err.code == '11000') {
-        res.json({status: 'error', error: 'username already taken'})
+        return res.json({status: 'error', error: 'username already taken'})
     }
-    res.json({status: 'error', error: err})
+    res.json({status: 'error', error: err.toString()})
 }})
 
 server.use('/posts', postRouter)

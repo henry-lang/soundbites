@@ -18,7 +18,7 @@ const login = async event => {
     }).then((res) => res.json())
 
     if (result.status == "ok") {
-        p.innerHTML = result.data
+        p.innerHTML = "Logged in successfully."
         p.style.display = "block"
     } else {
         p.innerHTML = result.error

@@ -1,15 +1,26 @@
-const form = document.getElementById("register-form")
+const form = document.getElementById("reg")
+const p = document.getElementById("invalid")
 
 form.addEventListener("submit", register)
 
-const register = async event => {
+async function register(event) {
+    p.style.display = "none"
     event.preventDefault()
     var username = document.getElementById("username").value
     var pwd = document.getElementById('pwd').value
 
-    await fetch("/register", {
+    result = await fetch("/register", {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({username, pwd})
-    })
+    }).then((res) => res.json())
+
+    if (result.status == "ok") {
+        p.innerHTML = "successfully made your account."
+        p.style.color = "var(--dark-color)"
+        p.style.display = "block"
+    } else {
+        p.innerHTML = result.error
+        p.style.display = "block"
+    }
 }

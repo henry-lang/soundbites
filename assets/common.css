@@ -99,15 +99,14 @@ body {
 .navbar-link {
     font-family: var(--main-font);
     font-weight: 200;
-    text-decoration: underline solid transparent;
+    text-decoration: none;
     color: var(--accent-color);
     padding-right: 20px;
     transition: 0.5s;
 }
 
 .navbar-link:hover {
-    text-decoration: underline solid var(--accent-color);
-    color: var(--accent-color);
+    text-decoration: underline;
     padding-right: 20px;
 }
 

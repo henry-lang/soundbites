@@ -1,4 +1,4 @@
-function assemble() {
+const assemble = () => {
     const d = new Date()
     var day = d.getDate()
     var month = d.getMonth() + 1

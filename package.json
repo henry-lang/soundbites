@@ -30,6 +30,7 @@
     "mongoose": "^5.13.6",
     "nodemon": "^2.0.12",
     "password-validator": "^5.1.1",
+    "simplemde": "^1.11.2",
     "slugify": "^1.6.0"
   }
 }

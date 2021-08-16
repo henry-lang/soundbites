@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({ //for now only username and pwd will be
     },
     displayName: {
         type: String,
-        required: false
+        required: true
     },
     password: {
         type: String,

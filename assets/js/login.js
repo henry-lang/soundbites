@@ -3,7 +3,7 @@ const p = document.getElementById("invalid")
 
 form.addEventListener("submit", login)
 
-const login = async event => {
+async function login(event) {
     event.preventDefault()
 
     p.style.display = "none"
@@ -20,6 +20,7 @@ const login = async event => {
     if (result.status == "ok") {
         p.innerHTML = "Logged in successfully."
         p.style.display = "block"
+        window.location.replace("http://localhost:3000/profile")
     } else {
         p.innerHTML = result.error
         p.style.display = "block"

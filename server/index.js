@@ -12,6 +12,7 @@ const Post = require('./models/post_model')
 const User = require('./models/user_model')
 
 const logRequests = require('./middleware/log_requests')
+const { verify } = require('crypto')
 
 require('dotenv').config()
 
@@ -72,6 +73,32 @@ server.get("/profile", verifyCookie, (req, res) => {
     res.json({status: "authorized."})
 })
 
+server.get("/create", verifyCookie, (req, res) => {
+    res.render("create")
+})
+
+server.post("/create", verifyCookie, async (req, res) => {
+    console.log(req.body)
+    var {title, description, markdown, username} = req.body
+    
+    var userDetails = await User.findOne({username})
+
+    if (!userDetails.author) {
+        console.log("author was not true")
+        return res.json({status: "error", error: "not permitted"})
+    } else {
+        post = new Post({
+            title: title,
+            description: description,
+            markdown: markdown,
+            author: username
+        })
+        post.save()
+    }
+    return res.json({status: "OK"})
+
+})
+
 server.post('/login', async (req, res) => {
     var username = req.body.username
     var pwd = req.body.pwd
@@ -84,24 +111,27 @@ server.post('/login', async (req, res) => {
 
     if (await bcrypt.compare(pwd, userDetails.password) == true) {
         var token = jwt.sign({id: userDetails._id, username: userDetails.username}, SECRET)
-        res.json({status: 'ok', data: token})
+        return res.cookie("access_token", token).json({status: "ok"})
     } else res.json({status: 'error', error: 'invalid login details'})
 })
 
 server.post('/register', async (req, res) => {
     var pwd = await bcrypt.hash(req.body.pwd, 10)
     var username = req.body.username
+    var displayName = req.body.displayName
 
     try {
         var newUser = new User({
             username: req.body.username,
             password: pwd,
+            displayName: displayName,
+            author: false
         })
         await newUser.save()
 
         newUser = await User.findOne({username})
         var token = jwt.sign({id: newUser._id, username: newUser.username}, SECRET)
-        return res.cookie("access_token", token).json({status: 'ok'}) //supply cookie for the first time
+        return res.cookie("access_token", token).json({status: "ok"}) //supply cookie for the first time
 } catch(err) {
     if (err.code == '11000') {
         return res.json({status: 'error', error: 'username already taken'})

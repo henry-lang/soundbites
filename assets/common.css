@@ -134,3 +134,17 @@ body {
 input {
     font-family: var(--main-font)
 }
+
+textarea {
+    height: 500px;
+    width: 100%;
+    font-family: var(--main-font);
+}
+
+#title-desc {
+    padding-bottom: 10px;
+}
+
+#form {
+    padding-top: 20px;
+}

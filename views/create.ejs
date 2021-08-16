@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/common.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
+    <title>create - music blog</title>
+</head>
+<body>
+    <%- include("common/navbar") %>
+
+    <div class="main-content">
+        <h1 id="title">submit an article</h1>
+        <p id="invalid"></p>
+        <form id="form">
+            <div id="title-desc">
+                <input id="title" type="text" placeholder="title of your article">
+                <input id="desc" type="text" placeholder="description of your article">
+            </div>
+            <textarea id="text"></textarea>
+            <input type="submit" value="publish">
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script defer >
+    var simplemde = new SimpleMDE({element: document.getElementById("text")})
+</script>
+<script defer>
+    const form = document.getElementById("form")
+    const text = document.getElementById("text")
+    const title = document.getElementById("title")
+    const desc = document.getElementById("desc")
+    const p = document.getElementById("invalid")
+
+    var result = form.addEventListener("submit", async (event) => {
+        event.preventDefault()
+        var content = text.value;
+        var articleTitle = title.value;
+        var articleDesc = desc.value;
+        console.log("article title", articleTitle)
+
+        var username = document.cookie;
+        username = JSON.parse(atob(username.split(".")[1])).username
+
+        var result = await fetch("/create", {
+        method: 'POST',
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify({
+            title: articleTitle,
+            description: articleDesc,
+            markdown: content,
+            username: username
+        })
+    }).then((res) => res.json())
+
+    console.log(result)
+    if (result.status == "OK") {
+        p.innerHTML = "article submitted!"
+        p.style.display = "block"
+    } else {
+        p.innerHTML = "you are not permitted";
+        p.style.display = "block"
+    }
+});
+</script>
+</html>

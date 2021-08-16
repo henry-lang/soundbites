@@ -1,29 +1,21 @@
-const express = require('express');
+const express = require('express')
 const Post = require('../models/post_model')
 
-const postRouter = express.Router();
+const postRouter = express.Router()
 
 postRouter.get('/:slug', async (req, res) => {
-    var slug = req.params.slug;
-    var data = await Post.findOne({slug: slug});
+    var slug = req.params.slug
+    var data = await Post.findOne({slug: slug}).lean()
     if(!data) {
-        res.render('404');
-        return;
+        res.render('404')
+        return
     }
-    
-    var trimmed = {
-        title: data.title,
-        description: data.description,
-        date: data.date,
-        author: data.author,
-        slug: data.slug,
-        html: data.html
-    };
-    res.render('post', {data: trimmed});
-});
+
+    res.render('post', {data: data})
+})
 
 postRouter.get('/', (req, res) => {
-    res.redirect('/featured');
-});
+    res.redirect('/featured')
+})
 
-module.exports = postRouter;
+module.exports = postRouter

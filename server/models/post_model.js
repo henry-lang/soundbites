@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-const slugify = require('slugify');
-const marked = require('marked');
+const mongoose = require('mongoose')
+const slugify = require('slugify')
+const marked = require('marked')
 
-const createDOMPurify = require('dompurify');
-const jsdom = require('jsdom');
+const createDOMPurify = require('dompurify')
+const jsdom = require('jsdom')
 
-const dompurify = createDOMPurify(new jsdom.JSDOM('').window);
+const dompurify = createDOMPurify(new jsdom.JSDOM('').window)
 
 const postSchema = new mongoose.Schema({
     slug: {
@@ -37,13 +37,13 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-});
+})
 
 postSchema.pre('validate', function(next) {
-    this.slug = slugify(this.title, {lower: true, strict: true});
-    this.html = dompurify.sanitize(marked(this.markdown));
+    this.slug = slugify(this.title, {lower: true, strict: true})
+    this.html = dompurify.sanitize(marked(this.markdown))
 
-    next();
-});
+    next()
+})
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Post', postSchema)

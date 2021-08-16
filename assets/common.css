@@ -126,3 +126,12 @@ body {
     width: var(--main-content-width);
     margin: 0 auto;
 }
+
+#invalid {
+    display: none;
+    color: var(--accent-color)
+}
+
+input {
+    font-family: var(--main-font)
+}

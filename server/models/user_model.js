@@ -9,14 +9,7 @@ const mongoose = require('mongoose');
 // .has().not().spaces()
 // const PasswordValidator = require("password-validator")
 
-// const passwordSchema = new PasswordValidator();
-// passwordSchema
-// .is.min(8)
-// .is.max(20)
-// .has().digits(1)
-// .has().not().spaces()
-
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({ //for now only username and pwd will be required, but eventually everything here will be needed.
     username: {
         type: String,
         required: true,
@@ -24,10 +17,11 @@ const userSchema = new mongoose.Schema({
     },
     displayName: {
         type: String,
-        required: true
+        required: false
     },
     password: {
         type: String,
+        required: true
     },
     profilePictureURL: {
         type: String,
@@ -35,7 +29,7 @@ const userSchema = new mongoose.Schema({
     },
     author: { // Author for writing posts, other users will be able to write comments, and rate them maybe.
         type: Boolean,
-        required: true,
+        required: false,
         default: false
     }
 });

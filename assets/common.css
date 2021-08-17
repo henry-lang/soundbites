@@ -6,9 +6,9 @@ html {
 
 :root {
     --main-font: "Georama";
-    --light-color: whitesmoke;
-    --dark-color: rgb(53, 53, 53);
-    --accent-color: rgb(201, 44, 32);
+    --light-color: #F9FAF4;
+    --dark-color: #4A6163;
+    --accent-color: #F17A7E;
     --nav-height: 55px;
     --main-content-width: 80%;
 }
@@ -89,7 +89,12 @@ body {
 
 .navbar-title {
     margin: 0;
+    color: var(--light-color);
     font-family: var(--main-font);
+}
+
+.navbar-title b {
+    color: var(--accent-color);
 }
 
 .navbar-links {
@@ -147,4 +152,8 @@ textarea {
 
 #form {
     padding-top: 20px;
+}
+
+.main-content h1 {
+    color: var(--dark-color);
 }

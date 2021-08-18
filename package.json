@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/henry-lang/music-blog.git"
+    "url": "git+https://github.com/henry-lang/soundbites.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/henry-lang/music-blog/issues"
+    "url": "https://github.com/henry-lang/soundbites/issues"
   },
-  "homepage": "https://github.com/henry-lang/music-blog#readme",
+  "homepage": "https://github.com/henry-lang/soundbites#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",

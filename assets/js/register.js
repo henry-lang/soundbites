@@ -20,7 +20,6 @@ async function register(event) {
         p.innerHTML = "successfully made your account."
         p.style.color = "var(--dark-color)"
         p.style.display = "block"
-        window.location.replace("http://localhost:3000/profile");
     } else {
         p.innerHTML = result.error
         p.style.display = "block"

@@ -10,7 +10,7 @@ async function register(event) {
     var pwd = document.getElementById('pwd').value
     var displayName = document.getElementById("display").value
 
-    result = await fetch("/register", {
+    result = await fetch("register/", {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({username, pwd, displayName})

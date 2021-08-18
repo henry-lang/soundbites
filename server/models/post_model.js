@@ -5,6 +5,8 @@ const marked = require('marked')
 const createDOMPurify = require('dompurify')
 const jsdom = require('jsdom')
 
+const dateAssembly = require('../date_assembly')
+
 const dompurify = createDOMPurify(new jsdom.JSDOM('').window)
 
 const postSchema = new mongoose.Schema({
@@ -40,6 +42,7 @@ const postSchema = new mongoose.Schema({
 })
 
 postSchema.pre('validate', function(next) {
+    this.date = dateAssembly()
     this.slug = slugify(this.title, {lower: true, strict: true})
     this.html = dompurify.sanitize(marked(this.markdown))
 

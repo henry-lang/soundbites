@@ -11,7 +11,7 @@ async function login(event) {
     var username = document.getElementById("username").value
     var pwd = document.getElementById('pwd').value
 
-    var result = await fetch("/login", {
+    var result = await fetch("login/", {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({username, pwd})
@@ -20,7 +20,7 @@ async function login(event) {
     if (result.status == "ok") {
         p.innerHTML = "Logged in successfully."
         p.style.display = "block"
-        window.location.replace("http://localhost:3000/profile")
+        window.location.replace("http://localhost:3000/")
     } else {
         p.innerHTML = result.error
         p.style.display = "block"

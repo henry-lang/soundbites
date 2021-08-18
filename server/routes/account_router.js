@@ -6,12 +6,24 @@ const User = require('../models/user_model')
 
 const accountRouter = new express.Router()
 
+accountRouter.get("/", async (req, res) => {
+    var token = req.cookies.access_token
+    token = token.split(".")[1]
+    var username = JSON.parse(Buffer.from(token, "base64").toString("ascii")).username
+    var userDetails = await User.findOne({username}).lean()
+    res.render("profile", {username: userDetails.username, displayName: userDetails.displayName, author: userDetails.author})
+})
+
 accountRouter.get('/register', (req, res) => {
     res.render('register')
 })
 
 accountRouter.get('/login', async (req, res) => {
     res.render('login')
+})
+
+accountRouter.get("/logout", async (req, res) => {
+    res.clearCookie("access_token").redirect("/")
 })
 
 accountRouter.post('/register', async (req, res) => {

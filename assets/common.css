@@ -7,7 +7,7 @@ html {
 :root {
     --main-font: "Georama";
     --light-color: #F9FAF4;
-    --dark-color: #4A6163;
+    --dark-color: #384446;
     --accent-color: #F17A7E;
     --nav-height: 55px;
     --main-content-width: 80%;
@@ -136,8 +136,19 @@ body {
     color: var(--accent-color)
 }
 
+.input {
+    font-family: var(--main-font);
+    margin: 1.5px;
+    height: 25px;
+    width: 150px;
+    border-radius: 5px;
+}
+
 input {
-    font-family: var(--main-font)
+    margin: 1.5px;
+    outline: none;
+    border-radius: 5px;
+    font-family: var(--main-font);
 }
 
 textarea {
@@ -156,4 +167,58 @@ textarea {
 
 .main-content h1 {
     color: var(--dark-color);
+}
+
+.block {
+    background-color: rgb(236, 236, 236);
+    transition: 0.5s;
+    height: 200px;
+    width: 200px;
+    border-radius: 15px;
+    text-align: center;
+    margin-right: 7.5px;
+}
+
+.block:hover {
+    transform: scale(1.05)
+}
+
+.block #textContainer {
+    padding-top: 10px;
+}
+
+.block a {
+    color: black;
+    font-weight: bold;
+    font-family: var(--main-font);
+    text-align: center;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+.block a:hover {text-decoration: underline;}
+
+.block #authorInfo {
+    color: black;
+    font-weight: 200;
+    font-size: 13px;
+}
+
+.block #desc {
+    font-size: 13px;
+    font-style: italic;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+}
+
+#headlines {
+    text-align: center;
+    padding-top: 50px;
+}
+
+#welcome {
+    padding-bottom: 50px;
 }

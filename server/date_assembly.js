@@ -5,7 +5,6 @@ const assemble = () => {
     var year = d.getFullYear()
     
     full = `${month}/${day}/${year}`
-    console.log(full)
     return full
 }
 

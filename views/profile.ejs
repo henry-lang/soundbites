@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/common.css">
+    <title>profile - music blog</title>
+</head>
+<body>
+    <%- include("common/navbar") %>
+    <div class="main-content">
+        <h1 id="title">profile</h1>
+        <p id="username">Username: <%= username %></p>
+        <p>Display Name: <%= displayName %></p>
+        <p>Author Permissions: (ability to write articles): <%= author %></p>
+        <a id="logout" href="../account/logout">log out</a>
+    </div>
+</body>
+</html>

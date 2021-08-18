@@ -17,21 +17,24 @@ postRouter.get('/create', requireLogin, (req, res) => {
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
     const {title, description, markdown} = req.body
-    const decodedToken = JSON.parse(atob(req.cookies.access_token.split('.')[1]))
+    const decodedToken = JSON.parse(Buffer.from(req.cookies.access_token.split('.')[1], "base64").toString("ascii"))
 
     const userDetails = await User.findById(decodedToken.id)
 
     if (!userDetails.author) {
-        console.log("author was not true")
         return res.json({status: "error", error: "not permitted"})
     } else {
-        post = new Post({
-            title: title,
-            description: description,
-            markdown: markdown,
-            author: userDetails.username
-        })
-        post.save()
+        try {
+            post = new Post({
+                title: title,
+                description: description,
+                markdown: markdown,
+                author: userDetails.username
+            })
+            await post.save()
+        } catch (err) {
+            if (err.code == "11000") {return res.json({status: "error", error: "title already exists"})}
+        }
     }
     return res.json({status: "OK"})
 })

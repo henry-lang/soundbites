@@ -53,10 +53,6 @@ server.get('/featured', (req, res) => {
     res.render('featured')
 })
 
-server.get("/profile", requireLogin, (req, res) => {
-    res.json({status: "authorized."})
-})
-
 server.use('/posts', postRouter)
 server.use('/users', userRouter)
 server.use('/account', accountRouter)

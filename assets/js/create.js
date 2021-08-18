@@ -22,7 +22,7 @@ form.addEventListener("submit", async (event) => {
         p.innerHTML = "article submitted!"
         p.style.display = "block"
     } else {
-        p.innerHTML = "you are not permitted";
+        p.innerHTML = result.error;
         p.style.display = "block"
     }
 })

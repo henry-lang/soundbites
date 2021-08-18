@@ -1,12 +1,23 @@
 const jwt = require('jsonwebtoken')
+const Users = require('./models/user_model')
 
 const SECRET = process.env.JWT_SECRET
+
+const decodeToken = token => {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64'))
+}
 
 const isLoggedIn = token => {
     if(!token || jwt.verify(token, SECRET) == false) {
         return false
     }
     return true
+}
+
+const isAuthor = async token => {
+    const id = decodeToken(token).id
+    const user = await Users.findById(id).lean()
+    return user.author
 }
 
 // Middleware for requiring login on a certain page
@@ -28,15 +39,24 @@ const requireLoginPost = (req, res, next) => {
 }
 
 // Middleware for checking if a user is logged in (for navbar and other site related things)
-const checkLogin = (req, res, next) => {
-    res.locals.isLoggedIn = isLoggedIn(req.cookies.access_token)
+const checkLogin = async (req, res, next) => {
+    const token = req.cookies.access_token
+
+    res.locals.isLoggedIn = isLoggedIn(token)
+    if(res.locals.isLoggedIn) {
+        res.locals.isAuthor = await isAuthor(token)   
+    } else {
+        res.locals.isAuthor = false
+    }
     
     next()
 }
 
 module.exports = 
 {
+    decodeToken: decodeToken,
     isLoggedIn: isLoggedIn,
+    isAuthor: isAuthor,
     requireLogin: requireLogin,
     requireLoginPost: requireLoginPost,
     checkLogin: checkLogin

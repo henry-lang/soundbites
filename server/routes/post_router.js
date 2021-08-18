@@ -3,7 +3,7 @@ const express = require('express')
 const Post = require('../models/post_model')
 const User = require('../models/user_model')
 
-const {requireLoginPost, requireLogin} = require('../auth_utils')
+const {requireLoginPost, requireLogin, decodeToken} = require('../auth_utils')
 
 const postRouter = new express.Router()
 
@@ -17,7 +17,8 @@ postRouter.get('/create', requireLogin, (req, res) => {
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
     const {title, description, markdown} = req.body
-    const decodedToken = JSON.parse(Buffer.from(req.cookies.access_token.split('.')[1], "base64").toString("ascii"))
+    const decodedToken = decodeToken(req.cookies.access_token)
+    console.log(decodedToken)
 
     const userDetails = await User.findById(decodedToken.id)
 

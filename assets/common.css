@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Georama&display=swap');
+
 /* Main Stuff */
 html {
     background-color: whitesmoke;
@@ -8,6 +9,7 @@ html {
     --main-font: "Georama";
     --light-color: #F9FAF4;
     --dark-color: #384446;
+    --super-dark-color: #22292A;
     --accent-color: #F17A7E;
     --nav-height: 55px;
     --main-content-width: 80%;
@@ -23,31 +25,12 @@ body {
     margin: 0;
 }
 
+@keyframes hr-shift {
+    from {transform: translate(-40%, 0px);}
+    to {transform: translate(-20%, 0px);}
+}
+
 @keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Firefox < 16 */
-@-moz-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Internet Explorer */
-@-ms-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Opera < 12.1 */
-@-o-keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
@@ -124,11 +107,24 @@ body {
     content: "";
 }
 
+.wave-divider {
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg width=\'60\' height=\'100%\'  viewBox=\'0 0 20 10\' xmlns=\'http://www.w3.org/2000/svg\' fill-rule=\'evenodd\' clip-rule=\'evenodd\' stroke-miterlimit=\'10\'%3e%3cpath fill=\'none\' d=\'M0 0h20v10H0z\'/%3e%3cclipPath id=\'a\'%3e%3cpath d=\'M0 0h20v10H0z\'/%3e%3c/clipPath%3e%3cg clip-path=\'url(%23a)\'%3e%3cpath d=\'M20 7.384c-4.999-.001-5-4.768-9.999-4.768C5 2.616 5 7.384 0 7.384\' fill=\'none\' stroke=\'%23000\'/%3e%3c/g%3e%3c/svg%3e');
+    height: 30px;
+    width: 280%;
+    background-repeat: repeat-x;
+    filter: invert(54%) sepia(54%) saturate(542%) hue-rotate(308deg) brightness(100%) contrast(89%);
+    border: none;
+    animation: hr-shift linear 20s;
+    animation-iteration-count: infinite;
+    overflow: hidden;
+}
+
 .main-content {
     font-family: var(--main-font);
     padding-top: calc(var(--nav-height) + 40px);
     width: var(--main-content-width);
     margin: 0 auto;
+    overflow: hidden;
 }
 
 #invalid {
@@ -180,7 +176,7 @@ textarea {
 }
 
 .block:hover {
-    transform: scale(1.05)
+    transform: scale(1.05);
 }
 
 .block #textContainer {

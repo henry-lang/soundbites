@@ -18,7 +18,6 @@ postRouter.get('/create', requireLogin, (req, res) => {
 postRouter.post('/create', requireLoginPost, async (req, res) => {
     const {title, description, markdown} = req.body
     const decodedToken = decodeToken(req.cookies.access_token)
-    console.log(decodedToken)
 
     const userDetails = await User.findById(decodedToken.id)
 

@@ -27,8 +27,19 @@ body {
 }
 
 @keyframes hr-shift {
-    from {transform: translate(-40%, 0px);}
-    to {transform: translate(-20%, 0px);}
+    from {transform: translateX(-40%);}
+    to {transform: translateX(-20%);}
+}
+
+@keyframes fadein-left {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 100%;
+        transform: translateX(0px);
+    }
 }
 
 @keyframes fadein {
@@ -55,6 +66,10 @@ body {
 
 h2 {
     margin: 0;
+}
+
+.container.fadein-left {
+    animation: fadein-left 0.75s;
 }
 
 .navbar {
@@ -121,7 +136,6 @@ h2 {
     border: none;
     animation: hr-shift linear 20s;
     animation-iteration-count: infinite;
-    overflow: hidden;
 }
 
 .main-content {

@@ -13,6 +13,7 @@ html {
     --accent-color: #F17A7E;
     --nav-height: 55px;
     --main-content-width: 80%;
+    --container-padding: 30px;
 }
 
 body {
@@ -50,6 +51,10 @@ body {
 
 .float-right {
     float: right;
+}
+
+h2 {
+    margin: 0;
 }
 
 .navbar {
@@ -121,7 +126,7 @@ body {
 
 .main-content {
     font-family: var(--main-font);
-    padding-top: calc(var(--nav-height) + 40px);
+    padding-top: calc(var(--nav-height) - var(--container-padding) + 40px);
     width: var(--main-content-width);
     margin: 0 auto;
     overflow: hidden;
@@ -210,11 +215,13 @@ textarea {
     justify-content: center;
 }
 
+
+.main-content > .container {
+    padding-top: var(--container-padding);
+    padding-bottom: var(--container-padding);
+}
+
 #headlines {
     text-align: center;
     padding-top: 50px;
-}
-
-#welcome {
-    padding-bottom: 50px;
 }

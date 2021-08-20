@@ -12,24 +12,24 @@
 
     <div class="main-content">
         <div class="container fadein-left">
-            <h1 id="title">welcome.</h1>
+            <h1 class="title">welcome.</h1>
             <p>soundbites analyzes music from all kinds of genres - rap, classical, jazz, pop. If you can name it, we're talking about it.</p>
             <a href="account/register" class="navbar-link">join us today</a>
         </div>
         <hr class="wave-divider">
         <div class="container fadein-left"> <!-- TODO: render them with ejs -->
-            <h2 id="headlines">our latest headlines</h2>
+            <h2 class="title" style="text-align: center; padding-bottom: 20px">our latest headlines</h2>
             <div id="container">
-                <% for(let i = 0; i < posts.length; i++) { %>
-                    <% console.log(posts[i].slug) %>
-                <div class="block"> <!-- TODO: make entire block clickable (how do we specify which block was clicked? how do we know which link to go 2?)-->
-                    <div id="textContainer">
-                        <a href="posts/<%= posts[i].slug %>"><%= posts[i].title %></a>
-                        <p id="authorInfo">By <strong><%= posts[i].author %></strong> on <%= posts[i].date %></p>
-                        <p id="desc"><%= posts[i].description %></p>
+                <% posts.forEach(post => { %>
+                    <% console.log(post.slug) %>
+                    <div class="block">
+                        <div id="textContainer">
+                            <a href="posts/<%= post.slug %>"><%= post.title %></a>
+                            <p id="authorInfo">By <strong><%= post.author %></strong> on <%= post.date %></p>
+                            <p id="desc"><%= post.description %></p>
+                        </div>
                     </div>
-                </div>
-                <% } %>
+                <% }); %>
             </div>
         </div>
     </div>

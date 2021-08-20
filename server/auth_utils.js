@@ -44,7 +44,7 @@ const checkLogin = async (req, res, next) => {
 
     res.locals.isLoggedIn = isLoggedIn(token)
     if(res.locals.isLoggedIn) {
-        res.locals.isAuthor = await isAuthor(token)   
+        res.locals.isAuthor = await isAuthor(token)
     } else {
         res.locals.isAuthor = false
     }

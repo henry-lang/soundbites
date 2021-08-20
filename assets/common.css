@@ -110,7 +110,6 @@ h2 {
     text-decoration: none;
     color: var(--accent-color);
     padding-right: 20px;
-    transition: 0.5s;
 }
 
 .navbar-link:hover {
@@ -186,7 +185,6 @@ textarea {
 
 .block {
     background-color: rgb(236, 236, 236);
-    transition: 0.5s;
     height: 200px;
     width: 200px;
     border-radius: 15px;

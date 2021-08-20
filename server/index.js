@@ -34,7 +34,6 @@ const SECRET = process.env.JWT_SECRET
 const server = express()
 const serverPort = process.env.SERVER_PORT
 
-
 server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.join(__dirname, '../assets')))
 server.use(cookieParser())

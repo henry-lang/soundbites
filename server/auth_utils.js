@@ -52,6 +52,18 @@ const checkLogin = async (req, res, next) => {
     next()
 }
 
+// Verifying that given registration details fulfills our minimum requirements.
+const verify = (accountDetails) => {
+    const {username, pwd, displayName} = accountDetails
+    if (Buffer.from(username).includes(" ") || /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(username) || pwd < 8 || !/\d/.test(pwd)) { //this is so scuffed lmao
+        return false
+    }
+
+    else if (!displayName) return false
+
+    return true
+}
+
 module.exports = 
 {
     decodeToken: decodeToken,
@@ -59,5 +71,6 @@ module.exports =
     isAuthor: isAuthor,
     requireLogin: requireLogin,
     requireLoginPost: requireLoginPost,
-    checkLogin: checkLogin
+    checkLogin: checkLogin,
+    verify: verify
 }

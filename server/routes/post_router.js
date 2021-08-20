@@ -8,7 +8,7 @@ const {requireLoginPost, requireLogin, decodeToken} = require('../auth_utils')
 const postRouter = new express.Router()
 
 postRouter.get('/', (req, res) => {
-    res.redirect('featured')
+    res.redirect('../featured')
 })
 
 postRouter.get('/create', requireLogin, (req, res) => {
@@ -29,7 +29,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 title: title,
                 description: description,
                 markdown: markdown,
-                author: userDetails.username
+                author: userDetails.username,
             })
             await post.save()
         } catch (err) {

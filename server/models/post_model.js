@@ -38,6 +38,11 @@ const postSchema = new mongoose.Schema({
     html: {
         type: String,
         required: true
+    },
+
+    epochTime: {
+        type: Number,
+        required: true
     }
 })
 
@@ -45,6 +50,7 @@ postSchema.pre('validate', function(next) {
     this.date = dateAssembly()
     this.slug = slugify(this.title, {lower: true, strict: true})
     this.html = dompurify.sanitize(marked(this.markdown))
+    this.epochTime = Date.now()
 
     next()
 })

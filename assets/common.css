@@ -208,10 +208,11 @@ textarea {
     font-family: var(--main-font);
     text-align: center;
     text-decoration: none;
-    transition: 0.5s;
 }
 
-.block a:hover {text-decoration: underline;}
+.block a:hover {
+    text-decoration: underline;
+}
 
 .block #authorInfo {
     color: black;
@@ -227,6 +228,7 @@ textarea {
 #container {
     display: flex;
     justify-content: center;
+    padding-top: 25px;
 }
 
 
@@ -237,5 +239,5 @@ textarea {
 
 #headlines {
     text-align: center;
-    padding-top: 50px;
+    padding-top: 20px;
 }

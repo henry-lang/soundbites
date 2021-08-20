@@ -1,6 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const {verify} = require('../auth_utils')
 
 const User = require('../models/user_model')
 
@@ -31,6 +32,9 @@ accountRouter.post('/register', async (req, res) => {
     var username = req.body.username
     var displayName = req.body.displayName
 
+    if (!verify({username: username, pwd: pwd, displayName: displayName})) {
+        return res.json({status: "error", error: "username cannot contain spaces. password must be at least 8 characters and contain a number. display name is required."})
+    }
     try {
         var newUser = new User({
             username: req.body.username,

@@ -18,43 +18,18 @@
         </div>
         <hr class="wave-divider">
         <div class="container fadein-left"> <!-- TODO: render them with ejs -->
-            <h2 id="title">our latest headlines</h2>
+            <h2 id="headlines">our latest headlines</h2>
             <div id="container">
-                <div class="block">
+                <% for(let i = 0; i < posts.length; i++) { %>
+                    <% console.log(posts[i].slug) %>
+                <div class="block"> <!-- TODO: make entire block clickable (how do we specify which block was clicked? how do we know which link to go 2?)-->
                     <div id="textContainer">
-                        <a href="posts/music-is-awesome">Music Is Awesome!</a>
-                        <p id="authorInfo">By <strong>Henry</strong> on 8/18/2021</p>
-                        <p id="desc">It's so cool.</p>
+                        <a href="posts/<%= posts[i].slug %>"><%= posts[i].title %></a>
+                        <p id="authorInfo">By <strong><%= posts[i].author %></strong> on <%= posts[i].date %></p>
+                        <p id="desc"><%= posts[i].description %></p>
                     </div>
                 </div>
-                <div class="block">
-                    <div id="textContainer">
-                        <a href="posts/music-is-awesome">Music Is Awesome!</a>
-                        <p id="authorInfo">By <strong>Henry</strong> on 8/18/2021</p>
-                        <p id="desc">It's so cool.</p>
-                    </div>
-                </div>
-                <div class="block">
-                    <div id="textContainer">
-                        <a href="posts/music-is-awesome">Music Is Awesome!</a>
-                        <p id="authorInfo">By <strong>Henry</strong> on 8/18/2021</p>
-                        <p id="desc">It's so cool.</p>
-                    </div>
-                </div>
-                <div class="block">
-                    <div id="textContainer">
-                        <a href="posts/music-is-awesome">Music Is Awesome!</a>
-                        <p id="authorInfo">By <strong>Henry</strong> on 8/18/2021</p>
-                        <p id="desc">It's so cool.</p>
-                    </div>
-                </div>
-                <div class="block">
-                    <div id="textContainer">
-                        <a href="posts/music-is-awesome">Music Is Awesome!</a>
-                        <p id="authorInfo">By <strong>Henry</strong> on 8/18/2021</p>
-                        <p id="desc">It's so cool.</p>
-                    </div>
-                </div>
+                <% } %>
             </div>
         </div>
     </div>

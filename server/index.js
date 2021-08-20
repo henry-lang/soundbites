@@ -16,6 +16,8 @@ const User = require('./models/user_model')
 
 const logRequests = require('./middleware/log_requests')
 const {checkLogin, requireLogin} = require('./auth_utils')
+const assemble = require("./date_assembly")
+const getPosts = require("./get_posts")
 
 const { verify } = require('crypto')
 
@@ -33,7 +35,6 @@ const server = express()
 const serverPort = process.env.SERVER_PORT
 
 
-
 server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.join(__dirname, '../assets')))
 server.use(cookieParser())
@@ -46,11 +47,15 @@ server.listen(serverPort, () => {
 })
 
 server.get('/', (req, res) => {
-    res.render('index')
+    getPosts().then((result) => {res.render("index", {posts: result})})
 })
 
 server.get('/featured', (req, res) => {
     res.render('featured')
+})
+
+server.get("/about", (req, res) => {x
+    res.render("about")
 })
 
 server.use('/posts', postRouter)

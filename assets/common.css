@@ -110,20 +110,13 @@ h2 {
     text-decoration: none;
     color: var(--accent-color);
     padding-right: 20px;
+    transition: scale 0.25s;
 }
 
 .navbar-link:hover {
     text-decoration: underline;
     padding-right: 20px;
-}
-
-.navbar-links > *::after {
-    content: "|";
-    padding-left: 20px;
-}
-
-.navbar-links > *:last-child::after {
-    content: "";
+    scale: 1.05;
 }
 
 .wave-divider {
@@ -183,44 +176,24 @@ textarea {
     color: var(--dark-color);
 }
 
-.block {
+.latest-headline {
     background-color: rgb(236, 236, 236);
     height: 200px;
     width: 200px;
     border-radius: 15px;
     text-align: center;
     margin-right: 7.5px;
-}
-
-.block:hover {
-    transform: scale(1.05);
-}
-
-.block #textContainer {
     padding-top: 10px;
+    transition: scale 0.3s;
 }
 
-.block a {
-    color: black;
-    font-weight: bold;
-    font-family: var(--main-font);
-    text-align: center;
+.latest-headline > p {
     text-decoration: none;
+    color: var(--dark-color);
 }
 
-.block a:hover {
-    text-decoration: underline;
-}
-
-.block #authorInfo {
-    color: black;
-    font-weight: 200;
-    font-size: 13px;
-}
-
-.block #desc {
-    font-size: 13px;
-    font-style: italic;
+.latest-headline:hover {
+    scale: 1.05;
 }
 
 #container {
@@ -233,9 +206,4 @@ textarea {
 .main-content > .container {
     padding-top: var(--container-padding);
     padding-bottom: var(--container-padding);
-}
-
-#headlines {
-    text-align: center;
-    padding-top: 20px;
 }

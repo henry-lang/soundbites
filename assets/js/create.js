@@ -1,15 +1,15 @@
-const simplemde = new SimpleMDE({element: document.getElementById("text")})
+const simplemde = new SimpleMDE({element: document.getElementById('text')})
 
-const form = document.getElementById("form")
-const text = document.getElementById("text")
-const title = document.getElementById("title-field")
-const description = document.getElementById("description-field")
-const p = document.getElementById("invalid")
+const form = document.getElementById('form')
+const text = document.getElementById('text')
+const title = document.getElementById('title-field')
+const description = document.getElementById('description-field')
+const p = document.getElementById('invalid')
 
-form.addEventListener("submit", async (event) => {
+form.addEventListener('submit', async (event) => {
     event.preventDefault()
 
-    var result = await fetch("create", {
+    var result = await fetch('create', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({
@@ -18,11 +18,11 @@ form.addEventListener("submit", async (event) => {
             markdown: text.value
         })
     }).then((res) => res.json())
-    if (result.status == "OK") {
-        p.innerHTML = "article submitted!"
-        p.style.display = "block"
+    if (result.status == 'OK') {
+        p.innerHTML = 'article submitted!'
+        p.style.display = 'block'
     } else {
         p.innerHTML = result.error;
-        p.style.display = "block"
+        p.style.display = 'block'
     }
 })

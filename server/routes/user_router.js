@@ -1,5 +1,5 @@
 const express = require('express')
-const user = require("../models/user_model")
+const user = require('../models/user_model')
 
 const userRouter = new express.Router()
 userRouter.get('/:username', async (req, res) => {

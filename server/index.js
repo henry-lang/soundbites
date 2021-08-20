@@ -16,8 +16,8 @@ const User = require('./models/user_model')
 
 const logRequests = require('./middleware/log_requests')
 const {checkLogin, requireLogin} = require('./auth_utils')
-const assemble = require("./date_assembly")
-const getPosts = require("./get_posts")
+const assemble = require('./date_assembly')
+const getPosts = require('./get_posts')
 
 const { verify } = require('crypto')
 
@@ -46,15 +46,15 @@ server.listen(serverPort, () => {
 })
 
 server.get('/', (req, res) => {
-    getPosts().then((result) => {res.render("index", {posts: result})})
+    getPosts().then((result) => {res.render('index', {posts: result})})
 })
 
 server.get('/featured', (req, res) => {
     res.render('featured')
 })
 
-server.get("/about", (req, res) => {x
-    res.render("about")
+server.get('/about', (req, res) => {
+    res.render('about')
 })
 
 server.use('/posts', postRouter)

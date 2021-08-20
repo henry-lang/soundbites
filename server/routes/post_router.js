@@ -22,7 +22,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
     const userDetails = await User.findById(decodedToken.id)
 
     if (!userDetails.author) {
-        return res.json({status: "error", error: "not permitted"})
+        return res.json({status: 'error', error: 'not permitted'})
     } else {
         try {
             post = new Post({
@@ -33,10 +33,10 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
             })
             await post.save()
         } catch (err) {
-            if (err.code == "11000") {return res.json({status: "error", error: "title already exists"})}
+            if (err.code == '11000') {return res.json({status: 'error', error: 'title already exists'})}
         }
     }
-    return res.json({status: "OK"})
+    return res.json({status: 'OK'})
 })
 
 postRouter.get('/:slug', async (req, res) => {

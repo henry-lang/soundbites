@@ -23,7 +23,7 @@ const isAuthor = async token => {
 // Middleware for requiring login on a certain page
 const requireLogin = (req, res, next) => {
     if (!isLoggedIn(req.cookies.access_token)) {
-        return res.redirect("/account/login")
+        return res.redirect('/account/login')
     }
 
     next()
@@ -55,7 +55,7 @@ const checkLogin = async (req, res, next) => {
 // Verifying that given registration details fulfills our minimum requirements.
 const verify = (accountDetails) => {
     const {username, pwd, displayName} = accountDetails
-    if (Buffer.from(username).includes(" ") || /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(username) || pwd < 8 || !/\d/.test(pwd)) { //this is so scuffed lmao
+    if (Buffer.from(username).includes(' ') || /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\':<>\?]/g.test(username) || pwd < 8 || !/\d/.test(pwd)) { //this is so scuffed lmao
         return false
     }
 
@@ -66,11 +66,11 @@ const verify = (accountDetails) => {
 
 module.exports = 
 {
-    decodeToken: decodeToken,
-    isLoggedIn: isLoggedIn,
-    isAuthor: isAuthor,
-    requireLogin: requireLogin,
-    requireLoginPost: requireLoginPost,
-    checkLogin: checkLogin,
-    verify: verify
+    decodeToken,
+    isLoggedIn,
+    isAuthor,
+    requireLogin,
+    requireLoginPost,
+    checkLogin,
+    verify
 }

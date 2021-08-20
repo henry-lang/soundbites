@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const PasswordValidator = require("password-validator")
+// const PasswordValidator = require('password-validator')
 
 // const passwordSchema = new PasswordValidator()
 // passwordSchema
@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
 // .is.max(20)
 // .has().digits(1)
 // .has().not().spaces()
-// const PasswordValidator = require("password-validator")
+// const PasswordValidator = require('password-validator')
 
 const userSchema = new mongoose.Schema({ //for now only username and pwd will be required, but eventually everything here will be needed.
     username: {

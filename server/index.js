@@ -19,8 +19,6 @@ const {checkLogin, requireLogin} = require('./auth_utils')
 const assemble = require('./date_assembly')
 const getPosts = require('./get_posts')
 
-const { verify } = require('crypto')
-
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

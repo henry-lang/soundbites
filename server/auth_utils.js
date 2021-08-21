@@ -7,8 +7,13 @@ const decodeToken = token => {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64'))
 }
 
-const isLoggedIn = token => {
-    if(!token || jwt.verify(token, SECRET) == false) {
+const isLoggedIn = async (token, res) => {
+    if(!token) return false
+    if(jwt.verify(token, SECRET) == false) return false
+    if(!(await Users.exists({_id: decodeToken(token).id}))) {
+        if(res != null) {
+            res.clearCookie('access_token')
+        }
         return false
     }
     return true
@@ -21,8 +26,8 @@ const isAuthor = async token => {
 }
 
 // Middleware for requiring login on a certain page
-const requireLogin = (req, res, next) => {
-    if (!isLoggedIn(req.cookies.access_token)) {
+const requireLogin = async (req, res, next) => {
+    if (!(await isLoggedIn(req.cookies.access_token))) {
         return res.redirect('/account/login')
     }
 
@@ -30,9 +35,9 @@ const requireLogin = (req, res, next) => {
 }
 
 // Middleware for requiring login on a post request
-const requireLoginPost = (req, res, next) => {
-    if (!isLoggedIn(req.cookies.access_token)) {
-        return res.json({status: 'You must be logged in to send this request!'})
+const requireLoginPost = async (req, res, next) => {
+    if (!(await isLoggedIn(req.cookies.access_token))) {
+        return res.json({status: 'error', error: 'You must be logged in to send this request!'})
     }
 
     next()
@@ -42,7 +47,7 @@ const requireLoginPost = (req, res, next) => {
 const checkLogin = async (req, res, next) => {
     const token = req.cookies.access_token
 
-    res.locals.isLoggedIn = isLoggedIn(token)
+    res.locals.isLoggedIn = await isLoggedIn(token, res)
     if(res.locals.isLoggedIn) {
         res.locals.isAuthor = await isAuthor(token)
     } else {

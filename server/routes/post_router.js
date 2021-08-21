@@ -17,9 +17,9 @@ postRouter.get('/create', requireLogin, (req, res) => {
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
     const {title, description, markdown} = req.body
-    const decodedToken = decodeToken(req.cookies.access_token)
+    const id = decodeToken(req.cookies.access_token).id
 
-    const userDetails = await User.findById(decodedToken.id)
+    const userDetails = await User.findById(id)
 
     if (!userDetails.author) {
         return res.json({status: 'error', error: 'not permitted'})

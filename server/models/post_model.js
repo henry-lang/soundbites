@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
-const slugify = require('slugify')
-const marked = require('marked')
+import mongoose from 'mongoose'
+import slugify from 'slugify'
+import marked from 'marked'
 
-const createDOMPurify = require('dompurify')
-const jsdom = require('jsdom')
+import createDOMPurify from 'dompurify'
+import jsdom from 'jsdom'
 
-const dateAssembly = require('../date_assembly')
+import dateAssembly from '../date_assembly.js'
 
 const dompurify = createDOMPurify(new jsdom.JSDOM('').window)
 
@@ -55,4 +55,6 @@ postSchema.pre('validate', function(next) {
     next()
 })
 
-module.exports = mongoose.model('Post', postSchema)
+const PostModel = mongoose.model('Post', postSchema)
+
+export default PostModel

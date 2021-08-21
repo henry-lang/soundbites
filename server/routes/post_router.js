@@ -1,9 +1,9 @@
-const express = require('express')
+import express from 'express'
 
-const Post = require('../models/post_model')
-const User = require('../models/user_model')
+import PostModel from '../models/post_model.js'
+import UserModel from '../models/user_model.js'
 
-const {requireLoginPost, requireLogin, decodeToken} = require('../auth_utils')
+import {requireLoginPost, requireLogin, decodeToken} from '../auth_utils.js'
 
 const postRouter = new express.Router()
 
@@ -16,16 +16,16 @@ postRouter.get('/create', requireLogin, (req, res) => {
 })
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
-    const {title, description, markdown} = req.body
-    const id = decodeToken(req.cookies.access_token).id
+    let {title, description, markdown} = req.body
+    let id = decodeToken(req.cookies.access_token).id
 
-    const userDetails = await User.findById(id)
+    let userDetails = await UserModel.findById(id)
 
     if (!userDetails.author) {
         return res.json({status: 'error', error: 'not permitted'})
     } else {
         try {
-            post = new Post({
+            post = new PostModel({
                 title: title,
                 description: description,
                 markdown: markdown,
@@ -40,8 +40,8 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
 })
 
 postRouter.get('/:slug', async (req, res) => {
-    var slug = req.params.slug
-    var data = await Post.findOne({slug: slug})
+    let slug = req.params.slug
+    let data = await PostModel.findOne({slug: slug})
     if(!data) {
         res.render('404')
         return
@@ -50,4 +50,4 @@ postRouter.get('/:slug', async (req, res) => {
     res.render('post', {data: data})
 })
 
-module.exports = postRouter
+export default postRouter

@@ -1,18 +1,17 @@
-const express = require('express')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
-const {verify} = require('../auth_utils')
+import express from 'express'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 
-const {requireLogin, decodeToken} = require('../auth_utils')
+import {verify, requireLogin, decodeToken} from '../auth_utils.js'
 
-const User = require('../models/user_model')
+import UserModel from '../models/user_model.js'
 
 const accountRouter = new express.Router()
 
 accountRouter.get('/', requireLogin, async (req, res) => {
-    var id = decodeToken(req.cookies.access_token).id
+    let id = decodeToken(req.cookies.access_token).id
+    let userDetails = await UserModel.findById(id).lean()
 
-    var userDetails = await User.findById(id).lean()
     res.render('profile', {username: userDetails.username, displayName: userDetails.displayName, author: userDetails.author})
 })
 
@@ -29,16 +28,16 @@ accountRouter.get('/logout', async (req, res) => {
 })
 
 accountRouter.post('/register', async (req, res) => {
-    var pwd = await bcrypt.hash(req.body.pwd, 10)
-    var username = req.body.username
-    var displayName = req.body.displayName
+    let pwd = await bcrypt.hash(req.body.pwd, 10)
+    let username = req.body.username
+    let displayName = req.body.displayName
 
     if (!verify({username: username, pwd: pwd, displayName: displayName})) {
         return res.json({status: 'error', error: 'username cannot contain spaces. password must be at least 8 characters and contain a number. display name is required.'})
     }
 
     try {
-        var newUser = new User({
+        let newUser = new UserModel({
             username: req.body.username,
             password: pwd,
             displayName: displayName,
@@ -46,7 +45,7 @@ accountRouter.post('/register', async (req, res) => {
         })
         await newUser.save()
 
-        var token = jwt.sign({id: newUser._id, message: 'keep your id a secret!'}, process.env.JWT_SECRET)
+        let token = jwt.sign({id: newUser._id, message: 'keep your id a secret!'}, process.env.JWT_SECRET)
         return res.cookie('access_token', token).json({status: 'ok'})
     } catch(err) {
         if (err.code == '11000') {
@@ -57,9 +56,9 @@ accountRouter.post('/register', async (req, res) => {
 })
 
 accountRouter.post('/login', async (req, res) => {
-    var username = req.body.username
-    var pwd = req.body.pwd
-    var userDetails = await User.findOne({username})
+    let username = req.body.username
+    let pwd = req.body.pwd
+    let userDetails = await UserModel.findOne({username})
 
     if (!userDetails) {
         res.json({status: 'error', error: 'invalid login details'})
@@ -67,9 +66,9 @@ accountRouter.post('/login', async (req, res) => {
     }
 
     if (await bcrypt.compare(pwd, userDetails.password) == true) {
-        var token = jwt.sign({id: userDetails._id, message: 'keep your id a secret!'}, process.env.JWT_SECRET)
+        let token = jwt.sign({id: userDetails._id, message: 'keep your token a secret!'}, process.env.JWT_SECRET)
         return res.cookie('access_token', token).json({status: 'ok'})
     } else res.json({status: 'error', error: 'invalid login details'})
 })
 
-module.exports = accountRouter
+export default accountRouter

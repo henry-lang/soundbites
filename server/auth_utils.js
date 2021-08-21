@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken')
-const Users = require('./models/user_model')
+import jwt from 'jsonwebtoken'
+import UserModel from './models/user_model.js'
 
 const SECRET = process.env.JWT_SECRET
 
@@ -10,7 +10,7 @@ const decodeToken = token => {
 const isLoggedIn = async (token, res) => {
     if(!token) return false
     if(jwt.verify(token, SECRET) == false) return false
-    if(!(await Users.exists({_id: decodeToken(token).id}))) {
+    if(!(await UserModel.exists({_id: decodeToken(token).id}))) {
         if(res != null) {
             res.clearCookie('access_token')
         }
@@ -20,8 +20,8 @@ const isLoggedIn = async (token, res) => {
 }
 
 const isAuthor = async token => {
-    const id = decodeToken(token).id
-    const user = await Users.findById(id).lean()
+    let id = decodeToken(token).id
+    let user = await UserModel.findById(id).lean()
     return user.author
 }
 
@@ -45,7 +45,7 @@ const requireLoginPost = async (req, res, next) => {
 
 // Middleware for checking if a user is logged in (for navbar and other site related things)
 const checkLogin = async (req, res, next) => {
-    const token = req.cookies.access_token
+    let token = req.cookies.access_token
 
     res.locals.isLoggedIn = await isLoggedIn(token, res)
     if(res.locals.isLoggedIn) {
@@ -59,7 +59,7 @@ const checkLogin = async (req, res, next) => {
 
 // Verifying that given registration details fulfills our minimum requirements.
 const verify = (accountDetails) => {
-    const {username, pwd, displayName} = accountDetails
+    let {username, pwd, displayName} = accountDetails
     if (Buffer.from(username).includes(' ') || /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\':<>\?]/g.test(username) || pwd < 8 || !/\d/.test(pwd)) { //this is so scuffed lmao
         return false
     }
@@ -69,8 +69,7 @@ const verify = (accountDetails) => {
     return true
 }
 
-module.exports = 
-{
+export {
     decodeToken,
     isLoggedIn,
     isAuthor,

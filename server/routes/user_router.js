@@ -1,20 +1,21 @@
-const express = require('express')
-const user = require('../models/user_model')
+import express from 'express'
+
+import UserModel from '../models/user_model.js'
 
 const userRouter = new express.Router()
 userRouter.get('/:username', async (req, res) => {
-    var username = req.params.username
-    var data = await user.findOne({username: username})
+    let username = req.params.username
+    let data = await UserModel.findOne({username: username})
     if(!data) {
         res.render('404')
         return
     }
     
-    var trimmed = {
+    let trimmed = {
         username: data.username,
         displayName: data.displayName
     }
     res.render('user', {data: trimmed})
 })
 
-module.exports = userRouter
+export default userRouter

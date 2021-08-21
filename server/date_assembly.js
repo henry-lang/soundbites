@@ -1,11 +1,11 @@
 const assemble = () => {
-    const d = new Date()
-    var day = d.getDate()
-    var month = d.getMonth() + 1
-    var year = d.getFullYear()
+    let d = new Date()
+    let day = d.getDate()
+    let month = d.getMonth() + 1
+    let year = d.getFullYear()
     
     full = `${month}/${day}/${year}`
     return full
 }
 
-module.exports = assemble
+export default assemble

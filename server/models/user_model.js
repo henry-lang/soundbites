@@ -1,13 +1,4 @@
-const mongoose = require('mongoose')
-// const PasswordValidator = require('password-validator')
-
-// const passwordSchema = new PasswordValidator()
-// passwordSchema
-// .is.min(8)
-// .is.max(20)
-// .has().digits(1)
-// .has().not().spaces()
-// const PasswordValidator = require('password-validator')
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({ //for now only username and pwd will be required, but eventually everything here will be needed.
     username: {
@@ -38,4 +29,6 @@ userSchema.pre('validate', function(next) {
     next()
 })
 
-module.exports = mongoose.model('User', userSchema)
+const UserModel = mongoose.model('User', userSchema)
+
+export default UserModel

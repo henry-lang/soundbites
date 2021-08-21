@@ -1,23 +1,24 @@
-require('dotenv').config()
+import './config.js'
 
-const express = require('express')
-const path = require('path')
-const mongoose = require('mongoose')
-const fs = require('fs')
-const jwt = require('jsonwebtoken')
-const cookieParser = require('cookie-parser')
+import express from 'express'
+import path from 'path'
+import mongoose from 'mongoose'
 
-const postRouter = require('./routes/post_router')
-const userRouter = require('./routes/user_router')
-const accountRouter = require('./routes/account_router')
+import cookieParser from 'cookie-parser'
 
-const Post = require('./models/post_model')
-const User = require('./models/user_model')
+import postRouter from './routes/post_router.js'
+import userRouter from './routes/user_router.js'
+import accountRouter from './routes/account_router.js'
 
-const logRequests = require('./middleware/log_requests')
-const {checkLogin, requireLogin} = require('./auth_utils')
-const assemble = require('./date_assembly')
-const getPosts = require('./get_posts')
+import logRequests from './middleware/log_requests.js'
+import {checkLogin} from './auth_utils.js'
+import getPosts from './get_posts.js'
+
+import {fileURLToPath} from 'url'
+import {dirname} from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,

@@ -15,14 +15,14 @@ form.addEventListener('submit', async (event) => {
         body: JSON.stringify({
             title: title.value,
             description: description.value,
-            markdown: text.value
-        })
+            markdown: text.value,
+        }),
     }).then((res) => res.json())
     if (result.status == 'OK') {
         p.innerHTML = 'article submitted!'
         p.style.display = 'block'
     } else {
-        p.innerHTML = result.error;
+        p.innerHTML = result.error
         p.style.display = 'block'
     }
 })

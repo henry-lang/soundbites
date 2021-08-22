@@ -20,14 +20,18 @@ import {dirname} from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-mongoose.connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-}, async (err) => {
-    if (err) throw err
-    console.log(`Connected to database on ${process.env.DB_URL}!`)
-})
+mongoose.connect(
+    process.env.DB_URL,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+    },
+    async (err) => {
+        if (err) throw err
+        console.log(`Connected to database on ${process.env.DB_URL}!`)
+    }
+)
 
 const SECRET = process.env.JWT_SECRET
 const server = express()
@@ -45,7 +49,9 @@ server.listen(serverPort, () => {
 })
 
 server.get('/', (req, res) => {
-    getPosts().then((result) => {res.render('index', {posts: result})})
+    getPosts().then((result) => {
+        res.render('index', {posts: result})
+    })
 })
 
 server.get('/featured', (req, res) => {

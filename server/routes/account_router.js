@@ -12,7 +12,11 @@ accountRouter.get('/', requireLogin, async (req, res) => {
     let id = decodeToken(req.cookies.access_token).id
     let userDetails = await UserModel.findById(id).lean()
 
-    res.render('profile', {username: userDetails.username, displayName: userDetails.displayName, author: userDetails.author})
+    res.render('profile', {
+        username: userDetails.username,
+        displayName: userDetails.displayName,
+        author: userDetails.author,
+    })
 })
 
 accountRouter.get('/register', (req, res) => {
@@ -33,7 +37,10 @@ accountRouter.post('/register', async (req, res) => {
     let displayName = req.body.displayName
 
     if (!verify({username: username, pwd: pwd, displayName: displayName})) {
-        return res.json({status: 'error', error: 'username cannot contain spaces. password must be at least 8 characters and contain a number. display name is required.'})
+        return res.json({
+            status: 'error',
+            error: 'username cannot contain spaces. password must be at least 8 characters and contain a number. display name is required.',
+        })
     }
 
     try {
@@ -41,13 +48,16 @@ accountRouter.post('/register', async (req, res) => {
             username: req.body.username,
             password: pwd,
             displayName: displayName,
-            author: false
+            author: false,
         })
         await newUser.save()
 
-        let token = jwt.sign({id: newUser._id, message: 'keep your id a secret!'}, process.env.JWT_SECRET)
+        let token = jwt.sign(
+            {id: newUser._id, message: 'keep your id a secret!'},
+            process.env.JWT_SECRET
+        )
         return res.cookie('access_token', token).json({status: 'ok'})
-    } catch(err) {
+    } catch (err) {
         if (err.code == '11000') {
             return res.json({status: 'error', error: 'username already taken'})
         }
@@ -65,8 +75,11 @@ accountRouter.post('/login', async (req, res) => {
         return
     }
 
-    if (await bcrypt.compare(pwd, userDetails.password) == true) {
-        let token = jwt.sign({id: userDetails._id, message: 'keep your token a secret!'}, process.env.JWT_SECRET)
+    if ((await bcrypt.compare(pwd, userDetails.password)) == true) {
+        let token = jwt.sign(
+            {id: userDetails._id, message: 'keep your token a secret!'},
+            process.env.JWT_SECRET
+        )
         return res.cookie('access_token', token).json({status: 'ok'})
     } else res.json({status: 'error', error: 'invalid login details'})
 })

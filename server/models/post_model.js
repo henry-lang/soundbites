@@ -13,11 +13,11 @@ const postSchema = new mongoose.Schema({
     slug: {
         type: String,
         unique: true,
-        required: true
+        required: true,
     },
     title: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
@@ -29,24 +29,24 @@ const postSchema = new mongoose.Schema({
     },
     author: {
         type: String,
-        required: true
+        required: true,
     },
     markdown: {
         type: String,
-        required: true
+        required: true,
     },
     html: {
         type: String,
-        required: true
+        required: true,
     },
 
     epochTime: {
         type: Number,
-        required: true
-    }
+        required: true,
+    },
 })
 
-postSchema.pre('validate', function(next) {
+postSchema.pre('validate', (next) => {
     this.date = dateAssembly()
     this.slug = slugify(this.title, {lower: true, strict: true})
     this.html = dompurify.sanitize(marked(this.markdown))

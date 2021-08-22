@@ -33,7 +33,12 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
             })
             await post.save()
         } catch (err) {
-            if (err.code == '11000') {return res.json({status: 'error', error: 'title already exists'})}
+            if (err.code == '11000') {
+                return res.json({
+                    status: 'error',
+                    error: 'title already exists',
+                })
+            }
         }
     }
     return res.json({status: 'OK'})
@@ -42,7 +47,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
 postRouter.get('/:slug', async (req, res) => {
     let slug = req.params.slug
     let data = await PostModel.findOne({slug: slug})
-    if(!data) {
+    if (!data) {
         res.render('404')
         return
     }

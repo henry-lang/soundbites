@@ -1,31 +1,33 @@
 import mongoose from 'mongoose'
 
-const userSchema = new mongoose.Schema({ //for now only username and pwd will be required, but eventually everything here will be needed.
+const userSchema = new mongoose.Schema({
+    //for now only username and pwd will be required, but eventually everything here will be needed.
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     displayName: {
         type: String,
-        required: true
+        required: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     profilePictureURL: {
         type: String,
-        required: false
+        required: false,
     },
-    author: { // Author for writing posts, other users will be able to write comments, and rate them maybe.
+    author: {
+        // Author for writing posts, other users will be able to write comments, and rate them maybe.
         type: Boolean,
         required: false,
-        default: false
-    }
+        default: false,
+    },
 })
 
-userSchema.pre('validate', function(next) {
+userSchema.pre('validate', function (next) {
     next()
 })
 

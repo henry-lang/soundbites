@@ -13,7 +13,7 @@ async function register(event) {
     result = await fetch('register/', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
-        body: JSON.stringify({username, pwd, displayName})
+        body: JSON.stringify({username, pwd, displayName}),
     }).then((res) => res.json())
 
     if (result.status == 'ok') {

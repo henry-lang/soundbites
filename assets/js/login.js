@@ -14,7 +14,7 @@ async function login(event) {
     var result = await fetch('login/', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
-        body: JSON.stringify({username, pwd})
+        body: JSON.stringify({username, pwd}),
     }).then((res) => res.json())
 
     if (result.status == 'ok') {

@@ -1,23 +1,10 @@
 {
-  "name": "soundbites",
-  "version": "1.0.0",
-  "description": "Something I'm doing with a couple friends.",
-  "main": "index.js",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "nodemon server/index.js",
     "start": "node server/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/henry-lang/soundbites.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/henry-lang/soundbites/issues"
-  },
-  "homepage": "https://github.com/henry-lang/soundbites#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",

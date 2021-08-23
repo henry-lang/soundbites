@@ -46,7 +46,7 @@ const postSchema = new mongoose.Schema({
     },
 })
 
-postSchema.pre('validate', (next) => {
+postSchema.pre('validate', function (next) {
     this.date = dateAssembly()
     this.slug = slugify(this.title, {lower: true, strict: true})
     this.html = dompurify.sanitize(marked(this.markdown))

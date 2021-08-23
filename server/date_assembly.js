@@ -4,7 +4,7 @@ const assemble = () => {
     let month = d.getMonth() + 1
     let year = d.getFullYear()
 
-    full = `${month}/${day}/${year}`
+    let full = `${month}/${day}/${year}`
     return full
 }
 

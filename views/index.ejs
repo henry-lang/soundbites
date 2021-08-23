@@ -17,10 +17,10 @@
             <a href="account/register" class="navbar-link">join us today</a>
         </div>
         <hr class="wave-divider">
-        <div class="container fadein-left"> <!-- TODO: render them with ejs -->
+        <div class="container fadein-left">
             <h2 class="title" style="text-align: center; padding-bottom: 20px">our latest headlines</h2>
             <div id="container">
-                <% posts.forEach(post => { %>
+                <% posts.map(post => { %>
                     <a href="posts/<%= post.slug %>">
                         <div class="latest-headline">
                             <p><%= post.title %></p>

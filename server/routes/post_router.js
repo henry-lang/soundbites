@@ -16,6 +16,7 @@ postRouter.get('/create', requireLogin, (req, res) => {
 })
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
+    console.log('Hello, world!')
     let {title, description, markdown} = req.body
     let id = decodeToken(req.cookies.access_token).id
 
@@ -25,7 +26,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
         return res.json({status: 'error', error: 'not permitted'})
     } else {
         try {
-            post = new PostModel({
+            let post = new PostModel({
                 title: title,
                 description: description,
                 markdown: markdown,
@@ -33,6 +34,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
             })
             await post.save()
         } catch (err) {
+            console.log(err.stack)
             if (err.code == '11000') {
                 return res.json({
                     status: 'error',

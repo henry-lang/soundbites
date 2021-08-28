@@ -1,11 +1,13 @@
 import express from 'express'
-
+import events from "events"
+import dateAssembly from '../date_assembly.js'
 import PostModel from '../models/post_model.js'
 import UserModel from '../models/user_model.js'
 
 import {requireLoginPost, requireLogin, decodeToken} from '../auth_utils.js'
 
 const postRouter = new express.Router()
+const postEmitter = new events.EventEmitter()
 
 postRouter.get('/', (req, res) => {
     res.redirect('../featured')
@@ -30,9 +32,10 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 title: title,
                 description: description,
                 markdown: markdown,
-                author: userDetails.username,
+                author: userDetails.username
             })
             await post.save()
+            postEmitter.emit("post", {title: title, description: description, author: userDetails.username, epochTime: Date.now(), date: dateAssembly()})
         } catch (err) {
             console.log(err.stack)
             if (err.code == '11000') {
@@ -57,4 +60,4 @@ postRouter.get('/:slug', async (req, res) => {
     res.render('post', {data: data})
 })
 
-export default postRouter
+export {postRouter, postEmitter}

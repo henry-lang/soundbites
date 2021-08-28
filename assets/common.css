@@ -88,6 +88,7 @@ h2 {
     height: var(--nav-height);
     overflow: hidden;
     padding: 0 40px;
+    z-index: 10;
 }
 
 .navbar-title-link {
@@ -158,6 +159,7 @@ h2 {
     height: 25px;
     width: 150px;
     border-radius: 5px;
+    /* background-color: var(--light-color) i hate you css give up; */
 }
 
 input {
@@ -165,6 +167,8 @@ input {
     outline: none;
     border-radius: 5px;
     font-family: var(--main-font);
+    background-color: var(--dark-color);
+    color: var(--accent-color);
 }
 
 textarea {
@@ -215,3 +219,5 @@ textarea {
     padding-top: var(--container-padding);
     padding-bottom: var(--container-padding);
 }
+
+.block-link {text-decoration: none;}

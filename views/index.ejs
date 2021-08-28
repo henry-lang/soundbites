@@ -21,7 +21,7 @@
             <h2 class="title" style="text-align: center; padding-bottom: 20px">our latest headlines</h2>
             <div id="container">
                 <% posts.map(post => { %>
-                    <a href="posts/<%= post.slug %>">
+                    <a class="block-link" href="posts/<%= post.slug %>">
                         <div class="latest-headline">
                             <p><%= post.title %></p>
                             <p id="authorInfo">By <strong><%= post.author %></strong> on <%= post.date %></p>

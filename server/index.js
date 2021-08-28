@@ -3,10 +3,11 @@ import './config.js'
 import express from 'express'
 import path from 'path'
 import mongoose from 'mongoose'
+import {postEmitter} from "./routes/post_router.js"
 
 import cookieParser from 'cookie-parser'
 
-import postRouter from './routes/post_router.js'
+import {postRouter} from './routes/post_router.js'
 import userRouter from './routes/user_router.js'
 import accountRouter from './routes/account_router.js'
 
@@ -16,9 +17,12 @@ import getPosts from './get_posts.js'
 
 import {fileURLToPath} from 'url'
 import {dirname} from 'path'
+import PostModel from './models/post_model.js'
+import { cache } from 'ejs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+var cachedPosts = null
 
 mongoose.connect(
     process.env.DB_URL,
@@ -30,6 +34,7 @@ mongoose.connect(
     async (err) => {
         if (err) throw err
         console.log(`Connected to database on ${process.env.DB_URL}!`)
+        cachedPosts = await getPosts()
     }
 )
 
@@ -44,14 +49,18 @@ server.use(checkLogin)
 server.use(logRequests)
 server.use(express.json())
 
+postEmitter.on("post", data => {
+    cachedPosts.push(data)
+    cachedPosts.sort(function (a, b) {return b.epochTime - a.epochTime});
+
+})
+
 server.listen(serverPort, () => {
     console.log(`Started server on port ${serverPort}!`)
 })
 
 server.get('/', (req, res) => {
-    getPosts().then((result) => {
-        res.render('index', {posts: result})
-    })
+    res.render("index", {posts: cachedPosts})
 })
 
 server.get('/featured', (req, res) => {

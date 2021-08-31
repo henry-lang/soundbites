@@ -11,6 +11,7 @@ html {
     --dark-color: #384446;
     --super-dark-color: #22292a;
     --accent-color: #f17a7e;
+    --darker-accent-color: #e04349;
     --nav-height: 55px;
     --main-content-width: 80%;
     --container-padding: 30px;
@@ -119,13 +120,13 @@ h2 {
     text-decoration: none;
     color: var(--accent-color);
     padding-right: 20px;
-    transition: scale 0.25s;
+    transition: 0.25s;
 }
 
 .navbar-link:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
     padding-right: 20px;
-    scale: 1.05;
+    color: var(--darker-accent-color);
 }
 
 .wave-divider {
@@ -136,7 +137,7 @@ h2 {
     filter: invert(54%) sepia(54%) saturate(542%) hue-rotate(308deg)
         brightness(100%) contrast(89%);
     border: none;
-    animation: hr-shift linear 20s;
+    animation: hr-shift linear 30s;
     animation-iteration-count: infinite;
 }
 
@@ -169,6 +170,11 @@ input {
     font-family: var(--main-font);
     background-color: var(--dark-color);
     color: var(--accent-color);
+    transition: 0.25s;
+}
+
+input:hover {
+    background-color: #555e5f;
 }
 
 textarea {
@@ -197,7 +203,8 @@ textarea {
     text-align: center;
     margin-right: 7.5px;
     padding-top: 10px;
-    transition: scale 0.3s;
+    transition: 0.3s;
+    margin-bottom: 7.5px
 }
 
 .latest-headline > p {
@@ -206,13 +213,14 @@ textarea {
 }
 
 .latest-headline:hover {
-    scale: 1.05;
+    transform: scale(1.05);
 }
 
 #container {
     display: flex;
     justify-content: center;
     padding-top: 25px;
+    flex-wrap: wrap;
 }
 
 .main-content > .container {
@@ -221,3 +229,19 @@ textarea {
 }
 
 .block-link {text-decoration: none;}
+
+ul {
+  list-style-type: circle;  
+}
+
+#team-title {
+    padding-top: 10px;
+}
+
+#credits {
+    text-indent: 20px;      
+}
+
+#credits li {
+    text-indent: 5px;
+}

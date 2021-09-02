@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= data.title %> - soundbites</title>
     <link rel="stylesheet" href="/assets/common.css">
+    <script src="../assets/js/comment.js" defer></script>
 </head>
 <body>
     <%- include("common/navbar") %>
@@ -13,8 +14,32 @@
     <div class="main-content">
         <h1><%= data.title %> </h1>
         <h3>By <%= data.author %> <i>on <%= data.date %></i></h3>
-    
+        <br>
         <%- data.html %>
+        <br>
+        <h3>comments</h3>
+        <% if (!comments.length) { %>
+            <p><i>This post has no comments.</i></p>
+        <% } else {%>
+        <% comments.map(comment => { %>
+            <div class="comment">
+                <div class="username-and-date">
+                    <p>
+                        <a class="navbar-link" href="../users/<%=comment.author%>"><%= comment.authorDisplay %></a>
+                        <p class="comment-date"><%= comment.date %></p>
+                    </p>
+                </div>
+                <p><%= comment.content %></p>
+            </div>
+        <% })} %>
+        <br>
+        <form id="login-form">
+            <h3>comment on this post</h3>
+            <p id="invalid"></p>
+            <textarea class="input" id="content" placeholder="submit a comment"></textarea>
+            <br>
+            <input class="submit" type="submit" value="submit">
+        </form>
     </div>
 </body>
 </html>

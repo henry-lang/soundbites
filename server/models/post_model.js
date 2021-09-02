@@ -44,6 +44,11 @@ const postSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 })
 
 postSchema.pre('validate', function (next) {

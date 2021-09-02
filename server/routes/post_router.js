@@ -1,8 +1,10 @@
 import express from 'express'
 import events from "events"
+import mongoose from "mongoose"
 import dateAssembly from '../date_assembly.js'
 import PostModel from '../models/post_model.js'
 import UserModel from '../models/user_model.js'
+import CommentModel from "../models/comment_model.js"
 
 import {requireLoginPost, requireLogin, decodeToken} from '../auth_utils.js'
 
@@ -18,7 +20,6 @@ postRouter.get('/create', requireLogin, (req, res) => {
 })
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
-    console.log('Hello, world!')
     let {title, description, markdown} = req.body
     let id = decodeToken(req.cookies.access_token).id
 
@@ -44,6 +45,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                     error: 'title already exists',
                 })
             }
+            res.json({status: "error", error: err.toString()})
         }
     }
     return res.json({status: 'OK'})
@@ -57,7 +59,31 @@ postRouter.get('/:slug', async (req, res) => {
         return
     }
 
-    res.render('post', {data: data})
+    var commentList = []
+    for (let i = 0; i < data.comments.length; i++) {
+        let comment = await CommentModel.findOne(data.comments[i])
+        let author = await UserModel.findOne({_id: comment.author})
+        commentList.push({content: comment.content, date: comment.date, authorDisplay: author.displayName, author: author.username})
+    }
+    res.render('post', {data: data, comments: commentList})
 })
+
+postRouter.post("/:slug/comment", requireLoginPost, async (req, res) => {
+    try {
+        let slug = req.params.slug
+        let content = req.body.content
+        let authorID = decodeToken(req.cookies.access_token).id
+        if (content == "") return
+        let comment = new CommentModel({_id: new mongoose.Types.ObjectId(), author: authorID, content: content})
+        await comment.save()
+        let post = await PostModel.findOne({slug: slug})
+        post.comments.push(comment._id)
+        await post.save()
+        await post.populate('comments')
+
+        res.json({status: "ok"})
+    } catch (err) {
+        res.json({status: 'error', error: err.toString()})
+}})
 
 export {postRouter, postEmitter}

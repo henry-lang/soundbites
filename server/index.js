@@ -1,9 +1,10 @@
 import './config.js'
 
 import express from 'express'
+import rateLimit from 'express-rate-limit'
 import path from 'path'
 import mongoose from 'mongoose'
-import {postEmitter} from "./routes/post_router.js"
+import {postEmitter} from './routes/post_router.js'
 
 import cookieParser from 'cookie-parser'
 
@@ -18,11 +19,17 @@ import getPosts from './get_posts.js'
 import {fileURLToPath} from 'url'
 import {dirname} from 'path'
 import PostModel from './models/post_model.js'
-import { cache } from 'ejs'
+import {cache} from 'ejs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 var cachedPosts = null
+
+const limitConfig = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 50,
+    message: `Too many requests have been made, you've been rate limited!`,
+})
 
 mongoose.connect(
     process.env.DB_URL,
@@ -46,13 +53,15 @@ server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.join(__dirname, '../assets')))
 server.use(cookieParser())
 server.use(checkLogin)
+server.post('*', limitConfig)
 server.use(logRequests)
 server.use(express.json())
 
-postEmitter.on("post", data => {
+postEmitter.on('post', (data) => {
     cachedPosts.push(data)
-    cachedPosts.sort(function (a, b) {return b.epochTime - a.epochTime});
-
+    cachedPosts.sort(function (a, b) {
+        return b.epochTime - a.epochTime
+    })
 })
 
 server.listen(serverPort, () => {
@@ -60,7 +69,7 @@ server.listen(serverPort, () => {
 })
 
 server.get('/', (req, res) => {
-    res.render("index", {posts: cachedPosts})
+    res.render('index', {posts: cachedPosts})
 })
 
 server.get('/featured', (req, res) => {

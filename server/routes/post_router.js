@@ -36,7 +36,12 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 author: userDetails.username
             })
             await post.save()
-            postEmitter.emit("post", {title: title, description: description, author: userDetails.username, epochTime: Date.now(), date: dateAssembly()})
+            postEmitter.emit("post", {title: title, 
+                description: description, 
+                author: userDetails.username, 
+                epochTime: Date.now(), 
+                date: dateAssembly(), 
+                slug: post.slug})
         } catch (err) {
             console.log(err.stack)
             if (err.code == '11000') {

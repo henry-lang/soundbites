@@ -20,7 +20,7 @@ async function login(event) {
     if (result.status == 'ok') {
         p.innerHTML = 'Logged in successfully.'
         p.style.display = 'block'
-        window.location.replace('http://localhost:3000/')
+        window.location.href = "http://" + window.location.href.split("/")[2]
     } else {
         p.innerHTML = result.error
         p.style.display = 'block'

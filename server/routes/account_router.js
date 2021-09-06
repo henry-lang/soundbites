@@ -2,7 +2,7 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 
-import {verify, requireLogin, decodeToken} from '../auth_utils.js'
+import {verify, requireLogin, requireLoginPost, decodeToken} from '../auth_utils.js'
 
 import UserModel from '../models/user_model.js'
 
@@ -29,6 +29,10 @@ accountRouter.get('/login', async (req, res) => {
 
 accountRouter.get('/logout', async (req, res) => {
     res.clearCookie('access_token').redirect('/')
+})
+
+accountRouter.get("/settings", requireLogin, async (req, res) => {
+    res.render("settings")
 })
 
 accountRouter.post('/register', async (req, res) => {
@@ -84,4 +88,26 @@ accountRouter.post('/login', async (req, res) => {
     } else res.json({status: 'error', error: 'invalid login details'})
 })
 
+accountRouter.post("/settings", requireLoginPost, async (req, res) => {
+    try {
+        let id = (decodeToken(req.cookies.access_token)).id
+        let user = await UserModel.findById(id)
+        console.log(req.body.checkbox)
+
+        if (req.body.checkbox) {
+            for (let i in req.body) {
+                if (req.body[i] != "") { //if any settings were not changed (they did not fill in the input), then they are ignored.
+                    user[i] = req.body[i]
+                }
+            }
+    
+            await user.save()
+            return res.json({status: "ok", modified: true})
+        } else {return res.json({status: "ok", modified: false})}
+        
+    } catch(err) {
+        if (err.code == "11000") {return res.json({status: "error", error: "this username is already taken."})}
+        res.json({status: "error", error: err.toString()})
+    }
+})
 export default accountRouter

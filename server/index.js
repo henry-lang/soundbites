@@ -28,7 +28,7 @@ var cachedPosts = null
 const limitConfig = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 50,
-    message: `Too many requests have been made, you've been rate limited!`,
+    message: `You've been making too many requests, please try again later.`,
 })
 
 mongoose.connect(

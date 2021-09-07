@@ -2,8 +2,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "start": "node server/index.js"
+    "dev": "sudo nodemon server/index.js",
+    "start": "sudo node server/index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

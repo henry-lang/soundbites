@@ -3,25 +3,25 @@ import assemble from '../date_assembly.js'
 
 const commentSchema = new mongoose.Schema({
     _id: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
     },
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
     },
     content: {
         type: String,
-        required: true
+        required: true,
     },
     date: {
         type: String,
-        required: true
+        required: true,
     },
     epochTime: {
         type: String,
         required: true,
-        unique: true
-    }
+        unique: true,
+    },
 })
 
 commentSchema.pre('validate', function (next) {

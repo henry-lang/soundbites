@@ -1,10 +1,10 @@
 import express from 'express'
-import events from "events"
-import mongoose from "mongoose"
+import events from 'events'
+import mongoose from 'mongoose'
 import dateAssembly from '../date_assembly.js'
 import PostModel from '../models/post_model.js'
 import UserModel from '../models/user_model.js'
-import CommentModel from "../models/comment_model.js"
+import CommentModel from '../models/comment_model.js'
 
 import {requireLoginPost, requireLogin, decodeToken} from '../auth_utils.js'
 
@@ -33,15 +33,17 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 title: title,
                 description: description,
                 markdown: markdown,
-                author: userDetails.username
+                author: userDetails.username,
             })
             await post.save()
-            postEmitter.emit("post", {title: title, 
-                description: description, 
-                author: userDetails.username, 
-                epochTime: Date.now(), 
-                date: dateAssembly(), 
-                slug: post.slug})
+            postEmitter.emit('post', {
+                title: title,
+                description: description,
+                author: userDetails.username,
+                epochTime: Date.now(),
+                date: dateAssembly(),
+                slug: post.slug,
+            })
         } catch (err) {
             console.log(err.stack)
             if (err.code == '11000') {
@@ -50,7 +52,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                     error: 'title already exists',
                 })
             }
-            res.json({status: "error", error: err.toString()})
+            res.json({status: 'error', error: err.toString()})
         }
     }
     return res.json({status: 'OK'})
@@ -64,31 +66,43 @@ postRouter.get('/:slug', async (req, res) => {
         return
     }
 
-    var commentList = []
-    for (let i = 0; i < data.comments.length; i++) {
-        let comment = await CommentModel.findOne(data.comments[i])
-        let author = await UserModel.findOne({_id: comment.author})
-        commentList.push({content: comment.content, date: comment.date, authorDisplay: author.displayName, author: author.username})
-    }
+    let commentList = []
+    await Promise.all(
+        data.comments.map(async (commentRef) => {
+            let comment = await CommentModel.findById(commentRef)
+            let author = await UserModel.findById(comment.author)
+            commentList.push({
+                content: comment.content,
+                date: comment.date,
+                authorDisplay: author.displayName,
+                author: author.username,
+            })
+        })
+    )
     res.render('post', {data: data, comments: commentList})
 })
 
-postRouter.post("/:slug/comment", requireLoginPost, async (req, res) => {
+postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
     try {
         let slug = req.params.slug
         let content = req.body.content
         let authorID = decodeToken(req.cookies.access_token).id
-        if (content == "") return
-        let comment = new CommentModel({_id: new mongoose.Types.ObjectId(), author: authorID, content: content})
+        if (content == '') return
+        let comment = new CommentModel({
+            _id: new mongoose.Types.ObjectId(),
+            author: authorID,
+            content: content,
+        })
         await comment.save()
         let post = await PostModel.findOne({slug: slug})
         post.comments.push(comment._id)
         await post.save()
         await post.populate('comments')
 
-        res.json({status: "ok"})
+        res.json({status: 'ok'})
     } catch (err) {
         res.json({status: 'error', error: err.toString()})
-}})
+    }
+})
 
 export {postRouter, postEmitter}

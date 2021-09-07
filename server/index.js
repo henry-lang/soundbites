@@ -2,6 +2,7 @@ import './config.js'
 
 import express from 'express'
 import rateLimit from 'express-rate-limit'
+import https from 'https'
 import path from 'path'
 import mongoose from 'mongoose'
 import {postEmitter} from './routes/post_router.js'
@@ -45,9 +46,11 @@ mongoose.connect(
     }
 )
 
-const SECRET = process.env.JWT_SECRET
+const {SERVER_PORT, HTTPS_SERVER_PORT, PRIVKEY_PATH, FULLCHAIN_PATH} = process.env
+const RUN_HTTPS = process.env.RUN_HTTPS === 'true'
+console.log({PRIVKEY_PATH, FULLCHAIN_PATH})
+
 const server = express()
-const serverPort = process.env.SERVER_PORT
 
 server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.join(__dirname, '../assets')))
@@ -59,14 +62,19 @@ server.use(express.json())
 
 postEmitter.on('post', (data) => {
     cachedPosts.push(data)
-    cachedPosts.sort(function (a, b) {
+    cachedPosts.sort((a, b) => {
         return b.epochTime - a.epochTime
     })
 })
 
-server.listen(serverPort, () => {
-    console.log(`Started server on port ${serverPort}!`)
+server.listen(SERVER_PORT, () => {
+    console.log(`Started server on port ${SERVER_PORT}!`)
 })
+
+if (RUN_HTTPS)
+    https
+        .createServer({}, server)
+        .listen(443, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
 
 server.get('/', (req, res) => {
     res.render('index', {posts: cachedPosts})

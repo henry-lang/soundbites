@@ -15,7 +15,9 @@
             <h1 class="title">welcome.</h1>
             <p>soundbites analyzes music from all kinds of genres - rap, classical, jazz, pop. If you can name it, we're talking about it.</p>
             <p>We report on the latest news and songs in music weekly. Create an account to comment on and rate our articles!</p>
-            <a href="account/register" class="navbar-link">join us today</a>
+            <% if(!isLoggedIn) { %>
+                <a href="account/register" class="navbar-link">join us today</a>
+            <% } %>
         </div>
         <hr class="wave-divider">
         <div class="container fadein-left">

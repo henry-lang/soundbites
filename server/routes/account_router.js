@@ -40,7 +40,13 @@ accountRouter.post('/register', async (req, res) => {
     let username = req.body.username
     let displayName = req.body.displayName
 
-    if (!verify({username: username, pwd: req.body.pwd, displayName: displayName})) {
+    if (
+        !verify({
+            username: username,
+            pwd: req.body.pwd,
+            displayName: displayName,
+        })
+    ) {
         return res.json({
             status: 'error',
             error: 'username cannot contain spaces. password must be at least 8 characters and contain a number. display name is required.',

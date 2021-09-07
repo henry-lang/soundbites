@@ -4,6 +4,7 @@ import express from 'express'
 import rateLimit from 'express-rate-limit'
 import https from 'https'
 import path from 'path'
+import fs from 'fs'
 import mongoose from 'mongoose'
 import {postEmitter} from './routes/post_router.js'
 
@@ -73,7 +74,13 @@ server.listen(SERVER_PORT, () => {
 
 if (RUN_HTTPS)
     https
-        .createServer({}, server)
+        .createServer(
+            {
+                key: fs.readFileSync(PRIVKEY_PATH),
+                cert: fs.readFileSync(FULLCHAIN_PATH),
+            },
+            server
+        )
         .listen(443, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
 
 server.get('/', (req, res) => {

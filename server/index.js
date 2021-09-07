@@ -81,7 +81,7 @@ if (RUN_HTTPS)
             },
             server
         )
-        .listen(443, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
+        .listen(443, () => console.log(fs.readFileSync(PRIVKEY_PATH)))
 
 server.get('/', (req, res) => {
     res.render('index', {posts: cachedPosts})

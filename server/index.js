@@ -81,7 +81,7 @@ if (RUN_HTTPS)
             },
             server
         )
-        .listen(443, () => console.log(fs.readFileSync(PRIVKEY_PATH)))
+        .listen(443, () => console.log())
 
 server.get('/', (req, res) => {
     res.render('index', {posts: cachedPosts})

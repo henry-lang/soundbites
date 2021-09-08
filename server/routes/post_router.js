@@ -45,7 +45,6 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 slug: post.slug,
             })
         } catch (err) {
-            console.log(err.stack)
             if (err.code == '11000') {
                 return res.json({
                     status: 'error',

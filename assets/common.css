@@ -282,3 +282,16 @@ ul {
     color: var(--light-color);
     padding-left: 2px;
 }
+
+a {
+    font-family: var(--main-font);
+    font-weight: 200;
+    text-decoration: none;
+    color: var(--accent-color);
+    /* margin-right: 20px; */
+    transition: 0.25s;   
+}
+
+a:hover {
+    color: var(--darker-accent-color);
+}

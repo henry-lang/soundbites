@@ -8,20 +8,23 @@ async function register(event) {
 
     event.preventDefault()
     var username = document.getElementById('username').value
-    var pwd = document.getElementById('pwd').value
     var displayName = document.getElementById('display').value
     var checkbox = document.getElementById("checkbox").checked
 
     result = await fetch('settings/', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
-        body: JSON.stringify({username, pwd, displayName, checkbox}),
+        body: JSON.stringify({username, displayName, checkbox}),
     }).then((res) => res.json())
 
     if (result.status == 'ok') {
-        if (result.modified) {p.innerHTML = 'settings changed successfully.'}
-        else {p.innerHTML = "no settings were changed"}
-        p.style.color = 'var(--dark-color)'
+        if (result.modified) {
+            p.innerHTML = 'settings changed successfully.'
+            p.style.color = 'var(--dark-color)'
+        } else {
+            p.innerHTML = "no settings were changed"
+            p.style.color = 'var(--accent-color)'
+        }
         p.style.display = 'block'
     } else {
         p.innerHTML = result.error

@@ -15,7 +15,9 @@
         <h1><%= data.title %> </h1>
         <h3>By <%= data.author %> <i>on <%= data.date %></i></h3>
         <br>
-        <%- data.html %>
+        <div class="post-content">
+            <%- data.html %>
+        </div>
         <br>
         <h3>comments</h3>
         <% if (!comments.length) { %>

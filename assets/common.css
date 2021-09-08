@@ -276,34 +276,9 @@ ul {
     width: 300px;
 }
 
-#question-mark { 
-    border: 1px solid;
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-    text-align: center;
-    font-size: 12px;
-}
-
-#question-mark-container {
-    display: flex;
-    transform: translateY(10%)
-}
-
-#question-mark-text {
-    display: none;
-    margin-left: 10px;
-    transform: translateY(-25%)
-}
-
-#question-mark-container:hover #question-mark-text{
-    display: inline;
-}
-
-#author-perms-container {
-    display: flex;
-}
-
-#author-perms-text {
-    margin-right: 10px;
+#beta-text {
+    transform: translateY(-15%);
+    font-family: var(--main-font);
+    color: var(--light-color);
+    padding-left: 2px;
 }

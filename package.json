@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "clear && sudo nodemon server/index.js",
-    "start": "clear && sudo node server/index.js"
+    "start": "clear && sudo node server/index.js",
+    "start-pm2": "sudo pm2 start server/index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

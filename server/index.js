@@ -49,8 +49,6 @@ mongoose.connect(
 
 const {SERVER_PORT, HTTPS_SERVER_PORT, PRIVKEY_PATH, FULLCHAIN_PATH} = process.env
 const RUN_HTTPS = process.env.RUN_HTTPS === 'true'
-console.log({PRIVKEY_PATH, FULLCHAIN_PATH})
-
 const server = express()
 
 server.set('view engine', 'ejs')
@@ -81,7 +79,7 @@ if (RUN_HTTPS)
             },
             server
         )
-        .listen(443, () => console.log())
+        .listen(443, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
 
 server.get('/', (req, res) => {
     res.render('index', {posts: cachedPosts})

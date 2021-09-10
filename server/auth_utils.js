@@ -63,25 +63,17 @@ const checkLogin = async (req, res, next) => {
 // Verifying that given registration details fulfills our minimum requirements.
 const verify = (accountDetails) => {
     let {username, pwd, displayName} = accountDetails
+    //this is so scuffed lmao0
     if (
         Buffer.from(username).includes(' ') ||
         /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\':<>\?]/g.test(username) ||
-        pwd < 8 ||
+        pwd.length < 8 ||
         !/\d/.test(pwd)
     ) {
-        //this is so scuffed lmao
         return false
     } else if (!displayName) return false
 
     return true
 }
 
-export {
-    decodeToken,
-    isLoggedIn,
-    isAuthor,
-    requireLogin,
-    requireLoginPost,
-    checkLogin,
-    verify,
-}
+export {decodeToken, isLoggedIn, isAuthor, requireLogin, requireLoginPost, checkLogin, verify}

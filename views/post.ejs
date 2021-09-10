@@ -11,37 +11,39 @@
 <body>
     <%- include("common/navbar") %>
 
-    <div class="main-content">
-        <h1><%= data.title %> </h1>
-        <h3>By <%= data.author %> <i>on <%= data.date %></i></h3>
-        <br>
-        <div class="post-content">
+    <div class="main-content fadein-left">
+        <div class="container">
+            <h1><%= data.title %> </h1>
+            <h3>By <%= data.author %> <i>on <%= data.date %></i></h3>
+        <div>
+        <div class="post-content container">
             <%- data.html %>
         </div>
-        <br>
-        <h3>comments</h3>
-        <% if (!comments.length) { %>
-            <p><i>This post has no comments.</i></p>
-        <% } else {%>
-        <% comments.map(comment => { %>
-            <div class="comment">
-                <div class="username-and-date">
-                    <p>
-                        <a class="navbar-link" href="../users/<%=comment.author%>"><%= comment.authorDisplay %></a>
-                        <p class="comment-date"><%= comment.date %></p>
-                    </p>
-                </div>
-                <p><%= comment.content %></p>
-            </div>
-        <% })} %>
-        <br>
-        <form id="login-form">
-            <h3>comment on this post</h3>
-            <p id="invalid"></p>
-            <textarea class="input" id="content" placeholder="submit a comment"></textarea>
-            <br>
-            <input class="submit" type="submit" value="submit">
-        </form>
+        <div class="container">
+            <h3>comments</h3>
+            <% if (!comments.length) { %>
+                <p><i>This post has no comments.</i></p>
+            <% } else {%>
+                <% comments.map(comment => { %>
+                    <div class="comment">
+                        <div class="username-and-date">
+                            <p>
+                                <a class="navbar-link" href="../users/<%=comment.author%>"><%= comment.authorDisplay %></a>
+                                <p class="comment-date"><%= comment.date %></p>
+                            </p>
+                        </div>
+                <% }) %>
+            <% } %>
+        </div>
+        <div class="container">
+            <form id="login-form">
+                <h3>comment on this post</h3>
+                <p id="invalid"></p>
+                <textarea class="input" id="content" placeholder="submit a comment"></textarea>
+                <br>
+                <input class="submit" type="submit" value="submit">
+            </form>
+        </div>
     </div>
 </body>
 </html>

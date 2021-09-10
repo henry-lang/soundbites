@@ -56,6 +56,22 @@ body {
     }
 }
 
+p,
+h1,
+h2,
+h3,
+h4 {
+    color: var(--dark-color);
+}
+
+h2 {
+    margin: 0;
+}
+
+h4 {
+    font-size: 18px;
+}
+
 .fixed {
     position: fixed;
 }
@@ -73,11 +89,7 @@ body {
     float: right;
 }
 
-h2 {
-    margin: 0;
-}
-
-.container.fadein-left {
+.fadein-left {
     animation: fadein-left 0.75s;
 }
 
@@ -134,10 +146,9 @@ h2 {
     height: 30px;
     width: 280%;
     background-repeat: repeat-x;
-    filter: invert(54%) sepia(54%) saturate(542%) hue-rotate(308deg)
-        brightness(100%) contrast(89%);
+    filter: invert(54%) sepia(54%) saturate(542%) hue-rotate(308deg) brightness(100%) contrast(89%);
     border: none;
-    animation: hr-shift linear 30s;
+    animation: hr-shift linear 50s;
     animation-iteration-count: infinite;
 }
 
@@ -178,7 +189,7 @@ input:hover {
 }
 
 .submit {
-    color: var(--accent-color)
+    color: var(--accent-color);
 }
 
 textarea {
@@ -195,10 +206,6 @@ textarea {
     padding-top: 20px;
 }
 
-.main-content h1 {
-    color: var(--dark-color);
-}
-
 .latest-headline {
     background-color: rgb(236, 236, 236);
     height: 200px;
@@ -208,7 +215,7 @@ textarea {
     margin-right: 7.5px;
     padding-top: 10px;
     transition: 0.3s;
-    margin-bottom: 7.5px
+    margin-bottom: 7.5px;
 }
 
 .latest-headline > p {
@@ -232,10 +239,12 @@ textarea {
     padding-bottom: var(--container-padding);
 }
 
-.block-link {text-decoration: none;}
+.block-link {
+    text-decoration: none;
+}
 
 ul {
-  list-style-type: circle;  
+    list-style-type: circle;
 }
 
 #team-title {
@@ -243,7 +252,7 @@ ul {
 }
 
 #credits {
-    text-indent: 20px;      
+    text-indent: 20px;
 }
 
 #credits li {
@@ -289,7 +298,7 @@ a {
     text-decoration: none;
     color: var(--accent-color);
     /* margin-right: 20px; */
-    transition: 0.25s;   
+    transition: 0.25s;
 }
 
 a:hover {

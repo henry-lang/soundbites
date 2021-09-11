@@ -11,9 +11,11 @@
     <%- include("common/navbar") %>
     <div class="main-content">
         <h1 id="title">profile</h1>
-        <p id="username">Username: <%= username %></p>
-        <p>Display Name: <%= displayName %></p>
-        <p id="author-perms-text">Author Permissions: (ability to write articles): <%= author %></p> 
+        <p id="username">Username: <%= data.username %></p>
+        <p>Display Name: <%= data.displayName %></p>
+        <p id="author-perms-text">Author Permissions: (ability to write articles): <%= data.author %></p> 
+        <p>Bio: <%= data.bio %></p>
+        <img src="<%= data.profilePictureURL %>">
         <a id="change-settings" class="navbar-link" href="/account/settings">change settings</a><a id="logout" class="navbar-link" href="../account/logout">log out</a>
     </div>
 </body>

@@ -10,11 +10,12 @@ async function register(event) {
     var username = document.getElementById('username').value
     var displayName = document.getElementById('display').value
     var checkbox = document.getElementById("checkbox").checked
+    var bio = document.getElementById("content").value
 
     result = await fetch('settings/', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
-        body: JSON.stringify({username, displayName, checkbox}),
+        body: JSON.stringify({username, displayName, checkbox, bio}),
     }).then((res) => res.json())
 
     if (result.status == 'ok') {

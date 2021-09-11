@@ -12,11 +12,7 @@ accountRouter.get('/', requireLogin, async (req, res) => {
     let id = decodeToken(req.cookies.access_token).id
     let userDetails = await UserModel.findById(id).lean()
 
-    res.render('profile', {
-        username: userDetails.username,
-        displayName: userDetails.displayName,
-        author: userDetails.author,
-    })
+    res.render('profile', {data: userDetails})
 })
 
 accountRouter.get('/register', (req, res) => {
@@ -32,7 +28,9 @@ accountRouter.get('/logout', async (req, res) => {
 })
 
 accountRouter.get("/settings", requireLogin, async (req, res) => {
-    res.render("settings")
+    let id = decodeToken(req.cookies.access_token).id
+    let user = await UserModel.findById(id)
+    res.render("settings", {data: {username: user.username, displayName: user.displayName, bio: user.bio}})
 })
 
 accountRouter.post('/register', async (req, res) => {
@@ -98,12 +96,13 @@ accountRouter.post("/settings", requireLoginPost, async (req, res) => {
     try {
         let id = (decodeToken(req.cookies.access_token)).id
         let user = await UserModel.findById(id)
-        console.log(req.body.checkbox)
 
         if (req.body.checkbox) {
             for (let i in req.body) {
                 if (req.body[i] != "") { //if any settings were not changed (they did not fill in the input), then they are ignored.
                     user[i] = req.body[i]
+                    console.log(req.body[i])
+                    console.log(req.body)
                 }
             }
     

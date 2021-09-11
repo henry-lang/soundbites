@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
         required: false,
         default: false,
     },
+    bio: {
+        type: String,
+        required: false,
+        default: "This user has no bio."
+    }
 })
 
 userSchema.pre('validate', function (next) {

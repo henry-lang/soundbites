@@ -10,9 +10,7 @@
 <body>
     <%- include("common/navbar") %>
     <div class="main-content">
-        <h1 id="title"><%= data.username %></h1>
-        <p id="username">Username: <%= data.username %></p>
-        <p>Display Name: <%= data.displayName %></p>
+        <%- include("common/user_details", {data}) %>
     </div>
 </body>
 </html>

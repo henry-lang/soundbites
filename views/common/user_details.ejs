@@ -1,0 +1,11 @@
+<p id="username">Username: <%= data.username %></p>
+<p>Display Name: <%= data.displayName %></p>
+<p id="author-perms-text">Author Permissions: (ability to write articles): <%= data.author %></p> 
+
+<% if(/\S/.test(data.bio)) { %>
+    <p><i>"<%= data.bio %>"</i></p>
+<% } else { %>
+    <p>This user has no bio.</p>
+<% } %>
+
+<img src="<%= data.profilePictureURL %>">

@@ -14,6 +14,8 @@ userRouter.get('/:username', async (req, res) => {
     let trimmed = {
         username: data.username,
         displayName: data.displayName,
+        author: data.author,
+        bio: data.bio,
     }
     res.render('user', {data: trimmed})
 })

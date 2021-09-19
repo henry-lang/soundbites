@@ -317,6 +317,15 @@ a:hover {
     object-fit: cover;
 }
 
+.avatar-small {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    margin-right: 1%;
+    object-fit: cover;
+    transform: translateY(30% )
+}
+
 #avatar-title-container {
     display:flex;
 }

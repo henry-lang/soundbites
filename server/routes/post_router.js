@@ -69,13 +69,13 @@ postRouter.get('/:slug', async (req, res) => {
     await Promise.all(
         data.comments.map(async (commentRef) => {
             let comment = await CommentModel.findById(commentRef)
-            console.log(comment.content)
             let author = await UserModel.findById(comment.author)
             commentList.push({
                 content: comment.content,
                 date: comment.date,
                 authorDisplay: author.displayName,
                 author: author.username,
+                avatar: author.avatar,
             })
         })
     )

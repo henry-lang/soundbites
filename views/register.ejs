@@ -14,18 +14,20 @@
 <body>
     <%- include("./common/navbar") %>
     <div class="main-content">
-        <form id="reg">
-            <h1>sign up</h1>
-            <p id="invalid"></p>
-            <input class="input" type="text" id="username" placeholder="username">
-            <br>
-            <input class="input" type="text" id="display" placeholder="display name">
-            <br>
-            <input class="input" type="password" id="pwd" placeholder = "password">
-            <br>
-            <input class="submit" type="submit" value="submit">
-        </form>
-        <p>already have an account? <a class="navbar-link" href="/account/login">log in here</a></p>
+        <div class="container fadein-left">
+            <form id="reg">
+                <h1>sign up</h1>
+                <p id="invalid"></p>
+                <input class="input" type="text" id="username" placeholder="username">
+                <br>
+                <input class="input" type="text" id="display" placeholder="display name">
+                <br>
+                <input class="input" type="password" id="pwd" placeholder = "password">
+                <br>
+                <input class="submit" type="submit" value="submit">
+            </form>
+            <p>already have an account? <a class="navbar-link" href="/account/login">log in here</a></p>
+        </div>
     </div>
 </body>
 </html>

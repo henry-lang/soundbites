@@ -10,9 +10,14 @@
 <body>
     <%- include("common/navbar") %>
     <div class="main-content">
-        <h1 id="title">profile</h1>
-        <%- include("common/user_details", {data}) %>
-        <a id="change-settings" class="navbar-link" href="/account/settings">change settings</a><a id="logout" class="navbar-link" href="../account/logout">log out</a>
+        <div class="container fadein-left">
+            <h1 id="title"><%= data.username %>'s profile</h1>
+            <div id="avatar-title-container">
+                <img id="avatar" src="data:<%=data.avatar.imgType%>;base64,<%=data.avatar.imgData.toString('base64')%>">
+                <div id="user-details"><%- include("common/user_details", {data}) %></div>
+            </div>
+            <a id="change-settings" class="navbar-link" href="/account/settings">change settings</a><a id="logout" class="navbar-link" href="../account/logout">log out</a>
+        </div>
     </div>
 </body>
 </html>

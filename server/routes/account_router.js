@@ -1,12 +1,15 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import multer from 'multer'
+import fs from 'fs'
 
 import {verify, requireLogin, requireLoginPost, decodeToken} from '../auth_utils.js'
 
 import UserModel from '../models/user_model.js'
 
 const accountRouter = new express.Router()
+const upload = multer({ dest: 'uploads/' })
 
 accountRouter.get('/', requireLogin, async (req, res) => {
     let id = decodeToken(req.cookies.access_token).id
@@ -58,6 +61,10 @@ accountRouter.post('/register', async (req, res) => {
             username: req.body.username,
             password: pwd,
             displayName: displayName,
+            avatar: {
+                imgData: fs.readFileSync("assets/default-photo.png"),
+                imgType: "image/png"
+            },
             author: false,
         })
         await newUser.save()
@@ -94,18 +101,26 @@ accountRouter.post('/login', async (req, res) => {
     } else res.json({status: 'error', error: 'invalid login details'})
 })
 
-accountRouter.post('/settings', requireLoginPost, async (req, res) => {
+accountRouter.post('/settings', requireLoginPost, upload.single('avatar'), async (req, res) => {
     try {
         let id = decodeToken(req.cookies.access_token).id
         let user = await UserModel.findById(id)
+        let file = req.file
+        var strData = JSON.parse(req.body.strData)
 
-        if (req.body.checkbox) {
-            for (let i in req.body) {
-                if (req.body[i] != '') {
+        if (strData.checkbox) {
+            for (let i in strData) {
+                if (strData[i] != '') {
                     //if any settings were not changed (they did not fill in the input), then they are ignored.
-                    user[i] = req.body[i]
+                    user[i] = strData[i]
                 }
             }
+
+            if (file != undefined) {
+                user.avatar = {
+                imgData: fs.readFileSync(`uploads/${file.filename}`),
+                imgType: file.mimetype
+            }}
 
             await user.save()
             return res.json({status: 'ok', modified: true})

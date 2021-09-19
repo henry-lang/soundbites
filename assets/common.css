@@ -235,7 +235,7 @@ textarea {
 }
 
 .main-content > .container {
-    padding-top: var(--container-padding);
+    /* padding-top: var(--container-padding); */
     padding-bottom: var(--container-padding);
 }
 
@@ -271,6 +271,10 @@ ul {
     margin-left: 5px;
 }
 
+.comment-content {
+    white-space: pre-wrap;
+}
+
 .username-and-date p {
     display: inline;
     word-wrap: break-word;
@@ -303,4 +307,24 @@ a {
 
 a:hover {
     color: var(--darker-accent-color);
+}
+
+#avatar {
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    margin-right: 1%;
+    object-fit: cover;
+}
+
+#avatar-title-container {
+    display:flex;
+}
+
+#user-details {
+    display: block
+}
+
+#bio {
+    white-space: pre-wrap;
 }

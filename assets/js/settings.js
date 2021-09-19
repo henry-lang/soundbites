@@ -7,15 +7,22 @@ async function register(event) {
     p.style.display = 'none'
 
     event.preventDefault()
-    var username = document.getElementById('username').value
-    var displayName = document.getElementById('display').value
-    var checkbox = document.getElementById("checkbox").checked
-    var bio = document.getElementById("content").value
+    var formData = new FormData()
+    var strData = {
+        username: document.getElementById('username').value,
+        displayName: document.getElementById('username').value,
+        checkbox: document.getElementById("checkbox").checked,
+        bio: document.getElementById("content").value
+
+    }
+    formData.append("strData", JSON.stringify(strData))
+    formData.append('avatar', document.getElementById("file-upload").files[0])
+
+    console.log(formData)
 
     result = await fetch('settings/', {
         method: 'POST',
-        headers: {'Content-type': 'application/json'},
-        body: JSON.stringify({username, displayName, checkbox, bio}),
+        body: formData
     }).then((res) => res.json())
 
     if (result.status == 'ok') {

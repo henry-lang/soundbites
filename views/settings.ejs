@@ -14,20 +14,26 @@
 <body>
     <%- include("./common/navbar") %>
     <div class="main-content">
-        <form id="settings">
-            <h1>settings</h1>
-            <p id="invalid"></p>
-            <h3>new username</h3>
-            <input class="input" type="text" id="username" placeholder="new username">
-            <h3>new display name</h3>
-            <input class="input" type="text" id="display" placeholder="new display name">
-            <h3>new bio</h3>
-            <textarea class="input" id="content" placeholder=""></textarea>
-            <br>
-            <input class="submit" type="submit" value="submit">
-            <p>Once you change your username it will be available for anyone to take. If someone else takes it, you won't get it back.</p>
-            <p><input type="checkbox" id="checkbox"> I understand</p>
-        </form>
+        <div class="container fadein-left">
+            <form id="settings">
+                <h1>settings</h1>
+                <p id="invalid"></p>
+                <h3>new username</h3>
+                <input class="input" type="text" id="username" placeholder="new username">
+                <h3>new display name</h3>
+                <input class="input" type="text" id="display" placeholder="new display name">
+                <h3>bio</h3>
+                <textarea class="input" id="content" placeholder=""></textarea>
+                <br>
+                <h3>avatar</h3>
+                <input id="file-upload" type="file">
+                <br>
+                <br>
+                <input class="submit" type="submit" value="submit" name="avatar">
+                <p>Once you change your username it will be available for anyone to take. If someone else takes it, you won't get it back.</p>
+                <p><input type="checkbox" id="checkbox"> I understand</p>
+            </form>            
+        </div>
     </div>
 </body>
 </html>

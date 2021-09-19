@@ -16,16 +16,18 @@
     <%- include("common/navbar") %>
 
     <div class="main-content">
-        <h1 id="title">submit an article</h1>
-        <p id="invalid"></p>
-        <form id="form">
-            <div id="title-desc">
-                <input id="title-field" type="text" placeholder="title of your article" class="input">
-                <input id="description-field" type="text" placeholder="description of your article" class="input">
-            </div>
-            <textarea id="text"></textarea>
-            <input type="submit" value="publish">
-        </form>
+        <div class="container fadein-left">
+            <h1 id="title">submit an article</h1>
+            <p id="invalid"></p>
+            <form id="form">
+                <div id="title-desc">
+                    <input id="title-field" type="text" placeholder="title of your article" class="input">
+                    <input id="description-field" type="text" placeholder="description of your article" class="input">
+                </div>
+                <textarea id="text"></textarea>
+                <input class="submit" type="submit" value="publish">
+            </form>
+        </div>
     </div>
 </body>
 </html>

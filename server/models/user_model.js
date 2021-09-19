@@ -1,4 +1,7 @@
 import mongoose from 'mongoose'
+import fs from "fs"
+
+const data = fs.readFileSync("assets/default-photo.png")
 
 const userSchema = new mongoose.Schema({
     //for now only username and pwd will be required, but eventually everything here will be needed.
@@ -15,8 +18,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    profilePictureURL: {
-        type: String,
+    avatar: {
+        imgData: Buffer,
+        imgType: String,
         required: false,
     },
     author: {
@@ -28,7 +32,6 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String,
         required: false,
-        default: "This user has no bio."
     }
 })
 

@@ -11,8 +11,7 @@ async function comment(event) {
     var content = document.getElementById('content').value
 
     var path = window.location.href
-    path = "/posts" + "/" + path.split("/")[4] + "/comment"
-    console.log(path)
+    path = `/posts/${path.split("/")[4]}/comment`
 
     var result = await fetch(path, {
         method: 'POST',

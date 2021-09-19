@@ -10,7 +10,14 @@
 <body>
     <%- include("common/navbar") %>
     <div class="main-content">
-        <%- include("common/user_details", {data}) %>
+        <div class="container fadein-left">
+            <h1 id="title"><%= data.username %>'s profile</h1>
+            <div id="avatar-title-container">
+                <img id="avatar" src="data:<%=data.avatar.imgType%>;base64,<%=data.avatar.imgData.toString('base64')%>">
+                <div id="user-details"><%- include("common/user_details", {data}) %></div>
+            </div>
+        </div>
+        <!-- probably add some extra content here like recent comments (or if an author, posts) -->
     </div>
 </body>
 </html>

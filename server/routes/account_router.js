@@ -117,10 +117,13 @@ accountRouter.post('/settings', requireLoginPost, upload.single('avatar'), async
             }
 
             if (file != undefined) {
-                user.avatar = {
-                imgData: fs.readFileSync(`uploads/${file.filename}`),
-                imgType: file.mimetype
-            }}
+                if (file.mimetype.split("/")[0] == "image") {
+                    user.avatar = {
+                        imgData: fs.readFileSync(`uploads/${file.filename}`),
+                        imgType: file.mimetype                    
+                    }
+                } else return res.json({status: "error", error: "filetype must be an image (jpg, png, gif)"})
+            }
 
             await user.save()
             return res.json({status: 'ok', modified: true})

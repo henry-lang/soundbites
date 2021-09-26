@@ -19,6 +19,14 @@ html {
     --container-padding: 30px;
 }
 
+[theme='dark'] {
+    --light-color: #22292a;
+    --dark-color: rgb(236, 236, 236);
+    --super-dark-color: #f9faf4;
+    --mid-color: #384446;
+    --accent-color: #f17a7e;
+}
+
 body {
     /* -webkit-animation: fadein 1s;
     -moz-animation: fadein 1s;
@@ -220,7 +228,7 @@ textarea {
     text-align: center;
     margin-right: 7.5px;
     padding-top: 10px;
-    transition: 0.3s;
+    transition: 0.3s transform;
     margin-bottom: 7.5px;
 }
 

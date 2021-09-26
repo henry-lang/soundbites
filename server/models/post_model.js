@@ -28,7 +28,8 @@ const postSchema = new mongoose.Schema({
         required: true,
     },
     author: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
     markdown: {
@@ -54,7 +55,7 @@ const postSchema = new mongoose.Schema({
 })
 
 postSchema.pre('validate', function (next) {
-    this.date = dateAssembly()
+    // this.date = dateAssembly()
     this.slug = slugify(this.title, {lower: true, strict: true})
     this.html = dompurify.sanitize(marked(this.markdown))
     this.epochTime = Date.now()

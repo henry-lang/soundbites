@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../assets/common.css">
 
     <script src="../assets/js/settings.js" defer></script>
-    <script defer src="../assets/js/common.js"></script>
 
     <title>settings - soundbites</title>
 </head>
@@ -22,11 +21,11 @@
                 <h1>settings</h1>
                 <p id="invalid"></p>
                 <h3>new username</h3>
-                <input class="input" type="text" id="username" placeholder="new username">
+                <input class="input" type="text" id="username" placeholder="<%=data.username%>">
                 <h3>new display name</h3>
-                <input class="input" type="text" id="display" placeholder="new display name">
+                <input class="input" type="text" id="display" placeholder="<%=data.displayName%>">
                 <h3>bio</h3>
-                <textarea class="input" id="content" placeholder=""></textarea>
+                <textarea class="input" id="content" placeholder="<%=data.bio%>"></textarea>
                 <br>
                 <h3>avatar</h3>
                 <input id="file-upload" type="file">

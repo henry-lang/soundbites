@@ -20,7 +20,7 @@ import getPosts from './get_posts.js'
 
 import {fileURLToPath} from 'url'
 import {dirname} from 'path'
-import PostModel from './models/post_model.js'
+import UserModel from './models/user_model.js'
 import {cache} from 'ejs'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -59,7 +59,9 @@ server.post('*', limitConfig)
 server.use(logRequests)
 server.use(express.json())
 
-postEmitter.on('post', (data) => {
+postEmitter.on('post', async (data) => {
+    data.author = await UserModel.findById(data.author)
+    console.log(data.author)
     cachedPosts.push(data)
     cachedPosts.sort((a, b) => {
         return b.epochTime - a.epochTime

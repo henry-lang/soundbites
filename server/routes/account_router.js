@@ -107,12 +107,15 @@ accountRouter.post('/settings', requireLoginPost, upload.single('avatar'), async
         let user = await UserModel.findById(id)
         let file = req.file
         var strData = JSON.parse(req.body.strData)
+        console.log(strData)
 
         if (strData.checkbox) {
             for (let i in strData) {
                 if (strData[i] != '') {
                     //if any settings were not changed (they did not fill in the input), then they are ignored.
                     user[i] = strData[i]
+                    console.log(strData[i])
+                    console.log(user[i])
                 }
             }
 
@@ -127,9 +130,8 @@ accountRouter.post('/settings', requireLoginPost, upload.single('avatar'), async
 
             await user.save()
             return res.json({status: 'ok', modified: true})
-        } else {
-            return res.json({status: 'ok', modified: false})
-        }
+
+        } else return res.json({status: 'ok', modified: false})
     } catch (err) {
         if (err.code == '11000') {
             return res.json({status: 'error', error: 'this username is already taken.'})

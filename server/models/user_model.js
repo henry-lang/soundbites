@@ -32,7 +32,14 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String,
         required: false,
-    }
+    },
+
+    posts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post',
+        }
+    ]
 })
 
 userSchema.pre('validate', function (next) {

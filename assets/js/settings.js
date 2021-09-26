@@ -10,7 +10,7 @@ async function register(event) {
     var formData = new FormData()
     var strData = {
         username: document.getElementById('username').value,
-        displayName: document.getElementById('username').value,
+        displayName: document.getElementById('display').value,
         checkbox: document.getElementById("checkbox").checked,
         bio: document.getElementById("content").value
 

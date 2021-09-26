@@ -19,12 +19,29 @@
                 <% if(data.avatar?.imgData == null) { %>
                     <img id="avatar" src="../assets/default-photo.png">
                 <% } else { %>
-                    <img id="avatar" src="data:<%=data.avatar.imgType%>;base64,<%=data.avatar.imgData.toString('base64')%>">
-                    <div id="user-details"></div>
+                    <div id="user-details">
+                        <%- include("common/user_details", {data}) %>
+                    </div>
                 <% } %>
             </div>
-            <%- include("common/user_details", {data}) %>
+            <!-- <%- include("common/user_details", {data}) %> -->
         </div>
+        <% if(data.author) { %>
+            <hr class="wave-divider">
+            <br>
+            <h2>articles <%=data.displayName%> has written</h2>
+            <div id="container">
+                <% data.posts.map(post => { %>
+                    <a class="block-link" href="/posts/<%= post.slug %>">
+                        <div class="latest-headline">
+                            <p><%= post.title %></p>
+                            <p id="authorInfo">By <strong><%= post.author %></strong> on <%= post.date %></p>
+                            <p id="desc"><%= post.description %></p>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        <% } %>
         <!-- probably add some extra content here like recent comments (or if an author, posts) -->
     </div>
 </body>

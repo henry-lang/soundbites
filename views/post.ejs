@@ -16,7 +16,7 @@
     <div class="main-content fadein-left">
         <div class="container">
             <h1><%= data.title %> </h1>
-            <h3>By <a href="../users/<%=data.author%>"><%= data.author %></a> on <i><%= data.date %></i></h3>
+            <h3>By <a href="../users/<%=data.author%>"><%= data.displayName %></a> on <i><%= data.date %></i></h3>
         <div>
         <div class="post-content container">
             <%- data.html %>

@@ -33,13 +33,17 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 title: title,
                 description: description,
                 markdown: markdown,
-                author: userDetails.username,
+                author: userDetails._id,
+                date: dateAssembly()
             })
             await post.save()
+            userDetails.posts.push(post)
+            await userDetails.populate()
+            await userDetails.save()
             postEmitter.emit('post', {
                 title: title,
                 description: description,
-                author: userDetails.username,
+                author: userDetails._id,
                 epochTime: Date.now(),
                 date: dateAssembly(),
                 slug: post.slug,
@@ -51,7 +55,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                     error: 'title already exists',
                 })
             }
-            res.json({status: 'error', error: err.toString()})
+            return res.json({status: 'error', error: err.toString()})
         }
     }
     return res.json({status: 'OK'})
@@ -64,6 +68,8 @@ postRouter.get('/:slug', async (req, res) => {
         res.render('404')
         return
     }
+
+    let author = await UserModel.findById(data.author)
 
     let commentList = []
     await Promise.all(
@@ -79,7 +85,7 @@ postRouter.get('/:slug', async (req, res) => {
             })
         })
     )
-    res.render('post', {data: data, comments: commentList})
+    res.render('post', {data: data, comments: commentList, author: author})
 })
 
 postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {

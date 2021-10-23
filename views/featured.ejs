@@ -10,10 +10,22 @@
 </head>
 <body>
     <%- include("common/navbar") %>
-    <%- include("common/theme_toggle") %>
 
     <div class="main-content">
-        <div class="container fadein-left"><p>featured posts are here. maybe have it sorted based on views/commments</p></div>
+        <div class="container fadein-left">
+            <h1>posts</h1>
+            <h2>our newest articles</h2>
+            <%- include('common/latest-headlines', {posts: data}) %>
+            <br>
+            <h2>top picks</h2>
+            <br>
+            <h2>highest ratings in the past month</h2>
+            <p>coming soon!</p>
+            <br>
+            <h2>all posts</h2>
+            <p>custom filtering coming soon!</p>
+        </div>
+        <%- include("common/theme_toggle") %>
     </div>
 </body>
 </html>

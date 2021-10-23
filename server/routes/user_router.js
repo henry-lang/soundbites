@@ -5,7 +5,6 @@ import PostModel from '../models/post_model.js'
 
 const userRouter = new express.Router()
 userRouter.get('/:username', async (req, res) => {
-    console.log("called")
     let username = req.params.username
     let data = await UserModel.findOne({username: username})
     if (!data) {
@@ -21,15 +20,15 @@ userRouter.get('/:username', async (req, res) => {
         avatar: data.avatar,
         posts: []
     }
-    console.log("data", data.posts)
     await Promise.all(
         data.posts.map(async (post) => {
-        let p = await PostModel.findById(post._id)
-        p.author = await UserModel.findById(post.author)
-        trimmed.posts.push(p)
-        console.log("finished")
-    }))
-    console.log(trimmed.posts)
+            let p = await PostModel.findById(post._id)
+            trimmed.posts.push(p)
+        })
+    )
+    trimmed.posts.sort((a, b) => {
+        return b.epochTime - a.epochTime
+    })
     res.render('user', {data: trimmed})
 })
 

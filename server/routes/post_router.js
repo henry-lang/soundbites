@@ -21,12 +21,14 @@ postRouter.get('/create', requireLogin, (req, res) => {
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
     let {title, description, markdown} = req.body
-    let id = decodeToken(req.cookies.access_token).id
+    let id = decodeToken(req.cookies.access_token)
 
     let userDetails = await UserModel.findById(id)
 
     if (!userDetails.author) {
         return res.json({status: 'error', error: 'not permitted'})
+    } else if (description.length > 100) {
+        return res.json({status: 'error', error: 'please keep description under 100 characters!'})
     } else {
         try {
             let post = new PostModel({
@@ -34,7 +36,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 description: description,
                 markdown: markdown,
                 author: userDetails._id,
-                date: dateAssembly()
+                date: dateAssembly(),
             })
             await post.save()
             userDetails.posts.push(post)
@@ -64,36 +66,46 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
 postRouter.get('/:slug', async (req, res) => {
     let slug = req.params.slug
     let data = await PostModel.findOne({slug: slug})
+    let myData = await UserModel.findById(decodeToken(req.cookies.access_token))
     if (!data) {
         res.render('404')
         return
     }
-
+    
+    let canDelete = false
     let author = await UserModel.findById(data.author)
-
+    if (myData && myData.username == author.username) {canDelete = true}
     let commentList = []
     await Promise.all(
         data.comments.map(async (commentRef) => {
             let comment = await CommentModel.findById(commentRef)
             let author = await UserModel.findById(comment.author)
+            let canDeleteComment = false
+            if (myData && myData.username == author.username) {canDeleteComment = true}
             commentList.push({
                 content: comment.content,
                 date: comment.date,
                 authorDisplay: author.displayName,
+                authorPerm: author.author,
                 author: author.username,
                 avatar: author.avatar,
+                _id: comment._id,
+                canDelete: canDeleteComment,
             })
         })
     )
-    res.render('post', {data: data, comments: commentList, author: author})
+    res.render('post', {data: data, comments: commentList, author: author, canDelete: canDelete})
 })
 
 postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
     try {
         let slug = req.params.slug
         let content = req.body.content
-        let authorID = decodeToken(req.cookies.access_token).id
+        let authorID = decodeToken(req.cookies.access_token)
         if (content == '') return
+        else if (content.length > 280) {
+            return res.json({status: 'error', error: 'please keep comments under 280 characters!'})
+        }
         let comment = new CommentModel({
             _id: new mongoose.Types.ObjectId(),
             author: authorID,
@@ -108,6 +120,27 @@ postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
         res.json({status: 'ok'})
     } catch (err) {
         res.json({status: 'error', error: err.toString()})
+    }
+})
+
+postRouter.post('/:slug/comment/delete', requireLoginPost, async (req, res) => {
+    try {
+        let commentID = req.body.commentID
+        let postID = req.body.postID
+        let comment = CommentModel.findById(commentID)
+        
+        if (!comment) {
+            return res.json({status: 'error', error: 'this comment does not exist or has been deleted.'})
+        }
+
+        let post = await PostModel.findOne({slug: postID})
+        post.comments.splice(post.comments.indexOf(commentID))
+        await post.save()
+
+        await CommentModel.findOneAndRemove(commentID)
+        return res.json({status: "ok"})
+    } catch (err) {
+        throw err   
     }
 })
 

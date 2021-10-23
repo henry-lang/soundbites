@@ -11,12 +11,11 @@
 </head>
 <body>
     <%- include("common/navbar") %>
-    <%- include("common/theme_toggle") %>
 
     <div class="main-content fadein-left">
         <div class="container">
             <h1><%= data.title %> </h1>
-            <h3>By <a href="../users/<%=data.author%>"><%= data.displayName %></a> on <i><%= data.date %></i></h3>
+            <h3>By <a href="../users/<%=author.username%>"><%= author.displayName %></a> on <i><%= data.date %></i></h3>
         <div>
         <div class="post-content container">
             <%- data.html %>
@@ -31,9 +30,12 @@
                         <div class="username-and-date">
                             <p id="p">
                                 <a class="navbar-link" href="../users/<%=comment.author%>">
-                                    <img class="avatar-small" src="data:<%=comment.avatar.imgType%>;base64,<%=comment.avatar.imgData.toString('base64')%>">
+                                    <img class="avatar-small" src="../<%=comment.avatar%>">
                                     <%= comment.authorDisplay %></a>
                                 <p class="comment-date"><%= comment.date %></p>
+                                <% if (canDelete || comment.canDelete) { %>
+                                <a class="delete-button" id="<%= comment._id %>" href="" onclick="deleteComment(this)">delete</a>
+                                <% } %>
                             </p>
                         </div>
                         <p class="comment-content"><%= comment.content %></p>
@@ -47,9 +49,10 @@
                 <p id="invalid"></p>
                 <textarea class="input" id="content" placeholder="submit a comment"></textarea>
                 <br>
-                <input class="submit" type="submit" value="submit">
+                <input class="submit" type="submit" value="comment">
             </form>
         </div>
+        <%- include("common/theme_toggle") %>
     </div>
 </body>
 </html>

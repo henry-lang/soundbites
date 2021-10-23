@@ -10,7 +10,6 @@
 </head>
 <body>
     <%- include("common/navbar") %>
-    <%- include("common/theme_toggle") %>
 
     <div class="main-content">
         <div class="container fadein-left">
@@ -24,18 +23,9 @@
         <hr class="wave-divider">
         <div class="container fadein-left">
             <h2 class="title" style="text-align: center; padding-bottom: 20px">our latest headlines</h2>
-            <div id="container">
-                <% posts.map(post => { %>
-                    <a class="block-link" href="posts/<%= post.slug %>">
-                        <div class="latest-headline">
-                            <p><%= post.title %></p>
-                            <p id="authorInfo">By <strong><%= post.displayName %></strong> on <%= post.date %></p>
-                            <p id="desc"><%= post.description %></p>
-                        </div>
-                    </a>
-                <% }) %>
-            </div>
+            <%- include('common/latest-headlines', {posts: posts}) %>
         </div>
+        <%- include("common/theme_toggle") %>
     </div>
 </body>
 </html>

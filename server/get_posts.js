@@ -7,9 +7,12 @@ const getPosts = async () => {
         .sort({epochTime: -1})
         .limit(5)
 
-    posts.map(async (post) => {
+    let cloned = JSON.parse(JSON.stringify(posts))
+
+    await Promise.all(await posts.map(async (post) => {
         post.author = await UserModel.findById(post.author)
-    })
+    }))
+
 
     return posts
 }

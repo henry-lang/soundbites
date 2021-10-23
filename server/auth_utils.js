@@ -4,13 +4,14 @@ import UserModel from './models/user_model.js'
 const SECRET = process.env.JWT_SECRET
 
 const decodeToken = (token) => {
-    return JSON.parse(Buffer.from(token.split('.')[1], 'base64'))
+    if (token == undefined) return undefined
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64')).id
 }
 
 const isLoggedIn = async (token, res) => {
     if (!token) return false
     if (jwt.verify(token, SECRET) == false) return false
-    if (!(await UserModel.exists({_id: decodeToken(token).id}))) {
+    if (!(await UserModel.exists({_id: decodeToken(token)}))) {
         if (res != null) {
             res.clearCookie('access_token')
         }
@@ -20,7 +21,7 @@ const isLoggedIn = async (token, res) => {
 }
 
 const isAuthor = async (token) => {
-    let id = decodeToken(token).id
+    let id = decodeToken(token)
     let user = await UserModel.findById(id).lean()
     return user.author
 }

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import fs from "fs"
+import fs from 'fs'
 
-const data = fs.readFileSync("assets/default-photo.png")
+const data = fs.readFileSync('assets/default-photo.png')
 
 const userSchema = new mongoose.Schema({
     //for now only username and pwd will be required, but eventually everything here will be needed.
@@ -19,8 +19,7 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     avatar: {
-        imgData: Buffer,
-        imgType: String,
+        type: String,
         required: false,
     },
     author: {
@@ -38,8 +37,8 @@ const userSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',
-        }
-    ]
+        },
+    ],
 })
 
 userSchema.pre('validate', function (next) {

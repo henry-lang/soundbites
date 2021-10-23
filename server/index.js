@@ -39,6 +39,7 @@ mongoose.connect(
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
+        useFindAndModify: false,
     },
     async (err) => {
         if (err) throw err
@@ -88,7 +89,7 @@ server.get('/', (req, res) => {
 })
 
 server.get('/featured', (req, res) => {
-    res.render('featured')
+    res.render('featured', {data: cachedPosts})
 })
 
 server.get('/about', (req, res) => {

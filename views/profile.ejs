@@ -10,22 +10,21 @@
 </head>
 <body>
     <%- include("common/navbar") %>
-    <%- include("common/theme_toggle") %>
 
     <div class="main-content">
         <div class="container fadein-left">
             <h1 id="title">profile</h1>
             <div id="avatar-title-container">
-                <% if(data.avatar?.imgData == null) { %>
+                <% if(data.avatar == null) { %>
                     <img id="avatar" src="../assets/default-photo.png">
                 <% } else { %>
-                    <img id="avatar" src="data:<%=data.avatar.imgType%>;base64,<%=data.avatar.imgData.toString('base64')%>">
-                    <div id="user-details"></div>
+                    <img id="avatar" src="<%=data.avatar%>">
                 <% } %>
+                <div id="user-details"><%- include("common/user_details", {data}) %></div>
             </div>
-            <%- include("common/user_details", {data}) %>
             <a id="change-settings" class="navbar-link" href="/account/settings">change settings</a><a id="logout" class="navbar-link" href="../account/logout">log out</a>
         </div>
+        <%- include("common/theme_toggle") %>
     </div>
 </body>
 </html>

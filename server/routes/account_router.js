@@ -9,10 +9,18 @@ import {verify, requireLogin, requireLoginPost, decodeToken} from '../auth_utils
 import UserModel from '../models/user_model.js'
 
 const accountRouter = new express.Router()
-const upload = multer({ dest: 'uploads/' })
+const diskStorage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, 'assets/avatars/')
+    }, 
+    filename: function (req, res, cb) {
+        cb(null, decodeToken(req.cookies.access_token))
+    }})
+
+const avatarUpload = multer({storage: diskStorage})
 
 accountRouter.get('/', requireLogin, async (req, res) => {
-    let id = decodeToken(req.cookies.access_token).id
+    let id = decodeToken(req.cookies.access_token)
     let userDetails = await UserModel.findById(id).lean()
 
     res.render('profile', {data: userDetails})
@@ -31,7 +39,7 @@ accountRouter.get('/logout', async (req, res) => {
 })
 
 accountRouter.get('/settings', requireLogin, async (req, res) => {
-    let id = decodeToken(req.cookies.access_token).id
+    let id = decodeToken(req.cookies.access_token)
     let user = await UserModel.findById(id)
     res.render('settings', {
         data: {username: user.username, displayName: user.displayName, bio: user.bio},
@@ -52,7 +60,7 @@ accountRouter.post('/register', async (req, res) => {
     ) {
         return res.json({
             status: 'error',
-            error: 'username cannot contain spaces. password must be at least 8 characters and contain a number. display name is required.',
+            error: 'username cannot contain special characters. password must be at least 8 characters and contain a number. display name is required.',
         })
     }
 
@@ -61,10 +69,7 @@ accountRouter.post('/register', async (req, res) => {
             username: req.body.username,
             password: pwd,
             displayName: displayName,
-            avatar: {
-                imgData: fs.readFileSync("assets/default-photo.png"),
-                imgType: "image/png"
-            },
+            avatar: 'assets/default-photo.png',
             author: false,
         })
         await newUser.save()
@@ -101,36 +106,38 @@ accountRouter.post('/login', async (req, res) => {
     } else res.json({status: 'error', error: 'invalid login details'})
 })
 
-accountRouter.post('/settings', requireLoginPost, upload.single('avatar'), async (req, res) => {
+accountRouter.post('/settings', requireLoginPost, avatarUpload.single('avatar'), async (req, res) => {
     try {
-        let id = decodeToken(req.cookies.access_token).id
+        let id = decodeToken(req.cookies.access_token)
         let user = await UserModel.findById(id)
         let file = req.file
         var strData = JSON.parse(req.body.strData)
-        console.log(strData)
+        let oldUsername = user.username
 
         if (strData.checkbox) {
             for (let i in strData) {
                 if (strData[i] != '') {
                     //if any settings were not changed (they did not fill in the input), then they are ignored.
                     user[i] = strData[i]
-                    console.log(strData[i])
-                    console.log(user[i])
                 }
             }
 
-            if (file != undefined) {
-                if (file.mimetype.split("/")[0] == "image") {
-                    user.avatar = {
-                        imgData: fs.readFileSync(`uploads/${file.filename}`),
-                        imgType: file.mimetype                    
-                    }
-                } else return res.json({status: "error", error: "filetype must be an image (jpg, png, gif)"})
+            if (!verify(user)) {
+                return res.json({status: "error", error: "username cannot contain special characters. password must be at least 8 characters. display name is required."})
+            }
+
+            if (file) {
+                if (file.mimetype.split('/')[0] == 'image') {
+                    user.avatar = `assets/avatars/${id}`
+                } else
+                    return res.json({
+                        status: 'error',
+                        error: 'filetype must be an image (jpg, png, gif)',
+                    })
             }
 
             await user.save()
             return res.json({status: 'ok', modified: true})
-
         } else return res.json({status: 'ok', modified: false})
     } catch (err) {
         if (err.code == '11000') {

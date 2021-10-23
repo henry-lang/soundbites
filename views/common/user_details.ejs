@@ -2,7 +2,7 @@
 <p>Display Name: <%= data.displayName %></p>
 <p id="author-perms-text">Author Permissions: (ability to write articles): <%= data.author %></p> 
 
-<% if(/\S/.test(data.bio)) { %>
+<% if(data.bio) { %>
     <p id="bio"><i>"<%= data.bio %>"</i></p>
 <% } else { %>
     <p>This user has no bio.</p>

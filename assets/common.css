@@ -234,6 +234,7 @@ textarea {
 
 .latest-headline > p {
     text-decoration: none;
+    word-wrap: break-word;
     color: var(--dark-color);
 }
 

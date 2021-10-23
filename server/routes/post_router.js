@@ -21,6 +21,7 @@ postRouter.get('/create', requireLogin, (req, res) => {
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
     let {title, description, markdown} = req.body
+    console.log(description.length)
     let id = decodeToken(req.cookies.access_token)
 
     let userDetails = await UserModel.findById(id)

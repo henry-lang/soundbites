@@ -67,7 +67,7 @@ const verify = (accountDetails) => {
     //this is so scuffed lmao0
     if (
         Buffer.from(username).includes(' ') ||
-        /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\':<>\?]/g.test(username) ||
+        /[~`!#$%\^&*+=\\[\]\\';,/{}|\\':<>\?]/g.test(username) ||
         pwd.length < 8 ||
         !/\d/.test(pwd)
     ) {

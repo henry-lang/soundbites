@@ -28,11 +28,15 @@ const userSchema = new mongoose.Schema({
         required: false,
         default: false,
     },
+    admin: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     bio: {
         type: String,
         required: false,
     },
-
     posts: [
         {
             type: mongoose.Schema.Types.ObjectId,

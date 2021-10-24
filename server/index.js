@@ -21,7 +21,6 @@ import getPosts from './get_posts.js'
 import {fileURLToPath} from 'url'
 import {dirname} from 'path'
 import UserModel from './models/user_model.js'
-import {cache} from 'ejs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)

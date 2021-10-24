@@ -71,6 +71,7 @@ accountRouter.post('/register', async (req, res) => {
             displayName: displayName,
             avatar: 'assets/default-photo.png',
             author: false,
+            admin: false,
         })
         await newUser.save()
 

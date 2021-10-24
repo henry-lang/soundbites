@@ -9,7 +9,7 @@ const toggleTheme = (theme) => {
 
     document.documentElement.setAttribute('theme', state)
     localStorage.setItem('theme', state)
-    themeSwitch.innerHTML = `switch to ${state}`
+    themeSwitch.innerHTML = `switch to ${state == 'light' ? 'dark' : 'light'}`
 }
 
 let state = localStorage.getItem('theme') || 'light'

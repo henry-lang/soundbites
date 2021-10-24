@@ -41,7 +41,6 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
             })
             await post.save()
             userDetails.posts.push(post)
-            await userDetails.populate()
             await userDetails.save()
             postEmitter.emit('post', {
                 title: title,
@@ -73,16 +72,20 @@ postRouter.get('/:slug', async (req, res) => {
         return
     }
     
-    let canDelete = false
+    let canDeleteComment = false
     let author = await UserModel.findById(data.author)
-    if (myData && myData.username == author.username) {canDelete = true}
+    if (myData && myData.username == author.username) {canDeleteComment = true}
     let commentList = []
     await Promise.all(
         data.comments.map(async (commentRef) => {
             let comment = await CommentModel.findById(commentRef)
             let author = await UserModel.findById(comment.author)
-            let canDeleteComment = false
-            if (myData && myData.username == author.username) {canDeleteComment = true}
+            let canDelete = false
+            if (myData) {
+                if (myData.username == author.username || myData.admin == true) {
+                    canDelete = true
+                }
+            }
             commentList.push({
                 content: comment.content,
                 date: comment.date,
@@ -95,7 +98,7 @@ postRouter.get('/:slug', async (req, res) => {
             })
         })
     )
-    res.render('post', {data: data, comments: commentList, author: author, canDelete: canDelete})
+    res.render('post', {data: data, comments: commentList, author: author, canDeleteComment: canDeleteComment})
 })
 
 postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
@@ -135,7 +138,7 @@ postRouter.post('/:slug/comment/delete', requireLoginPost, async (req, res) => {
         }
 
         let post = await PostModel.findOne({slug: postID})
-        post.comments.splice(post.comments.indexOf(commentID))
+        post.comments.splice(post.comments.indexOf(commentID), 1)
         await post.save()
 
         await CommentModel.findOneAndRemove(commentID)

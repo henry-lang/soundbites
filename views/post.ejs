@@ -33,7 +33,7 @@
                                     <img class="avatar-small" src="../<%=comment.avatar%>">
                                     <%= comment.authorDisplay %></a>
                                 <p class="comment-date"><%= comment.date %></p>
-                                <% if (canDelete || comment.canDelete) { %>
+                                <% if (canDeleteComment || comment.canDelete) { %>
                                 <a class="delete-button" id="<%= comment._id %>" href="" onclick="deleteComment(this)">delete</a>
                                 <% } %>
                             </p>

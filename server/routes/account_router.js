@@ -123,7 +123,8 @@ accountRouter.post('/settings', requireLoginPost, avatarUpload.single('avatar'),
                 }
             }
 
-            if (!verify(user)) {
+            console.log(user)
+            if (!verify({username: user.username, pwd: user.password, displayName: user.displayName})) {
                 return res.json({status: "error", error: "username cannot contain special characters. password must be at least 8 characters. display name is required."})
             }
 

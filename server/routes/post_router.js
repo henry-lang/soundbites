@@ -66,26 +66,18 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
 postRouter.get('/:slug', async (req, res) => {
     let slug = req.params.slug
     let data = await PostModel.findOne({slug: slug})
-    let myData = await UserModel.findById(decodeToken(req.cookies.access_token))
+    // let myData = await UserModel.findById(decodeToken(req.cookies.access_token))
     if (!data) {
         res.render('404')
         return
     }
     
-    let canDeleteComment = false
     let author = await UserModel.findById(data.author)
-    if (myData && myData.username == author.username) {canDeleteComment = true}
     let commentList = []
     await Promise.all(
         data.comments.map(async (commentRef) => {
             let comment = await CommentModel.findById(commentRef)
             let author = await UserModel.findById(comment.author)
-            let canDelete = false
-            if (myData) {
-                if (myData.username == author.username || myData.admin == true) {
-                    canDelete = true
-                }
-            }
             commentList.push({
                 content: comment.content,
                 date: comment.date,
@@ -94,11 +86,10 @@ postRouter.get('/:slug', async (req, res) => {
                 author: author.username,
                 avatar: author.avatar,
                 _id: comment._id,
-                canDelete: canDeleteComment,
             })
         })
     )
-    res.render('post', {data: data, comments: commentList, author: author, canDeleteComment: canDeleteComment})
+    res.render('post', {data: data, comments: commentList, author: author})
 })
 
 postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
@@ -127,25 +118,25 @@ postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
     }
 })
 
-postRouter.post('/:slug/comment/delete', requireLoginPost, async (req, res) => {
-    try {
-        let commentID = req.body.commentID
-        let postID = req.body.postID
-        let comment = CommentModel.findById(commentID)
+// postRouter.post('/:slug/comment/delete', requireLoginPost, async (req, res) => {
+//     try {
+//         let commentID = req.body.commentID
+//         let postID = req.body.postID
+//         let comment = CommentModel.findById(commentID)
         
-        if (!comment) {
-            return res.json({status: 'error', error: 'this comment does not exist or has been deleted.'})
-        }
+//         if (!comment) {
+//             return res.json({status: 'error', error: 'this comment does not exist or has been deleted.'})
+//         }
 
-        let post = await PostModel.findOne({slug: postID})
-        post.comments.splice(post.comments.indexOf(commentID), 1)
-        await post.save()
+//         let post = await PostModel.findOne({slug: postID})
+//         post.comments.splice(post.comments.indexOf(commentID), 1)
+//         await post.save()
 
-        await CommentModel.findOneAndRemove(commentID)
-        return res.json({status: "ok"})
-    } catch (err) {
-        throw err   
-    }
-})
+//         await CommentModel.findOneAndRemove(commentID)
+//         return res.json({status: "ok"})
+//     } catch (err) {
+//         throw err   
+//     }
+// })
 
 export {postRouter, postEmitter}

@@ -1,18 +1,18 @@
 ---
 import "../styles/global.scss"
 
-import BaseHead from "../components/BaseHead.astro";
-import Navbar from "../components/Navbar.astro";
+import BaseHead from "../components/BaseHead.astro"
+import Navbar from "../components/Navbar.astro"
 
 export interface Props {
     content: {
         title: string,
         description: string
+        tags: string[]
     }
 }
 
-const { content: { title, description } } = Astro.props as Props
-
+const { content: { title, description, tags } } = Astro.props as Props
 ---
 
 <html lang="en">

@@ -31,6 +31,8 @@ if (path.endsWith('/') && path.length > 1) {
     }
 
     .logo {
+        display: block;
+        width: auto;
         height: 4rem;
     }
 
@@ -53,7 +55,7 @@ if (path.endsWith('/') && path.length > 1) {
 </style>
 
 <nav class="nav">
-    <img class="logo" src={logo}>
+    <img alt="Soundbites waveform logo" class="logo" src={logo}>
     {links.map(link => <a class:list={['link', {selected: path==link.href}]} href={link.href}>{link.text}</a>
     )}
 </nav>

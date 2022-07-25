@@ -1,0 +1,40 @@
+---
+export interface Props {
+    title: string,
+    description: string
+}
+
+const { title, description } = Astro.props
+const TITLE_DIVIDER = ' | '
+---
+
+<!-- Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+<!-- Primary Meta Tags -->
+<title>{title + TITLE_DIVIDER + 'Soundbites'}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description}>
+
+<!-- Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<!-- Temporary -->
+<meta property="og:image" content="https://astro.build/social.png" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.canonicalURL} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<!-- Temporary -->
+<meta property="twitter:image" content="https://astro.build/social.png" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet" />

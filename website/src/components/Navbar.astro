@@ -1,0 +1,59 @@
+---
+import logo from '/logo.svg'
+
+const links: { text: string, href: string }[] = [
+    { text: 'home', href: '/' },
+    { text: 'featured', href: '/featured' },
+    { text: 'about', href: '/about' },
+]
+
+let path = Astro.canonicalURL.pathname
+
+if (path.endsWith('/') && path.length > 1) {
+    path = path.substring(0, path.length - 1)
+}
+---
+
+<style lang="scss">
+    @import "../styles/variables.scss";
+
+    .nav {
+        background-color: $mg;
+        display: flex;
+        align-items: center;
+
+        padding: {
+            top: 1rem;
+            bottom: 1rem;
+            left: 2rem;
+            right: 2rem;
+        }
+    }
+
+    .logo {
+        height: 4rem;
+    }
+
+    .link {
+        font-size: 15pt;
+        color: $fg;
+        display: block;
+        text-decoration: none;
+        margin-left: 1rem;
+
+        &:focus,
+        &:hover {
+            color: $accent;
+        }
+    }
+
+    .selected {
+        font-weight: bold;
+    }
+</style>
+
+<nav class="nav">
+    <img class="logo" src={logo}>
+    {links.map(link => <a class:list={['link', {selected: path==link.href}]} href={link.href}>{link.text}</a>
+    )}
+</nav>

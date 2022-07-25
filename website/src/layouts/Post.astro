@@ -1,5 +1,8 @@
 ---
+import "../styles/global.scss"
+
 import BaseHead from "../components/BaseHead.astro";
+import Navbar from "../components/Navbar.astro";
 
 export interface Props {
     content: {
@@ -15,10 +18,11 @@ const { content: { title, description } } = Astro.props as Props
 <html lang="en">
 
 <head>
-    <BaseHead title={title} description={description}></BaseHead>
+    <BaseHead title={title} description={description} />
 </head>
 
 <body>
+    <Navbar />
     <slot />
 </body>
 

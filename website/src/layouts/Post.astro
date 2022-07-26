@@ -4,13 +4,10 @@ import "../styles/global.scss"
 import BaseHead from "../components/BaseHead.astro"
 import Navbar from "../components/Navbar.astro"
 import Tag from "../components/Tag.astro"
+import PostFrontmatter from "../util/PostFrontmatter"
 
 export interface Props {
-    content: {
-        title: string,
-        description: string
-        tags: string[]
-    }
+    content: PostFrontmatter
 }
 
 const { content: { title, description, tags } } = Astro.props as Props
@@ -28,7 +25,7 @@ const { content: { title, description, tags } } = Astro.props as Props
         {tags.map(name =>
         <Tag name={name} />)}
 
-        <article>
+        <article class="article">
             <slot />
         </article>
     </main>

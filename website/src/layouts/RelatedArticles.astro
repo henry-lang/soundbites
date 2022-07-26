@@ -1,19 +1,19 @@
 ---
+import '../styles/global.scss'
+
 import BaseHead from '../components/BaseHead.astro'
 import Navbar from '../components/Navbar.astro'
-import { Props as PostProps } from './Post.astro'
-
-export type Frontmatter = PostProps['content']
+import PostFrontmatter from '../util/PostFrontmatter'
 
 export interface Props {
     relatedTo: string,
-    predicate: (post: Frontmatter) => boolean
+    predicate: (post: PostFrontmatter) => boolean
 }
 
 const { relatedTo, predicate } = Astro.props as Props
 
 const title = `Related articles to ${relatedTo}`
-const articles = (await Astro.glob<Frontmatter>('../pages/posts/*.md'))
+const articles = (await Astro.glob<PostFrontmatter>('../pages/posts/*.md'))
     .map(post => post.frontmatter)
     .filter(predicate)
 console.log(articles)

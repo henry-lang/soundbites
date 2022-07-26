@@ -1,0 +1,13 @@
+---
+import RelatedArticles from '../../layouts/RelatedArticles.astro';
+
+export const getStaticPaths = (): { params: { name: string } }[] => {
+    return [{ params: { name: 'cool' } }, { params: { name: 'epic' } }]
+}
+
+
+let { name } = Astro.params // Manually check getStaticPaths ONLY returns valid params (name)
+if (typeof name != 'string') { name = '' } // Astro has crappy typedefs :(
+---
+
+<RelatedArticles relatedTo={name} predicate={(post)=> post.tags.includes(name)} />

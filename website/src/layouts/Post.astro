@@ -21,17 +21,28 @@ const { content: { title, description, tags } } = Astro.props as Props
 <head>
     <BaseHead title={title} description={description} />
 </head>
-
 <body>
     <Navbar />
     <main>
-        {tags.map(name =>
-        <Tag name={name} />)}
-
+        <div class="tag-container">
+            {tags.map(name =>
+            <Tag name={name} />)}
+        </div>
         <article>
             <slot />
         </article>
     </main>
 </body>
-
+<style lang="scss" is:global>
+    main {
+        margin-left: 10rem;
+        margin-top: 1.75rem
+    }
+    .tag-container {
+        margin-bottom: -1.75rem;
+    }
+    h1 {
+        font-size: 2.5rem;
+    }
+</style>
 </html>

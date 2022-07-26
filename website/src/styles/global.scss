@@ -9,4 +9,9 @@ body {
 
 * {
     font-family: $font;
+    color: $fg;
+}
+
+a {
+    color: $accent;
 }

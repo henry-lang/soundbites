@@ -23,7 +23,11 @@ const { content: { title, description, tags } } = Astro.props as Props
 
 <body>
     <Navbar />
-    <slot />
+    <main>
+        <article>
+            <slot />
+        </article>
+    </main>
 </body>
 
 </html>

@@ -9,12 +9,6 @@ const links: { text: string, href: string }[] = [
 ]
 
 const githubRepo = "https://github.com/henry-lang/soundbites"
-
-let path = Astro.canonicalURL.pathname
-
-if (path.endsWith('/') && path.length > 1) {
-    path = path.substring(0, path.length - 1)
-}
 ---
 
 <style lang="scss">
@@ -25,6 +19,7 @@ if (path.endsWith('/') && path.length > 1) {
         background-color: $mg;
         display: flex;
         justify-content: space-between;
+        user-select: none;
 
         padding: {
             top: 1rem;

@@ -1,0 +1,18 @@
+@use "./variables.scss" as *;
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $bg;
+    overflow: hidden;
+    width: 100%
+}
+
+* {
+    font-family: $font;
+    color: $fg;
+}
+
+a {
+    color: $accent;
+}

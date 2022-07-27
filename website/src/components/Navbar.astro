@@ -1,0 +1,75 @@
+---
+import logo from '/logo.svg'
+import github from '/github.svg'
+
+const links: { text: string, href: string }[] = [
+    { text: 'home', href: '/' },
+    { text: 'featured', href: '/featured' },
+    { text: 'about', href: '/about' },
+]
+
+const githubRepo = "https://github.com/henry-lang/soundbites"
+---
+
+<style lang="scss">
+    @use "../styles/variables.scss" as *;
+    @use "../styles/mixins.scss";
+
+    .nav {
+        background-color: $mg;
+        display: flex;
+        justify-content: space-between;
+        user-select: none;
+
+        padding: {
+            top: 1rem;
+            bottom: 1rem;
+            left: 1.5rem;
+            right: 1.5rem;
+        }
+
+        * {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .logo {
+        display: block;
+        height: 2.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .link {
+        @include mixins.accent_on_hover;
+
+        font-size: 15pt;
+        color: $fg;
+        display: block;
+        text-decoration: none;
+        margin-left: 1rem;
+    }
+
+    .github {
+        @include mixins.color_to_filter($fg);
+
+        display: block;
+        height: 1.5rem;
+        margin-left: 0.5rem;
+
+        &:hover,
+        &:focus {
+            @include mixins.color_to_filter($accent);
+        }
+    }
+</style>
+
+<nav class="nav">
+    <div>
+        <!-- Left side div -->
+        <img alt="Soundbites waveform logo" class="logo" src={logo}>
+        {links.map(link => <a class="link" href={link.href}>{link.text}</a>)}
+    </div>
+
+    <a href={githubRepo}><img alt="Github link logo" class="github" src={github}></a>
+</nav>

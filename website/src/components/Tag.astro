@@ -1,0 +1,22 @@
+---
+export interface Props {
+    tag: string
+}
+
+const { tag } = Astro.props as Props;
+
+---
+
+<style lang="scss">
+    @use "../styles/variables.scss" as *;
+
+    .tag {
+        background-color: $accent;
+        color: $mg;
+        padding: 0.1rem;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+</style>
+
+<a class="tag" href={`/tags/${tag}`}>{tag}</a>

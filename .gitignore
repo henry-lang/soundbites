@@ -1,5 +1,2 @@
-node_modules/
-.env
-/**/.DS_Store
-uploads/
-assets/avatars/
+.vscode
+.DS_Store

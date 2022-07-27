@@ -15,6 +15,7 @@ const { relatedTo, predicate } = Astro.props as Props
 const title = `Related articles to ${relatedTo}`
 const posts = (await Astro.glob<PostFrontmatter>('../pages/posts/*.md'))
     .filter((post) => predicate(post.frontmatter))
+    .sort(({ frontmatter: { date: a } }, { frontmatter: { date: b } }) => new Date(b).getTime() - new Date(a).getTime())
 ---
 
 <html lang="en">

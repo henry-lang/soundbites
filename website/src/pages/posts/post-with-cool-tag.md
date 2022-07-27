@@ -3,6 +3,7 @@ layout: ../../layouts/Post.astro
 title: Secret Post
 description: This is the first post on soundbites.
 tags: [cool]
+date: 2022-07-27
 ---
 
 # Ooh... a secret

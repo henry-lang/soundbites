@@ -1,9 +1,10 @@
 ---
 export interface Props {
-    name: string
+    tag: string
 }
 
-const { name } = Astro.props as Props;
+const { tag } = Astro.props as Props;
+
 ---
 
 <style lang="scss">
@@ -18,4 +19,4 @@ const { name } = Astro.props as Props;
     }
 </style>
 
-<a class="tag" href="/">{name}</a>
+<a class="tag" href={`/tags/${tag}`}>{tag}</a>

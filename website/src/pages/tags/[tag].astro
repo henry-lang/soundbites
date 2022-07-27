@@ -1,0 +1,17 @@
+---
+import RelatedArticles from '../../layouts/RelatedArticles.astro'
+import PostFrontmatter from '../../util/PostFrontmatter'
+
+export async function getStaticPaths(): Promise<{ params: { tag: string } }[]> {
+    let result = [...new Set((await Astro.glob<PostFrontmatter>('../posts/*.md'))
+        .flatMap(({ frontmatter: { tags } }) => tags))]
+        .map(tag => { return { params: { tag } } })
+
+    return result
+}
+
+let { tag } = Astro.params // Manually check getStaticPaths ONLY returns valid params (name)
+if (typeof tag != 'string') { tag = '' } // Astro has crappy typedefs :(
+---
+
+<RelatedArticles relatedTo={tag} predicate={(post)=> post.tags.includes(tag)} />

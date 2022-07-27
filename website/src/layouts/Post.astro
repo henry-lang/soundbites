@@ -41,11 +41,13 @@ const { content: { title, description, tags } } = Astro.props as Props
     <Navbar />
     <main>
         <div class="tag-container">
-            {tags.map(name =>
-            <Tag name={name} />)}
+            {tags.map(tag =>
+            <Tag tag={tag} />)}
         </div>
         <article>
             <slot />
         </article>
     </main>
-</body></html>
+</body>
+
+</html>

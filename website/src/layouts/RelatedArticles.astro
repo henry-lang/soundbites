@@ -13,10 +13,8 @@ export interface Props {
 const { relatedTo, predicate } = Astro.props as Props
 
 const title = `Related articles to ${relatedTo}`
-const articles = (await Astro.glob<PostFrontmatter>('../pages/posts/*.md'))
-    .map(post => post.frontmatter)
-    .filter(predicate)
-console.log(articles)
+const posts = (await Astro.glob<PostFrontmatter>('../pages/posts/*.md'))
+    .filter((post) => predicate(post.frontmatter))
 ---
 
 <html lang="en">
@@ -28,6 +26,7 @@ console.log(articles)
 <body>
     <Navbar />
     <main>
+        {posts.map(post => <a href={post.url}>{post.frontmatter.title}</a>)}
     </main>
 </body>
 

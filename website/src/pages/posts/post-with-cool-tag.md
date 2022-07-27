@@ -6,6 +6,4 @@ tags: [cool]
 date: 2022-07-27
 ---
 
-# Ooh... a secret
-
 Here is a SECRET post that can only be accessed by going to the tags of "cool"

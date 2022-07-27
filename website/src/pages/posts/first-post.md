@@ -6,8 +6,4 @@ tags: [featured, cool]
 date: 2022-07-26
 ---
 
-# Hello
-
-[Google](https://google.com)
-
-Here is the first post on soundbites!
+Hello

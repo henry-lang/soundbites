@@ -18,17 +18,4 @@ const posts = (await Astro.glob<PostFrontmatter>('../pages/posts/*.md'))
     .sort(({ frontmatter: { date: a } }, { frontmatter: { date: b } }) => new Date(b).getTime() - new Date(a).getTime())
 ---
 
-<html lang="en">
-
-<head>
-    <BaseHead title={title} description={title} />
-</head>
-
-<body>
-    <Navbar />
-    <main>
-        {posts.map(post => <a href={post.url}>{post.frontmatter.title}</a>)}
-    </main>
-</body>
-
-</html>
+{posts.map(post => <a href={post.url}>{post.frontmatter.title}</a>)}

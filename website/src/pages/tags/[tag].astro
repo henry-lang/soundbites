@@ -1,5 +1,6 @@
 ---
-import RelatedArticles from '../../layouts/RelatedArticles.astro'
+import Default from '../../layouts/Default.astro'
+import RelatedArticles from '../../components/RelatedArticles.astro'
 import PostFrontmatter from '../../util/PostFrontmatter'
 
 export async function getStaticPaths(): Promise<{ params: { tag: string } }[]> {
@@ -10,8 +11,9 @@ export async function getStaticPaths(): Promise<{ params: { tag: string } }[]> {
     return result
 }
 
-let { tag } = Astro.params // Manually check getStaticPaths ONLY returns valid params (name)
-if (typeof tag != 'string') { tag = '' } // Astro has crappy typedefs :(
+let { tag } = Astro.params // Manually check getStaticPaths returns valid params (tag, etc)
 ---
 
-<RelatedArticles relatedTo={tag} predicate={(post)=> post.tags.includes(tag)} />
+<Default title={`Related articles to ${tag}`}>
+    <RelatedArticles relatedTo={tag} predicate={(post: PostFrontmatter)=> post.tags.includes(tag!.toString())} />
+</Default>

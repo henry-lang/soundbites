@@ -6,6 +6,7 @@ export interface Props {
 
 const { title, description } = Astro.props
 const TITLE_DIVIDER = ' | '
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 ---
 
 <!-- Metadata -->
@@ -20,20 +21,20 @@ const TITLE_DIVIDER = ' | '
 
 <!-- Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.canonicalURL} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:site_name" content="Soundbites" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <!-- Temporary -->
-<meta property="og:image" content="https://astro.build/social.png" />
+<meta property="og:image" content="/logo.webp" />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.canonicalURL} />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <!-- Temporary -->
-<meta property="twitter:image" content="https://astro.build/social.png" />
+<meta property="twitter:image" content="/logo.webp" />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">

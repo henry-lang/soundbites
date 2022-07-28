@@ -5,12 +5,15 @@ body {
     padding: 0;
     background-color: $bg;
     overflow-x: hidden;
-    width: 100%
 }
 
 * {
     font-family: $font;
     color: $fg;
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+    color: $bright;
 }
 
 a {

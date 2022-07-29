@@ -1,11 +1,11 @@
 ---
-import "../styles/global.scss"
+import '../styles/global.scss'
 
-import BaseHead from "../components/BaseHead.astro"
-import Navbar from "../components/Navbar.astro"
-import Tag from "../components/Tag.astro"
-import PostFrontmatter from "../util/PostFrontmatter"
-import WaveDivider from "../components/WaveDivider.astro"
+import BaseHead from '../components/BaseHead.astro'
+import Navbar from '../components/Navbar.astro'
+import Tag from '../components/Tag.astro'
+import PostFrontmatter from '../util/PostFrontmatter'
+import WaveDivider from '../components/WaveDivider.astro'
 
 export interface Props {
     content: PostFrontmatter
@@ -27,10 +27,6 @@ const { content: { title, description, tags } } = Astro.props as Props
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
-
-    .tag-container {
-        margin-bottom: -1.75rem;
     }
 
     .description {

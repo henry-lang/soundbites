@@ -1,9 +1,48 @@
 ---
+import "../styles/sound-wave.scss"
 import WaveDivider from "../components/WaveDivider.astro";
 import Default from "../layouts/Default.astro"
+import SoundwaveLogo from "../components/SoundwaveLogo.astro";
 ---
 
 <Default title="Home">
-    <p>Home</p>
-    <WaveDivider />
-</Default>
+    <main>
+        <!-- <div class="flex-header"> -->
+        <div class="logo-container">
+            <SoundwaveLogo />
+        </div>
+        <h1 class="header right">bite-sized takes on music.</h1>
+        <p class="desc right">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam magnam voluptatibus provident dicta pariatur. Laudantium, repellendus delectus qui illum excepturi earum modi natus ducimus in fugiat possimus laboriosam eligendi aperiam!</p>    
+        <!-- </div> -->
+        <WaveDivider />
+        <h1 class="header left">recent bites</h1>
+        <p class="desc left">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet quo quos, voluptatem quaerat beatae officia ex omnis excepturi explicabo quis molestiae architecto odit corporis laboriosam necessitatibus commodi maxime aspernatur cupiditate?</p>
+        </main>
+    </Default>
+
+<style lang="scss">
+    .header {
+        font-size: 2.5rem;
+    }
+
+    .right {
+        margin-left: auto;
+        margin-right: 4.5rem;
+        text-align: right;
+        // float: right;
+    }
+
+    .desc {
+        word-wrap: break-word;
+        width: 40rem;
+    }
+
+    .left {
+        margin-left: 4.5rem;
+    }
+
+    .logo-container {
+        margin-bottom: -7rem;
+        margin-top: 3rem;
+    }
+</style>

@@ -2,14 +2,6 @@
 const bars = ['med', 'small', 'large', 'med', 'small', 'large', 'med', 'x-large', 'small', 'large', 'med', 'small']
 ---
 
-<div class="soundwave-container">
-    <div class="portrait-container">
-        {bars.map(bar =>
-        <div class={`soundwave-line soundwave-portrait ${bar}`} />)}
-    </div>
-    <div class="soundwave-line soundwave-landscape"></div>
-</div>
-
 <style lang="scss">
     @keyframes soundwave-open-landscape {
         0% {
@@ -84,3 +76,11 @@ const bars = ['med', 'small', 'large', 'med', 'small', 'large', 'med', 'x-large'
         margin-left: 4.5rem;
     }
 </style>
+
+<div class="soundwave-container">
+    <div class="portrait-container">
+        {bars.map(bar =>
+        <div class={`soundwave-line soundwave-portrait ${bar}`} />)}
+    </div>
+    <div class="soundwave-line soundwave-landscape"></div>
+</div>

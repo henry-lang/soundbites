@@ -2,16 +2,19 @@
 import Default from '../../layouts/Default.astro'
 import RelatedArticles from '../../components/RelatedArticles.astro'
 import PostFrontmatter from '../../util/PostFrontmatter'
-
-export async function getStaticPaths(): Promise<{ params: { tag: string } }[]> {
-    let result = [...new Set((await Astro.glob<PostFrontmatter>('../posts/*.md'))
-        .flatMap(({ frontmatter: { tags } }) => tags))]
-        .map(tag => { return { params: { tag } } })
-
-    return result
+import { GetStaticPathsOptions } from'astro'
+    
+interface Params {
+    tag: string
 }
 
-let { tag } = Astro.params // Manually check getStaticPaths returns valid params (tag, etc)
+export async function getStaticPaths(): Promise<{ params: Params }[]> {
+    return [...new Set((await Astro.glob<PostFrontmatter>('../posts/*.md'))
+        .flatMap(({ frontmatter: { tags } }) => tags))]
+        .map(tag => { return { params: { tag } } })
+}
+
+let { tag } = Astro.params as Params
 ---
 
 <Default title={`Related articles to ${tag}`}>

@@ -1,0 +1,19 @@
+@keyframes soundwave-open-landscape {
+    0% {
+        transform: scale(0, 0.125)
+    }
+
+    50% {
+        transform: scale(1, 0.125)
+    }
+}
+
+@keyframes open-portrait {
+    0% {
+        transform: scale(1, 0)
+    }
+
+    50% {
+        transform: scale(1, 1)
+    }
+}

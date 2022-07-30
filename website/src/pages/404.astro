@@ -1,0 +1,18 @@
+---
+import Default from '../layouts/Default.astro'
+---
+
+<style lang="scss">
+    .message {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
+
+<Default title="404">
+    <div class="message">
+        <h1>404 Not Found</h1>
+        <p>Sorry, we can't find what you're looking for.</p>
+    </div>
+</Default>

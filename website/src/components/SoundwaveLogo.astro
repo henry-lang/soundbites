@@ -15,11 +15,17 @@ const bars = ['med', 'small', 'large', 'med', 'small', 'large', 'med', 'x-large'
 
     @keyframes open-portrait {
         0% {
+            opacity: 1;
             transform: scale(0.125, 0)
         }
 
         50% {
+            opacity: 1;
             transform: scale(1, 1)
+        }
+
+        100% {
+            opacity: 1;
         }
     }
 
@@ -55,11 +61,11 @@ const bars = ['med', 'small', 'large', 'med', 'small', 'large', 'med', 'x-large'
     }
 
     .soundwave-portrait {
-        // animation-delay: 2s;
         width: 0.25rem;
         margin-right: 1.54rem;
-        // bottom: 0;
-        animation: open-portrait 2s 1;
+        will-change: opacity;
+        opacity: 0;
+        animation: open-portrait 2s ease-in-out 1s forwards;
     }
 
     .portrait-container {

@@ -7,11 +7,10 @@ import https from 'https'
 import path from 'path'
 import fs from 'fs'
 import mongoose from 'mongoose'
-import {postEmitter} from './routes/post_router.js'
 
 import cookieParser from 'cookie-parser'
 
-import {postRouter} from './routes/post_router.js'
+import {postRouter, postEmitter} from './routes/post_router.js'
 import userRouter from './routes/user_router.js'
 import accountRouter from './routes/account_router.js'
 
@@ -33,13 +32,13 @@ const limitConfig = rateLimit({
     message: `You've been making too many requests, please try again later.`,
 })
 
+// Idk
+mongoose.set('strictQuery', true);
 mongoose.connect(
     process.env.DB_URL,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
     },
     async (err) => {
         if (err) throw err

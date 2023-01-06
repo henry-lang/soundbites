@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import slugify from 'slugify'
-import marked from 'marked'
+import {marked} from 'marked'
 
 import createDOMPurify from 'dompurify'
 import jsdom from 'jsdom'

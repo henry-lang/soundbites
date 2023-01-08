@@ -2,20 +2,16 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import multer from 'multer'
-import fs from 'fs'
 
 import {verify, requireLogin, requireLoginPost, decodeToken} from '../auth_utils.js'
 
 import UserModel from '../models/user_model.js'
 
-const accountRouter = new express.Router()
+const accountRouter = express.Router()
 const diskStorage = multer.diskStorage({
-    destination: function (req, res, cb) {
-        cb(null, 'assets/avatars/')
-    }, 
-    filename: function (req, res, cb) {
-        cb(null, decodeToken(req.cookies.access_token))
-    }})
+    destination: (req, res, cb) => cb(null, 'assets/avatars/'), 
+    filename: (req, res, cb) => cb(null, decodeToken(req.cookies.access_token))
+})
 
 const avatarUpload = multer({storage: diskStorage})
 
@@ -41,9 +37,13 @@ accountRouter.get('/logout', async (req, res) => {
 accountRouter.get('/settings', requireLogin, async (req, res) => {
     let id = decodeToken(req.cookies.access_token)
     let user = await UserModel.findById(id)
-    res.render('settings', {
-        data: {username: user.username, displayName: user.displayName, bio: user.bio},
-    })
+    if(user == null) {
+        res.render('404')
+    } else {
+        res.render('settings', {
+            data: {username: user.username, displayName: user.displayName, bio: user.bio},
+        })
+    }
 })
 
 accountRouter.post('/register', async (req, res) => {

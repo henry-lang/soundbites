@@ -1,9 +1,17 @@
-import mongoose from 'mongoose'
-import fs from 'fs'
+import {Schema, model, Types} from 'mongoose'
 
-const data = fs.readFileSync('assets/default-photo.png')
+interface User {
+    username: string,
+    displayName: string,
+    password: string,
+    avatar: string,
+    author: boolean,
+    admin: boolean,
+    bio?: string,
+    posts: Types.ObjectId[]
+}
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema<User>({
     //for now only username and pwd will be required, but eventually everything here will be needed.
     username: {
         type: String,
@@ -39,7 +47,7 @@ const userSchema = new mongoose.Schema({
     },
     posts: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Post',
         },
     ],
@@ -49,6 +57,6 @@ userSchema.pre('validate', function (next) {
     next()
 })
 
-const UserModel = mongoose.model('User', userSchema)
+const UserModel = model<User>('User', userSchema)
 
 export default UserModel

@@ -1,13 +1,21 @@
-import mongoose from 'mongoose'
+import {Schema, model, Types} from 'mongoose'
 import assemble from '../date_assembly.js'
 
-const commentSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
-    },
+interface Comment {
+    author: Types.ObjectId,
+    content: string,
+    date: string,
+    epochTime: string
+}
+
+const commentSchema = new Schema<Comment>({
+    // _id: {
+    //     type: Schema.Types.ObjectId,
+    // },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
     },
     content: {
         type: String,
@@ -26,10 +34,10 @@ const commentSchema = new mongoose.Schema({
 
 commentSchema.pre('validate', function (next) {
     this.date = assemble()
-    this.epochTime = Date.now()
+    this.epochTime = Date.now().toString()
     next()
 })
 
-const CommentModel = mongoose.model('Comment', commentSchema)
+const CommentModel = model<Comment>('Comment', commentSchema)
 
 export default CommentModel

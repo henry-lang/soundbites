@@ -1,4 +1,4 @@
-const assemble = () => {
+export default function(): string {
     let d = new Date()
     let day = d.getDate()
     let month = d.getMonth() + 1
@@ -7,5 +7,3 @@ const assemble = () => {
     let full = `${month}/${day}/${year}`
     return full
 }
-
-export default assemble

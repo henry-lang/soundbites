@@ -7,7 +7,7 @@ import jsdom from 'jsdom'
 
 const dompurify = createDOMPurify(new jsdom.JSDOM('').window as any) // Evil but I can't figure it out
 
-interface Post {
+export interface Post {
     author: Types.ObjectId
     slug: string,
     title: string,

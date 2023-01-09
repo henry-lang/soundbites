@@ -1,30 +1,41 @@
 import express from 'express'
 import events from 'events'
-import mongoose from 'mongoose'
+import mongoose, { MongooseError } from 'mongoose'
 import dateAssembly from '../date_assembly.js'
 import PostModel from '../models/post_model.js'
 import UserModel from '../models/user_model.js'
 import CommentModel from '../models/comment_model.js'
 
-import {requireLoginPost, requireLogin, decodeToken} from '../auth_utils.js'
+import {requireLoginPost, requireLogin, decodeToken} from '../auth.js'
+import { is } from 'typescript-is'
 
-const postRouter = new express.Router()
+interface CreatePostDetails {
+    title: string,
+    description: string,
+    markdown: string
+}
+
+const postRouter = express.Router()
 const postEmitter = new events.EventEmitter()
 
-postRouter.get('/', (req, res) => {
+postRouter.get('/', (_req, res) => {
     res.redirect('../featured')
 })
 
-postRouter.get('/create', requireLogin, (req, res) => {
+postRouter.get('/create', requireLogin, (_req, res) => {
     res.render('create')
 })
 
 postRouter.post('/create', requireLoginPost, async (req, res) => {
-    let {title, description, markdown} = req.body
-    console.log(description.length)
-    let id = decodeToken(req.cookies.access_token)
+    const id = decodeToken(req.cookies.access_token)
+    if(!is<CreatePostDetails>(req.body)){
+        return res.json({status: 'error', error: 'malformed request data'})
+    } 
+
+    const {title, description, markdown} = req.body
 
     let userDetails = await UserModel.findById(id)
+    if(userDetails == null) return res.json({status: 'error', error: 'user does not exist'})
 
     if (!userDetails.author) {
         return res.json({status: 'error', error: 'not permitted'})
@@ -50,7 +61,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
                 date: dateAssembly(),
                 slug: post.slug,
             })
-        } catch (err) {
+        } catch (err: any) {
             if (err.code == '11000') {
                 return res.json({
                     status: 'error',

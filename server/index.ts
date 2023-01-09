@@ -1,5 +1,4 @@
-import './config.js'
-
+import './env.js'
 
 import express from 'express'
 import rateLimit from 'express-rate-limit'
@@ -10,21 +9,22 @@ import mongoose from 'mongoose'
 
 import cookieParser from 'cookie-parser'
 
-import {postRouter, postEmitter} from './routes/post_router.js'
-import userRouter from './routes/user_router.js'
-import accountRouter from './routes/account_router.js'
+import {postRouter, postEmitter} from './routes/post_router'
+import userRouter from './routes/user_router'
+import accountRouter from './routes/account_router'
 
-import logRequests from './middleware/log_requests.js'
-import {checkLogin} from './auth_utils.js'
-import getPosts from './get_posts.js'
+import logRequests from './middleware/log_requests'
+import {checkLogin} from './auth'
+import getPosts from './get_posts'
 
 import {fileURLToPath} from 'url'
 import {dirname} from 'path'
-import UserModel from './models/user_model.js'
+import UserModel from './models/user_model'
+import { env } from './env'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-var cachedPosts = null
+let cachedPosts = null
 
 const limitConfig = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -35,11 +35,8 @@ const limitConfig = rateLimit({
 // Idk
 mongoose.set('strictQuery', true);
 mongoose.connect(
-    process.env.DB_URL,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    },
+    env.DB_URL,
+    {},
     async (err) => {
         if (err) throw err
         console.log(`Connected to database on ${process.env.DB_URL}!`)
@@ -47,8 +44,6 @@ mongoose.connect(
     }
 )
 
-const {SERVER_PORT, HTTPS_SERVER_PORT, PRIVKEY_PATH, FULLCHAIN_PATH} = process.env
-const RUN_HTTPS = process.env.RUN_HTTPS === 'true'
 const server = express()
 
 server.set('view engine', 'ejs')
@@ -68,30 +63,30 @@ postEmitter.on('post', async (data) => {
     })
 })
 
-server.listen(SERVER_PORT, () => {
-    console.log(`Started server on port ${SERVER_PORT}!`)
+server.listen(env.SERVER_PORT, () => {
+    console.log(`Started server on port ${env.SERVER_PORT}!`)
 })
 
-if (RUN_HTTPS)
+if (env.RUN_HTTPS)
     https
         .createServer(
             {
-                key: fs.readFileSync(PRIVKEY_PATH),
-                cert: fs.readFileSync(FULLCHAIN_PATH),
+                key: fs.readFileSync(env.PRIVKEY_PATH),
+                cert: fs.readFileSync(env.FULLCHAIN_PATH),
             },
             server
         )
-        .listen(443, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
+        .listen(443, () => console.log(`Secure server started on port ${env.HTTPS_SERVER_PORT}!`))
 
-server.get('/', (req, res) => {
+server.get('/', (_req, res) => {
     res.render('index', {posts: cachedPosts})
 })
 
-server.get('/featured', (req, res) => {
+server.get('/featured', (_req, res) => {
     res.render('featured', {data: cachedPosts})
 })
 
-server.get('/about', (req, res) => {
+server.get('/about', (_req, res) => {
     res.render('about')
 })
 
@@ -99,6 +94,6 @@ server.use('/posts', postRouter)
 server.use('/users', userRouter)
 server.use('/account', accountRouter)
 
-server.use((req, res) => {
+server.use((_req, res) => {
     res.status(404).render('../views/404')
 })

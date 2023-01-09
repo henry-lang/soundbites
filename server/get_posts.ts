@@ -1,5 +1,5 @@
-import PostModel from './models/post_model.js'
-import UserModel from './models/user_model.js'
+import PostModel from './models/post_model'
+import UserModel from './models/user_model'
 
 const getPosts = async () => {
     let lastWeek = Date.now() - 604800000

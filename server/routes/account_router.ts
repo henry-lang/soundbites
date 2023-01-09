@@ -3,14 +3,15 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import multer from 'multer'
 
-import {verify, requireLogin, requireLoginPost, decodeToken} from '../auth_utils.js'
+import {requireLogin, requireLoginPost, decodeToken, verifyRegistration} from '../auth'
 
 import UserModel from '../models/user_model.js'
+import { env } from '../env'
 
 const accountRouter = express.Router()
 const diskStorage = multer.diskStorage({
-    destination: (req, res, cb) => cb(null, 'assets/avatars/'), 
-    filename: (req, res, cb) => cb(null, decodeToken(req.cookies.access_token))
+    destination: (_req, _res, cb) => cb(null, 'assets/avatars/'), 
+    filename: (req, _res, cb) => cb(null, decodeToken(req.cookies.access_token))
 })
 
 const avatarUpload = multer({storage: diskStorage})
@@ -22,15 +23,15 @@ accountRouter.get('/', requireLogin, async (req, res) => {
     res.render('profile', {data: userDetails})
 })
 
-accountRouter.get('/register', (req, res) => {
+accountRouter.get('/register', (_req, res) => {
     res.render('register')
 })
 
-accountRouter.get('/login', async (req, res) => {
+accountRouter.get('/login', (_req, res) => {
     res.render('login')
 })
 
-accountRouter.get('/logout', async (req, res) => {
+accountRouter.get('/logout', (_req, res) => {
     res.clearCookie('access_token').redirect('/')
 })
 
@@ -48,14 +49,11 @@ accountRouter.get('/settings', requireLogin, async (req, res) => {
 
 accountRouter.post('/register', async (req, res) => {
     let pwd = await bcrypt.hash(req.body.pwd, 10)
-    let username = req.body.username
-    let displayName = req.body.displayName
-
     if (
-        !verify({
-            username: username,
+        !verifyRegistration({
+            username: req.body.username,
             pwd: req.body.pwd,
-            displayName: displayName,
+            displayName: req.body.displayName,
         })
     ) {
         return res.json({
@@ -77,7 +75,7 @@ accountRouter.post('/register', async (req, res) => {
 
         let token = jwt.sign(
             {id: newUser._id, message: 'keep your id a secret!'},
-            process.env.JWT_SECRET
+            env.JWT_SECRET
         )
         return res.cookie('access_token', token).json({status: 'ok'})
     } catch (err) {
@@ -101,7 +99,7 @@ accountRouter.post('/login', async (req, res) => {
     if ((await bcrypt.compare(pwd, userDetails.password)) == true) {
         let token = jwt.sign(
             {id: userDetails._id, message: 'keep your token a secret!'},
-            process.env.JWT_SECRET
+            env.JWT_SECRET
         )
         return res.cookie('access_token', token).json({status: 'ok'})
     } else res.json({status: 'error', error: 'invalid login details'})
@@ -124,7 +122,7 @@ accountRouter.post('/settings', requireLoginPost, avatarUpload.single('avatar'),
             }
 
             console.log(user)
-            if (!verify({username: user.username, pwd: user.password, displayName: user.displayName})) {
+            if (!verifyRegistration({username: user.username, pwd: user.password, displayName: user.displayName})) {
                 return res.json({status: "error", error: "username cannot contain special characters. password must be at least 8 characters. display name is required."})
             }
 

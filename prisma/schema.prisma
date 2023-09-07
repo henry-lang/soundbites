@@ -1,0 +1,68 @@
+datasource db {
+    provider = "postgres"
+    url      = env("DB_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+enum Role {
+    USER
+    AUTHOR
+    ADMIN
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime
+    role      Role
+
+    username String  @unique @db.VarChar(40)
+    email    String  @unique @db.VarChar(255)
+    password String @db.VarChar(255)
+    iconUrl  String? @db.VarChar(255)
+    bio      String?
+
+    posts Post[]
+
+    @@index([username, email])
+}
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    slug      String   @db.VarChar(40)
+    createdAt DateTime
+    author    User     @relation(fields: [authorId], references: [id])
+    authorId  Int
+
+    title       String
+    description String
+    markdown    String
+
+    comments Comment[]
+    tags     Tags[]
+
+    @@index([slug, authorId])
+}
+
+model Tags {
+    id   Int    @id @default(autoincrement())
+    name String @unique
+
+    posts Post[]
+}
+
+model Comment {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime
+
+    post   Post @relation(fields: [postId], references: [id])
+    postId Int
+
+    children Comment[] @relation("replies")
+    parent   Comment?  @relation("replies", fields: [parentId], references: [id])
+    parentId Int?
+
+    @@index([postId, parentId])
+}

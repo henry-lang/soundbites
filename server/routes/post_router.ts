@@ -1,19 +1,9 @@
 import express from 'express'
 import events from 'events'
-import mongoose, { MongooseError } from 'mongoose'
-import dateAssembly from '../date_assembly.js'
-import PostModel from '../models/post_model.js'
-import UserModel from '../models/user_model.js'
-import CommentModel from '../models/comment_model.js'
 
-import {requireLoginPost, requireLogin, decodeToken} from '../auth.js'
-import { is } from 'typescript-is'
-
-interface CreatePostDetails {
-    title: string,
-    description: string,
-    markdown: string
-}
+import {requireLoginPost, requireLogin} from '../auth.js'
+import { validateRequestBodyAsync } from 'zod-express'
+import { z } from 'zod'
 
 const postRouter = express.Router()
 const postEmitter = new events.EventEmitter()
@@ -26,16 +16,7 @@ postRouter.get('/create', requireLogin, (_req, res) => {
     res.render('create')
 })
 
-postRouter.post('/create', requireLoginPost, async (req, res) => {
-    const id = decodeToken(req.cookies.access_token)
-    if(!is<CreatePostDetails>(req.body)){
-        return res.json({status: 'error', error: 'malformed request data'})
-    } 
-
-    const {title, description, markdown} = req.body
-
-    let userDetails = await UserModel.findById(id)
-    if(userDetails == null) return res.json({status: 'error', error: 'user does not exist'})
+postRouter.post('/create', requireLoginPost, validateRequestBodyAsync(z.object({title: z.string(), description: z.string(), markdown: z.string()})), async (req, res) => {
 
     if (!userDetails.author) {
         return res.json({status: 'error', error: 'not permitted'})

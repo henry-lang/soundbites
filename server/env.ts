@@ -1,21 +1,21 @@
 import dotenv from 'dotenv'
-import { is } from 'typescript-is'
+import z from 'zod'
 dotenv.config()
 
-interface Environment {
-    SERVER_PORT: number,
-    RUN_HTTPS: string,
-    DB_URL: string,
-    JWT_SECRET: string,
-    HTTPS_SERVER_PORT: number,
-    PRIVKEY_PATH: string,
-    FULLCHAIN_PATH: string,
-}
+const envSchema =  z.object({
+    SERVER_PORT: z.coerce.number(),
+    RUN_HTTPS: z.coerce.boolean(),
+    DB_URL: z.string().nonempty(),
+    JWT_SECRET: z.string().nonempty(),
+    HTTPS_SERVER_PORT: z.coerce.number(),
+    PRIVKEY_PATH: z.string().nonempty(),
+    FULLCHAIN_PATH: z.string().nonempty(),
+})
 
-function onExit(): never {
-    console.log("Config is not valid. Exiting!")
-    console.log(process.env)
-    process.exit();
-}
+envSchema.parse(process.env)
 
-export const env = is<Environment>(process.env) ? process.env : onExit()
+declare global {
+    namespace NodeJS {
+        interface ProcessEnv extends z.infer<typeof envSchema> {}
+    }
+}

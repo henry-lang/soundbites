@@ -1,26 +1,28 @@
 import express from 'express'
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import multer from 'multer'
 
-import {requireLogin, requireLoginPost, decodeToken, verifyRegistration} from '../auth'
-
-import UserModel from '../models/user_model.js'
-import { env } from '../env'
+import {requireLogin, requireLoginPost} from '../auth.js'
+import {prisma} from '../prisma.js'
+import {validateRequestBodyAsync} from 'zod-express'
+import {z} from 'zod'
+import { apiFailure } from '../utils.js'
 
 const accountRouter = express.Router()
 const diskStorage = multer.diskStorage({
-    destination: (_req, _res, cb) => cb(null, 'assets/avatars/'), 
-    filename: (req, _res, cb) => cb(null, decodeToken(req.cookies.access_token))
+    destination: (_req, _res, cb) => cb(null, 'assets/avatars/'),
+    filename: (req, _res, cb) =>
+        cb(null, decodeToken(req.session)),
 })
 
 const avatarUpload = multer({storage: diskStorage})
 
 accountRouter.get('/', requireLogin, async (req, res) => {
-    let id = decodeToken(req.cookies.access_token)
-    let userDetails = await UserModel.findById(id).lean()
+    const user = await prisma.user.findFirst({
+        where: {id: req.session.userId},
+    })
 
-    res.render('profile', {data: userDetails})
+    res.render('profile', {data: user})
 })
 
 accountRouter.get('/register', (_req, res) => {
@@ -36,13 +38,12 @@ accountRouter.get('/logout', (_req, res) => {
 })
 
 accountRouter.get('/settings', requireLogin, async (req, res) => {
-    let id = decodeToken(req.cookies.access_token)
-    let user = await UserModel.findById(id)
-    if(user == null) {
+    let user = await prisma.user.findFirst({where: {id: req.session.userId}})
+    if (user == null) {
         res.render('404')
     } else {
         res.render('settings', {
-            data: {username: user.username, displayName: user.displayName, bio: user.bio},
+            data: {username: user.username, bio: user.bio},
         })
     }
 })
@@ -61,55 +62,44 @@ accountRouter.post('/register', async (req, res) => {
             error: 'username cannot contain special characters. password must be at least 8 characters and contain a number. display name is required.',
         })
     }
+})
 
-    try {
-        let newUser = new UserModel({
-            username: req.body.username,
-            password: pwd,
-            displayName: displayName,
-            avatar: 'assets/default-photo.png',
-            author: false,
-            admin: false,
-        })
-        await newUser.save()
+accountRouter.post(
+    '/login',
+    validateRequestBodyAsync(
+        z.object({username: z.string(), password: z.string()})
+    ),
+    async (req, res) => {
+        const userDetails = await prisma.user.findFirst({where: {username: req.body.username}})
 
-        let token = jwt.sign(
-            {id: newUser._id, message: 'keep your id a secret!'},
-            env.JWT_SECRET
-        )
-        return res.cookie('access_token', token).json({status: 'ok'})
-    } catch (err) {
-        if (err.code == '11000') {
-            return res.json({status: 'error', error: 'username already taken'})
+        if (!userDetails) {
+            apiFailure(res, 'invalid login details')
+            return
         }
-        res.json({status: 'error', error: err.toString()})
+
+        const passwordCorrect = await bcrypt.compare(req.body.password, userDetails.password)
+
+        if (passwordCorrect) {
+            req.session.userId = userDetails.id
+        } else {
+            apiFailure(res, 'invalid login details')
+        }
     }
-})
+)
 
-accountRouter.post('/login', async (req, res) => {
-    let username = req.body.username
-    let pwd = req.body.pwd
-    let userDetails = await UserModel.findOne({username})
+accountRouter.post(
+    '/settings',
+    requireLoginPost,
+    avatarUpload.single('avatar'),
+    async (req, res) => {
+        const user = await prisma.user.findFirst({where: {id: req.session.userId}})
 
-    if (!userDetails) {
-        res.json({status: 'error', error: 'invalid login details'})
-        return
-    }
+        if(!user) {
+            apiFailure(res, 'error')
+            return
+        }
 
-    if ((await bcrypt.compare(pwd, userDetails.password)) == true) {
-        let token = jwt.sign(
-            {id: userDetails._id, message: 'keep your token a secret!'},
-            env.JWT_SECRET
-        )
-        return res.cookie('access_token', token).json({status: 'ok'})
-    } else res.json({status: 'error', error: 'invalid login details'})
-})
-
-accountRouter.post('/settings', requireLoginPost, avatarUpload.single('avatar'), async (req, res) => {
-    try {
-        let id = decodeToken(req.cookies.access_token)
-        let user = await UserModel.findById(id)
-        let file = req.file
+        const file = req.file
         var strData = JSON.parse(req.body.strData)
         let oldUsername = user.username
 
@@ -122,8 +112,17 @@ accountRouter.post('/settings', requireLoginPost, avatarUpload.single('avatar'),
             }
 
             console.log(user)
-            if (!verifyRegistration({username: user.username, pwd: user.password, displayName: user.displayName})) {
-                return res.json({status: "error", error: "username cannot contain special characters. password must be at least 8 characters. display name is required."})
+            if (
+                !verifyRegistration({
+                    username: user.username,
+                    pwd: user.password,
+                    displayName: user.displayName,
+                })
+            ) {
+                return res.json({
+                    status: 'error',
+                    error: 'username cannot contain special characters. password must be at least 8 characters. display name is required.',
+                })
             }
 
             if (file) {
@@ -139,11 +138,6 @@ accountRouter.post('/settings', requireLoginPost, avatarUpload.single('avatar'),
             await user.save()
             return res.json({status: 'ok', modified: true})
         } else return res.json({status: 'ok', modified: false})
-    } catch (err) {
-        if (err.code == '11000') {
-            return res.json({status: 'error', error: 'this username is already taken.'})
-        }
-        res.json({status: 'error', error: err.toString()})
     }
-})
+)
 export default accountRouter

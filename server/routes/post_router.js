@@ -1,15 +1,13 @@
 import express from 'express'
-import events from 'events'
-import mongoose from 'mongoose'
-import dateAssembly from '../date_assembly.js'
-import PostModel from '../models/post_model.js'
-import UserModel from '../models/user_model.js'
-import CommentModel from '../models/comment_model.js'
-
 import {requireLoginPost, requireLogin, decodeToken} from '../auth_utils.js'
+import {prisma} from '../index.js'
+import slugify from 'slugify'
+import {marked} from 'marked'
+import createDOMPurify from 'dompurify'
+import jsdom from 'jsdom'
 
+const dompurify = createDOMPurify(new jsdom.JSDOM('').window)
 const postRouter = new express.Router()
-const postEmitter = new events.EventEmitter()
 
 postRouter.get('/', (req, res) => {
     res.redirect('../featured')
@@ -24,7 +22,7 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
     console.log(description.length)
     let id = decodeToken(req.cookies.access_token)
 
-    let userDetails = await UserModel.findById(id)
+    let userDetails = await prisma.user.findFirst({where: {id}})
 
     if (!userDetails.author) {
         return res.json({status: 'error', error: 'not permitted'})
@@ -32,25 +30,20 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
         return res.json({status: 'error', error: 'please keep description under 100 characters!'})
     } else {
         try {
-            let post = new PostModel({
-                title: title,
-                description: description,
-                markdown: markdown,
-                author: userDetails._id,
-                date: dateAssembly(),
-            })
-            await post.save()
-            userDetails.posts.push(post)
-            await userDetails.save()
-            postEmitter.emit('post', {
-                title: title,
-                description: description,
-                author: userDetails._id,
-                epochTime: Date.now(),
-                date: dateAssembly(),
-                slug: post.slug,
+            let slug = slugify(title, {lower: true, strict: true})
+            let html = dompurify.sanitize(marked(markdown))
+            await prisma.post.create({
+                data: {
+                    title,
+                    slug,
+                    html,
+                    description,
+                    markdown,
+                    authorId: id,
+                },
             })
         } catch (err) {
+            console.log(err)
             if (err.code == '11000') {
                 return res.json({
                     status: 'error',
@@ -65,52 +58,29 @@ postRouter.post('/create', requireLoginPost, async (req, res) => {
 
 postRouter.get('/:slug', async (req, res) => {
     let slug = req.params.slug
-    let data = await PostModel.findOne({slug: slug})
-    // let myData = await UserModel.findById(decodeToken(req.cookies.access_token))
+    let data = await prisma.post.findFirst({
+        where: {slug},
+        include: {author: true, comments: {take: 10, include: {author: true}}},
+    })
     if (!data) {
         res.render('404')
         return
     }
-    
-    let author = await UserModel.findById(data.author)
-    let commentList = []
-    await Promise.all(
-        data.comments.map(async (commentRef) => {
-            let comment = await CommentModel.findById(commentRef)
-            let author = await UserModel.findById(comment.author)
-            commentList.push({
-                content: comment.content,
-                date: comment.date,
-                authorDisplay: author.displayName,
-                authorPerm: author.author,
-                author: author.username,
-                avatar: author.avatar,
-                _id: comment._id,
-            })
-        })
-    )
-    res.render('post', {data: data, comments: commentList, author: author})
+
+    res.render('post', {data: data, comments: data.comments, author: data.author})
 })
 
 postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
     try {
         let slug = req.params.slug
         let content = req.body.content
-        let authorID = decodeToken(req.cookies.access_token)
+        let authorId = decodeToken(req.cookies.access_token)
         if (content == '') return
         else if (content.length > 280) {
             return res.json({status: 'error', error: 'please keep comments under 280 characters!'})
         }
-        let comment = new CommentModel({
-            _id: new mongoose.Types.ObjectId(),
-            author: authorID,
-            content: content,
-        })
-        await comment.save()
-        let post = await PostModel.findOne({slug: slug})
-        post.comments.push(comment._id)
-        await post.save()
-        await post.populate('comments')
+        let post = await prisma.post.findFirst({where: {slug}, select: {id}})
+        await prisma.comment.create({data: {content, postId: post.id, authorId}})
 
         res.json({status: 'ok'})
     } catch (err) {
@@ -123,7 +93,7 @@ postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
 //         let commentID = req.body.commentID
 //         let postID = req.body.postID
 //         let comment = CommentModel.findById(commentID)
-        
+
 //         if (!comment) {
 //             return res.json({status: 'error', error: 'this comment does not exist or has been deleted.'})
 //         }
@@ -135,8 +105,8 @@ postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
 //         await CommentModel.findOneAndRemove(commentID)
 //         return res.json({status: "ok"})
 //     } catch (err) {
-//         throw err   
+//         throw err
 //     }
 // })
 
-export {postRouter, postEmitter}
+export {postRouter}

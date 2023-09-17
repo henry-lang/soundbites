@@ -1,12 +1,11 @@
 import express from 'express'
 
-import UserModel from '../models/user_model.js'
-import PostModel from '../models/post_model.js'
+import {prisma} from '../index.js'
 
 const userRouter = new express.Router()
 userRouter.get('/:username', async (req, res) => {
     let username = req.params.username
-    let data = await UserModel.findOne({username: username})
+    let data = await prisma.user.findFirst({where: {username}, include: {posts: {take: 10}}})
     if (!data) {
         res.render('404')
         return
@@ -18,17 +17,9 @@ userRouter.get('/:username', async (req, res) => {
         author: data.author,
         bio: data.bio,
         avatar: data.avatar,
-        posts: []
+        posts: data.posts,
     }
-    await Promise.all(
-        data.posts.map(async (post) => {
-            let p = await PostModel.findById(post._id)
-            trimmed.posts.push(p)
-        })
-    )
-    trimmed.posts.sort((a, b) => {
-        return b.epochTime - a.epochTime
-    })
+
     res.render('user', {data: trimmed})
 })
 

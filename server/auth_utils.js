@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import UserModel from './models/user_model.js'
+import {prisma} from './index.js'
 
 const SECRET = process.env.JWT_SECRET
 
@@ -11,7 +11,7 @@ const decodeToken = (token) => {
 const isLoggedIn = async (token, res) => {
     if (!token) return false
     if (jwt.verify(token, SECRET) == false) return false
-    if (!(await UserModel.exists({_id: decodeToken(token)}))) {
+    if (!((await prisma.user.count({where: {id: decodeToken(token)}, take: 1})) > 0)) {
         if (res != null) {
             res.clearCookie('access_token')
         }
@@ -22,7 +22,7 @@ const isLoggedIn = async (token, res) => {
 
 const isAuthor = async (token) => {
     let id = decodeToken(token)
-    let user = await UserModel.findById(id).lean()
+    let user = await prisma.user.findFirst({where: {id}, select: {author: true}})
     return user.author
 }
 

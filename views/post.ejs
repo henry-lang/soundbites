@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= data.title %> - soundbites</title>
+    <link rel="icon" href="../assets/favicon.svg">
     <link rel="stylesheet" href="/assets/common.css">
     <script src="../assets/js/comment.js" defer></script>
     <script defer src="../assets/js/common.js"></script>
@@ -15,7 +16,7 @@
     <div class="main-content fadein-left">
         <div class="container">
             <h1><%= data.title %> </h1>
-            <h3>By <a href="../users/<%=author.username%>"><%= author.displayName %></a> on <i><%= data.date %></i></h3>
+            <h3>By <a href="../users/<%=author.username%>"><%= author.displayName %></a> on <i><%= data.date.toLocaleDateString(undefined, {year: "numeric", month: 'numeric', day: 'numeric'}) %></i></h3>
         <div>
         <div class="post-content container">
             <%- data.html %>
@@ -29,10 +30,10 @@
                     <div class="comment">
                         <div class="username-and-date">
                             <p id="p">
-                                <a class="navbar-link" href="../users/<%=comment.author%>">
-                                    <img class="avatar-small" src="../<%=comment.avatar%>">
-                                    <%= comment.authorDisplay %></a>
-                                <p class="comment-date"><%= comment.date %></p>
+                                <a class="navbar-link" href="../users/<%=comment.author.username%>">
+                                    <img class="avatar-small" src="../<%=comment.author.avatar%>">
+                                    <%= comment.author.displayName %></a>
+                                <p class="comment-date"><%= comment.date.toLocaleDateString(undefined, {year: "numeric", month: 'numeric', day: 'numeric'}) %></p>
                             </p>
                         </div>
                         <p class="comment-content"><%= comment.content %></p>

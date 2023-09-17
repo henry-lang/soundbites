@@ -3,7 +3,7 @@
         <a class="block-link" href="posts/<%= post.slug %>">
             <div class="latest-headline">
                 <p><%= post.title %></p>
-                <p id="authorInfo">By <strong><%= post.author.displayName %></strong> on <%= post.date %></p>
+                <p id="authorInfo">By <strong><%= post.author.displayName %></strong> on <%= post.date.toLocaleDateString(undefined, {year: "numeric", month: 'numeric', day: 'numeric'}) %></p>
                 <p id="desc"><%= post.description %></p>
             </div>
         </a>

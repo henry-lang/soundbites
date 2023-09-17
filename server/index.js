@@ -23,7 +23,7 @@ import {PrismaClient} from '@prisma/client'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-export const prisma = new PrismaClient()
+export const prisma = new PrismaClient({log: ['query', 'info', 'warn', 'error']})
 
 const limitConfig = rateLimit({
     windowMs: 15 * 60 * 1000,

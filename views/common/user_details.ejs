@@ -1,6 +1,8 @@
 <p id="username">Username: <%= data.username %></p>
 <p>Display Name: <%= data.displayName %></p>
-<p id="author-perms-text">Author Permissions: (ability to write articles): <%= data.author %></p> 
+<% if (data.author) { %>
+    <p id="author-perms-text">This user is an author.</p> 
+<% } %>
 
 <% if(data.bio) { %>
     <p id="bio"><i>"<%= data.bio %>"</i></p>

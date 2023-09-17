@@ -5,6 +5,7 @@ import slugify from 'slugify'
 import {marked} from 'marked'
 import createDOMPurify from 'dompurify'
 import jsdom from 'jsdom'
+import assemble from '../date_assembly.js'
 
 const dompurify = createDOMPurify(new jsdom.JSDOM('').window)
 const postRouter = new express.Router()
@@ -62,6 +63,7 @@ postRouter.get('/:slug', async (req, res) => {
         where: {slug},
         include: {author: true, comments: {take: 10, include: {author: true}}},
     })
+    console.log(data.comments)
     if (!data) {
         res.render('404')
         return
@@ -79,7 +81,7 @@ postRouter.post('/:slug/comment', requireLoginPost, async (req, res) => {
         else if (content.length > 280) {
             return res.json({status: 'error', error: 'please keep comments under 280 characters!'})
         }
-        let post = await prisma.post.findFirst({where: {slug}, select: {id}})
+        let post = await prisma.post.findFirst({where: {slug}, select: {id: true}})
         await prisma.comment.create({data: {content, postId: post.id, authorId}})
 
         res.json({status: 'ok'})

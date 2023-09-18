@@ -17,10 +17,13 @@ userRouter.get('/:username', async (req, res) => {
         author: data.author,
         bio: data.bio,
         avatar: data.avatar,
-        posts: data.posts,
     }
 
-    res.render('user', {data: trimmed})
+    let posts = data.posts
+    posts.map((p) => {
+        p.author = trimmed
+    })
+    res.render('user', {data: trimmed, posts: data.posts})
 })
 
 export default userRouter

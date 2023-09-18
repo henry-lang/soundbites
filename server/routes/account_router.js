@@ -12,7 +12,8 @@ const diskStorage = multer.diskStorage({
         cb(null, 'assets/avatars/')
     },
     filename: function (req, res, cb) {
-        cb(null, decodeToken(req.cookies.access_token))
+        console.log(decodeToken(req.cookies.access_token))
+        cb(null, `${decodeToken(req.cookies.access_token)}`)
     },
 })
 
@@ -88,7 +89,7 @@ accountRouter.post('/register', async (req, res) => {
 accountRouter.post('/login', async (req, res) => {
     let username = req.body.username
     let pwd = req.body.pwd
-    let userDetails = prisma.user.findFirst({where: {username}})
+    let userDetails = await prisma.user.findFirst({where: {username}})
 
     if (!userDetails) {
         res.json({status: 'error', error: 'invalid login details'})
@@ -111,11 +112,13 @@ accountRouter.post(
     async (req, res) => {
         try {
             let id = decodeToken(req.cookies.access_token)
-            let user = prisma.user.findFirst({where: {id}})
+            let user = await prisma.user.findFirst({where: {id}})
+            console.log(user)
             let file = req.file
             var strData = JSON.parse(req.body.strData)
 
             if (strData.checkbox) {
+                console.log(strData)
                 for (let i in strData) {
                     if (strData[i] != '') {
                         //if any settings were not changed (they did not fill in the input), then they are ignored.
@@ -145,6 +148,8 @@ accountRouter.post(
                             error: 'filetype must be an image (jpg, png, gif)',
                         })
                 }
+
+                delete user.id; delete user.checkbox
                 await prisma.user.update({where: {id}, data: user})
                 return res.json({status: 'ok', modified: true})
             } else return res.json({status: 'ok', modified: false})

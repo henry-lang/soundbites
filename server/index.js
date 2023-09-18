@@ -42,6 +42,11 @@ server.use(checkLogin)
 server.post('*', limitConfig)
 server.use(logRequests)
 server.use(express.json())
+server.enable('trust proxy')
+server.use((req, res, next) => {
+    if (RUN_HTTPS && !req.secure) res.redirect(`https://${req.headers.host}${req.headers.url}`)
+    next();
+})
 
 server.listen(SERVER_PORT, () => {
     console.log(`Started server on port ${SERVER_PORT}!`)
@@ -59,6 +64,7 @@ if (RUN_HTTPS)
         .listen(443, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
 
 function recentPosts() {
+    // prisma.post.findMany({take: 10, orderBy: {date: 'desc'}, include: {author: true}}).then((r) => console.log(r))
     return prisma.post.findMany({take: 10, orderBy: {date: 'desc'}, include: {author: true}})
 }
 
@@ -70,8 +76,12 @@ server.get('/featured', async (_, res) => {
     res.render('featured', {data: await recentPosts()})
 })
 
-server.get('/about', (_, res) => {
-    res.render('about')
+server.get('/about', async (_, res) => {
+    res.render('about', {authors: await prisma.user.findMany({where: {author: true}, select: {displayName: true, username: true}})})
+})
+
+server.get('/join', (_, res) => {
+    res.redirect('/account/register')
 })
 
 server.use('/posts', postRouter)

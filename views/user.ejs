@@ -29,21 +29,14 @@
             <br>
         <div class="container fadein-left">
             <h2>articles <%=data.displayName%> has written</h2>
-            <div id="container">
-                <% data.posts.map(post => { %>
-                    <a class="block-link" href="/posts/<%= post.slug %>">
-                        <div class="latest-headline">
-                            <p><%= post.title %></p>
-                            <p id="authorInfo">By <strong><%= data.username %></strong> on <%= post.date %></p>
-                            <p id="desc"><%= post.description %></p>
-                        </div>
-                    </a>
-                <% }) %>
-            </div>
+
+            <%- include("common/latest-headlines") %>
         <% } %>
         </div>
         <%- include("common/theme_toggle") %>
         <!-- probably add some extra content here like recent comments (or if an author, posts) -->
     </div>
 </body>
+<script>
+</script>
 </html>

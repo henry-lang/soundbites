@@ -1,11 +1,32 @@
 <div id="container">
     <% posts.map(post => { %>
-        <a class="block-link" href="posts/<%= post.slug %>">
-            <div class="latest-headline">
+        <!-- <a class="block-link" href="posts/<%= post.slug %>"> -->
+            <div class="latest-headline" href="posts/<%= post.slug %>">
                 <p><%= post.title %></p>
-                <p id="authorInfo">By <strong><%= post.author.displayName %></strong> on <%= post.date.toLocaleDateString(undefined, {year: "numeric", month: 'numeric', day: 'numeric'}) %></p>
+                <p id="authorInfo">
+                    By <a class="link" href="/users/<%= post.author.username %>"><%= post.author.displayName %></a>
+                    on <%= post.date.toLocaleDateString(undefined, {year: "numeric", month: 'numeric', day: 'numeric'}) %>
+                </p>
                 <p id="desc"><%= post.description %></p>
             </div>
-        </a>
+        <!-- </a> -->
     <% }) %>
 </div>
+<script>
+    const posts = document.getElementsByClassName("latest-headline")
+    // const links = document.getElementsByClassName("link")
+    for (let i = 0; i < posts.length; i++) {
+        let p = posts[i]
+        // let l = links[i]
+        p.addEventListener('click', (e) => {
+            e.preventDefault()
+            // console.log(p.getAttribute('href'))
+            console.log(e.target)
+            if (e.target.tagName.toLowerCase() == "a") {
+                window.location.href = e.target.getAttribute('href')
+                return
+            }
+            window.location.href = p.getAttribute('href')
+        })
+    }
+</script>

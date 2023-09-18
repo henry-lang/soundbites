@@ -13,6 +13,8 @@ html {
     --super-dark-color: #22292a;
     --mid-color: rgb(236, 236, 236);
     --accent-color: #f17a7e;
+    --input-bg-color: whitesmoke;
+    --input-hover-color: #ecf0f0;
 
     --nav-height: 55px;
     --main-content-width: 80%;
@@ -25,6 +27,8 @@ html {
     --super-dark-color: #f9faf4;
     --mid-color: #384446;
     --accent-color: #f17a7e;
+    --input-bg-color: var(--mid-color);
+    --input-hover-color: #585b5c;
 }
 
 body {
@@ -138,11 +142,14 @@ h4 {
     line-height: var(--nav-height);
 }
 
-.navbar-link {
+.link {
     font-family: var(--main-font);
     font-weight: 200;
     text-decoration: none;
-    color: var(--accent-color);
+    color: var(--accent-color)
+}
+
+.navbar-link {
     margin-right: 20px;
     transition: 0.25s;
 }
@@ -193,13 +200,13 @@ input {
     outline: none;
     border-radius: 5px;
     font-family: var(--main-font);
-    background-color: whitesmoke;
+    background-color: var(--input-bg-color);
     color: var(--dark-color);
     transition: 0.25s;
 }
 
 input:hover {
-    background-color: #ecf0f0;
+    background-color: var(--input-hover-color);
 }
 
 .submit {
@@ -240,6 +247,7 @@ textarea {
 
 .latest-headline:hover {
     transform: scale(1.05);
+    cursor: pointer;
 }
 
 #container {
@@ -256,6 +264,7 @@ textarea {
 
 .block-link {
     text-decoration: none;
+    color: var(--dark-color)
 }
 
 ul {
@@ -272,6 +281,7 @@ ul {
 
 #credits li {
     text-indent: 5px;
+    color: var(--dark-color)
 }
 
 .comment {

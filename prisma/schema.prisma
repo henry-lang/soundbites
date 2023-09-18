@@ -12,7 +12,7 @@ model User {
     username    String
     displayName String
     password    String
-    avatar      String  @default('../assets/default-photo.png')
+    avatar      String  @default("../assets/default-photo.png")
     author      Boolean @default(false)
     admin       Boolean @default(false)
     bio         String?

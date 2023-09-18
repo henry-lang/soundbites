@@ -15,15 +15,17 @@
     <div class="main-content">
         <div class="container fadein-left">
             <h1>about us</h1>
-            Soundbites is a news site and blog based around music, which publishes “bite-sized” articles.
-            Our goal is to encourage music enjoyers of all kinds - regardless of writing skill - to come together and share their thoughts on what they love.
+            <p>
+                Soundbites is a news site and blog based around music, which publishes “bite-sized” articles.
+                Our goal is to encourage music enjoyers of all kinds - regardless of writing skill - to come together and share their thoughts on what they love.
+                <br>
+                <br>
+                We write articles that analyze lyrical and sonic elements of all types of music, including current releases, retrospectives 
+                (looks on older, significant albums that changed a certain genre), and give updates on notable events in the music industry.
+            </p>
+            <!-- <br>
             <br>
-            <br>
-            We write articles that analyze lyrical and sonic elements of all types of music, including current releases, retrospectives 
-            (looks on older, significant albums that changed a certain genre), and give updates on notable events in the music industry.
-            <br>
-            <br>
-            We have formed into a club at <a href="https://princetonk12.org/princeton-high-school" target="_blank">Princeton High School</a>. You're reading articles created by talented writers at PHS!
+            We have formed into a club at <a href="https://princetonk12.org/princeton-high-school" target="_blank">Princeton High School</a>. You're reading articles created by talented writers at PHS! -->
         </div>
         <hr class="wave-divider">
             <div class="container fadein-left">
@@ -31,12 +33,14 @@
                 <div id="credits">
                 <h3>writers</h3>
                 <ul>
-                    <li>We're getting writers soon!</li>
+                    <% authors.map(a => { %>
+                        <li><a class="link" href="../users/<%= a.username%>"><%= a.displayName %></a></li>
+                    <% }) %>
                 </ul> 
                 <h3>developers</h3>
                 <ul>
-                    <li><a class="navbar-link" href="../users/henry">henry</a></li>
-                    <li><a class="navbar-link" href="../users/ayush">ayush</a></li>
+                    <li><a class="link" href="../users/henry">henry</a></li>
+                    <li><a class="link" href="../users/ayush">ayush</a></li>
                 </ul>
             </div>
         </div>
@@ -50,7 +54,7 @@
                 Because of this, there may be some disrupting issues. We're hoping to fix those as soon as possible. If you see any problems, please post a comment on <a href="/posts/music-is-awesome">this post.</a>
                 <br>
                 <br> -->
-                We are still working on this website as we speak! We're going to be reworking the server and the web design throughout the year, so stay tuned!
+                We are still working on this website. We're going to be reworking the server and the design throughout the year, so stay tuned for a new theme change!
                 <br>
                 If you are interested, changes will be visible on our <a href="https://github.com/henry-lang/soundbites" target="_blank">GitHub repository.</a>
             </p>

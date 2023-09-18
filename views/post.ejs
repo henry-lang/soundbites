@@ -30,7 +30,7 @@
                     <div class="comment">
                         <div class="username-and-date">
                             <p id="p">
-                                <a class="navbar-link" href="../users/<%=comment.author.username%>">
+                                <a class="link" href="../users/<%=comment.author.username%>">
                                     <img class="avatar-small" src="../<%=comment.author.avatar%>">
                                     <%= comment.author.displayName %></a>
                                 <p class="comment-date"><%= comment.date.toLocaleDateString(undefined, {year: "numeric", month: 'numeric', day: 'numeric'}) %></p>

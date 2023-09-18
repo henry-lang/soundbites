@@ -1,7 +1,7 @@
 <div id="container">
     <% posts.map(post => { %>
         <!-- <a class="block-link" href="posts/<%= post.slug %>"> -->
-            <div class="latest-headline" href="posts/<%= post.slug %>">
+            <div class="latest-headline" href="/posts/<%= post.slug %>">
                 <p><%= post.title %></p>
                 <p id="authorInfo">
                     By <a class="link" href="/users/<%= post.author.username %>"><%= post.author.displayName %></a>

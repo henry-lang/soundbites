@@ -19,6 +19,7 @@ import {fileURLToPath} from 'url'
 import {dirname} from 'path'
 
 import {PrismaClient} from '@prisma/client'
+import helmet from 'helmet';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -32,11 +33,13 @@ const limitConfig = rateLimit({
 })
 
 const {SERVER_PORT, HTTPS_SERVER_PORT, PRIVKEY_PATH, FULLCHAIN_PATH} = process.env
+console.log(PRIVKEY_PATH, FULLCHAIN_PATH);
 const RUN_HTTPS = process.env.RUN_HTTPS === 'true'
 const server = express()
 
 server.set('view engine', 'ejs')
 server.use('/assets', express.static(path.join(__dirname, '../assets')))
+server.use(express.static(path.join(__dirname, '../assets'))) // for certbot to give us https
 server.use(cookieParser())
 server.use(checkLogin)
 server.post('*', limitConfig)
@@ -44,9 +47,10 @@ server.use(logRequests)
 server.use(express.json())
 server.enable('trust proxy')
 server.use((req, res, next) => {
-    if (RUN_HTTPS && !req.secure) res.redirect(`https://${req.headers.host}${req.headers.url}`)
+    if (RUN_HTTPS && !req.secure) return res.redirect(`https://${req.headers.host}${req.originalUrl}`)
     next();
 })
+server.use(helmet())
 
 server.listen(SERVER_PORT, () => {
     console.log(`Started server on port ${SERVER_PORT}!`)
@@ -61,7 +65,7 @@ if (RUN_HTTPS)
             },
             server
         )
-        .listen(443, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
+        .listen(HTTPS_SERVER_PORT, () => console.log(`Secure server started on port ${HTTPS_SERVER_PORT}!`))
 
 function recentPosts() {
     // prisma.post.findMany({take: 10, orderBy: {date: 'desc'}, include: {author: true}}).then((r) => console.log(r))

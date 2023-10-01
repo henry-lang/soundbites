@@ -62,8 +62,7 @@ accountRouter.post('/register', async (req, res) => {
             status: 'error',
             error: 'username cannot contain special characters. password must be at least 8 characters and contain a number. display name is required.',
         })
-    }
-
+    } else if (await prisma.user.findFirst({where: {username}})) return res.json({status: 'error', error: 'that username is already in use!'})
     try {
         let newUser = await prisma.user.create({
             data: {

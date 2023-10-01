@@ -9,7 +9,7 @@ generator client {
 
 model User {
     id          Int     @id @default(autoincrement())
-    username    String
+    username    String  @unique
     displayName String
     password    String
     avatar      String  @default("../assets/default-photo.png")

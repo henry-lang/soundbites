@@ -46,11 +46,13 @@ server.post('*', limitConfig)
 server.use(logRequests)
 server.use(express.json())
 server.enable('trust proxy')
+server.use(helmet())
 server.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "script-src 'self' 'unsafe-inline';")
+    // res.setHeader('Content-Security-Policy', "script-src 'unsafe-inline'")
     if (RUN_HTTPS && !req.secure) return res.redirect(`https://${req.headers.host}${req.originalUrl}`)
     next();
 })
-server.use(helmet())
 
 server.listen(SERVER_PORT, () => {
     console.log(`Started server on port ${SERVER_PORT}!`)
